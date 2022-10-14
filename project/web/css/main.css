@@ -35,11 +35,14 @@ body {
     font-family: var(--ff-primary);
     font-size: var(--fs-medium);
     
+    background: rgba(var(--clr-primary-1), 0.1);
     background-image: url(../img/linear-gradient.png);
+}
+
+.content-container {
     display: flex;
     flex-direction: column;
     min-height: 100%;
-    background: rgba(var(--clr-primary-1), 0.1);
 }
 
 header {
