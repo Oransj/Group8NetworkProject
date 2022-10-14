@@ -90,10 +90,12 @@ main {
     align-items: center;
 
     overflow: hidden;
+    user-select: none;
 }
 
 .weather-card * {
     margin: auto;
+    pointer-events: none;
 }
 
 .weather-card:hover, .weather-card:focus {
