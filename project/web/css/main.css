@@ -15,6 +15,14 @@
     --fs-small: 0.7em;
 }
 
+*:focus {
+    outline: none;
+}
+
+a:focus {
+    filter: drop-shadow(0 0 10px #4d8bcd);
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -88,7 +96,7 @@ main {
     margin: auto;
 }
 
-.weather-card:hover {
+.weather-card:hover, .weather-card:focus {
     box-shadow: 0 0 10px rgba(var(--clr-primary-1), 0.8);
     cursor: pointer;
 }
@@ -132,7 +140,6 @@ main {
 .weather-card--rain {
     grid-row: 7 / 9;
     grid-column: 1 / 2;
-    filter: sepia(100%) hue-rotate(90deg) saturate(400%);
 }
 
 .weather-card--wind {
