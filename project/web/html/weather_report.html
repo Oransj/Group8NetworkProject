@@ -10,43 +10,47 @@
 </head>
 
 <body>
-    <header>
-        <a href="index.html">
-            <img class="logo" src="../img/Logo.png" alt="Logo">
-        </a>
-        <div class="title">
-            <h2 style="margin: 0">Ålesund</h2>
-            <h4 style="margin: 0">Today</h4>
-        </div>
-    </header>
-    <main>
-        <table class="forecast_table">
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Weather</th>
-                <th>Temperature</th>
-                <th>Precipitation</th>
-                <th>Wind</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>08:00</td>
-                <td>
-                    <img src="../img/animated/sun.svg">
-                </td>
-                <td>8&#176C</td>
-                <td>4.0mm</td>
-                <td>2.0m/s</td>
-                <td></td>
-              </tr>
-            </tbody>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <div class="content-container">
+        <header>
+            <a href="index.html">
+                <img class="logo" src="../img/Logo.png" alt="Logo">
+            </a>
+            <div class="title">
+                <h2 style="margin: 0">Ålesund</h2>
+                <h4 style="margin: 0">Today</h4>
+            </div>
+        </header>
+        <main>
+            <table class="forecast_table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Weather</th>
+                    <th>Temperature</th>
+                    <th>Precipitation</th>
+                    <th>Wind</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>08:00</td>
+                    <td>
+                        <img src="../img/animated/sun.svg">
+                    </td>
+                    <td>8&#176C</td>
+                    <td>4.0mm</td>
+                    <td>2.0m/s</td>
+                  </tr>
+                </tbody>
             </table>
-        <canvas class="temperature_graph"></canvas>
-    </main>
-    <footer>
-        <div class="time-updated">Last updated 14.10.2022 19:37</div>
-    </footer>
+            <canvas id="myChart" class="forecast_graph--temperature"></canvas>
+        </main>
+        <footer>
+            <div class="time-updated">Last updated 14.10.2022 19:37</div>
+        </footer>
+    </div>
+
+    <script src="../js/weather_report.js"></script>
 </body>
 </html>
