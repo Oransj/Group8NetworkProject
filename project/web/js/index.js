@@ -18,7 +18,7 @@ function insertWeatherCards() {
 function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmount, windAmount) {
     let weatherCardContainer = document.querySelector(".weather-card-container");
     weatherCardContainer.innerHTML += `
-        <li class="weather-card" data-value="${date}">
+        <li class="weather-card" data-value="${date}" tabindex="0">
             <h4 class="weather-card--date">${weekday}</h4>
             <img class="weather-card--icon" src="../img/animated/${weatherType}.svg" alt="Weather icon">
             <div class="weather-card--min-temp">${minTemp}&#176C</div>
