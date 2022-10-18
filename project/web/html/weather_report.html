@@ -22,35 +22,30 @@
             </div>
         </header>
         <main>
-            <table class="forecast_table">
-                <thead>
-                  <tr>
-                    <th>Time</th>
-                    <th>Weather</th>
-                    <th>Temperature</th>
-                    <th>Precipitation</th>
-                    <th>Wind</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>08:00</td>
-                    <td>
-                        <img src="../img/static/sun.svg">
-                    </td>
-                    <td>8&#176C</td>
-                    <td>4.0mm</td>
-                    <td>2.0m/s</td>
-                  </tr>
-                </tbody>
-            </table>
-            <canvas id="myChart" class="forecast_graph--temperature"></canvas>
+            <div class="forecast-container">
+                <table class="forecast_table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Weather</th>
+                        <th>Temperature</th>
+                        <th>Precipitation</th>
+                        <th>Wind</th>
+                      </tr>
+                    </thead>
+                    <tbody class="forecast_table--body">
+                      
+                    </tbody>
+                </table>
+                <canvas id="myChart" class="forecast_graph--temperature"></canvas>
+            </div>
         </main>
         <footer>
-            <div class="time-updated">Last updated 14.10.2022 19:37</div>
+            <div class="time-updated"></div>
         </footer>
     </div>
 
+    <script src="../js/main.js"></script>
     <script src="../js/weather_report.js"></script>
 </body>
 </html>
