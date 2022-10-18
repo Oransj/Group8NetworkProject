@@ -1,0 +1,5 @@
+THING: Changerate, minChange, maxChange
+TEMP: 0.7 0.0 5.0
+AIRP: 0.75 0.1 1.33
+LIHT: 1.0 10.0 100.0
+WNDS: 0.3 0.0 10.0
