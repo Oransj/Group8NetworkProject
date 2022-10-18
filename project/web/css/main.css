@@ -1,10 +1,10 @@
 /* VARIABLES */
 :root {
     /* Colours */
-    --clr-primary-1: 0, 0, 0;
-    --clr-primary-2: 255, 255, 255;
-    --clr-secondary-1: 70, 70, 70;
-    --clr-secondary-2: 228, 132, 152;
+    --clr-primary-1: 0, 0, 0; /* black */
+    --clr-primary-2: 255, 255, 255; /* white*/
+    --clr-secondary-1: 70, 70, 70; /* darkgrey */ 
+    --clr-secondary-2: 200, 200, 200; /* lightgrey */
 
     /* Font families */
     --ff-primary: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -27,7 +27,8 @@ a:focus {
     filter: drop-shadow(0 0 10px #4d8bcd);
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -38,7 +39,7 @@ body {
     color: rgb(var(--clr-primary-1));
     font-family: var(--ff-primary);
     font-size: var(--fs-medium);
-    
+
     background: rgba(var(--clr-primary-1), 0.1);
     background-image: url(../img/linear-gradient.png);
 }
@@ -76,4 +77,20 @@ footer {
     padding: 0.5em;
     filter: drop-shadow(0 0 0.3rem rgb(var(--clr-primary-2)));
     z-index: -1;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px rgba(var(--clr-primary-1), 0.3);
+	background-color: rgb(var(--clr-primary-2));
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	box-shadow: inset 0 0 6px rgba(var(--clr-primary-1), 0.3);
+	background-color: rgb(var(--clr-secondary-2));
 }
