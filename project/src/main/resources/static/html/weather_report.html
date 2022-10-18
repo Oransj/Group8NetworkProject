@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/weather_report.css">
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <div class="content-container">
+        <header>
+            <a href="index.html">
+                <img class="logo" src="../img/Logo.png" alt="Logo">
+            </a>
+            <div class="title">
+                <h2 style="margin: 0">Ålesund</h2>
+                <h4 style="margin: 0">Today</h4>
+            </div>
+        </header>
+        <main>
+            <table class="forecast_table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Weather</th>
+                    <th>Temperature</th>
+                    <th>Precipitation</th>
+                    <th>Wind</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>08:00</td>
+                    <td>
+                        <img src="../img/static/sun.svg">
+                    </td>
+                    <td>8&#176C</td>
+                    <td>4.0mm</td>
+                    <td>2.0m/s</td>
+                  </tr>
+                </tbody>
+            </table>
+            <canvas id="myChart" class="forecast_graph--temperature"></canvas>
+        </main>
+        <footer>
+            <div class="time-updated">Last updated 14.10.2022 19:37</div>
+        </footer>
+    </div>
+
+    <script src="../js/weather_report.js"></script>
+</body>
+</html>
