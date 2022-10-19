@@ -1,5 +1,7 @@
 import datetime
 
+from numpy import pi, sin
+
     
 class weather:
 
@@ -47,5 +49,13 @@ class day:
         print(time)
         print(f"{self.weatherList[time]} TIME: {time}")
         
+def sinus(x : float):
+    A = 1
+    w = 2*pi
+    phi = 0
+    return A * sin(w * x + phi)
+
+print(sinus(0))
+
 newDay = day()
 newDay.add_weather(datetime.time(0,0,0), weather(10, 0.0, 0.0, 0, 0, 'N'))
