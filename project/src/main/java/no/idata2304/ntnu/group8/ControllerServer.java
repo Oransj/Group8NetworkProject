@@ -8,12 +8,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ControllerServer {
 
-  @GetMapping("/greeting")
-  public String greeting(
+  @GetMapping("/today")
+  public String today(
       @RequestParam(name = "name", required = false, defaultValue = "World") String name,
       Model model) {
     model.addAttribute("name", name);
-    return "greeting";
+    return "weather_report";
+  }
+
+  @GetMapping("/tomorrow")
+  public String tomorrow(
+      @RequestParam(name = "name", required = false, defaultValue = "World") String name,
+      Model model) {
+    model.addAttribute("name", name);
+    return "weather_report";
   }
 
 }

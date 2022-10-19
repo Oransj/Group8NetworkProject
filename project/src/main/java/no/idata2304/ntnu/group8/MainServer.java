@@ -1,4 +1,4 @@
-package no.ntnu.idata2304.group8;
+package no.idata2304.ntnu.group8;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
