@@ -1,4 +1,7 @@
 window.onload = function() {
+    insertWeatherCard("4", "Today", "sun", "6", "8", "4.0", "2.0");
+    insertWeatherCard("4", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
+    insertWeatherCard("4", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
     insertWeatherCard("4", "Monday", "thunder", "6", "8", "4.0", "2.0");
 
     addEventListeners();
