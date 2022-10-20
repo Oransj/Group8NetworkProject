@@ -12,10 +12,10 @@ var date = new Date();
 var finaltime = timeSince(date);
 lastUpdatedElem.innerHTML = "This page was updated " + timeSince(date) + " ago";
 
-/* Set an interval for the text to be refreshed on the page */
+/* Set an interval (milliseconds) for the text to be refreshed on the page */
 setInterval(function() {
   lastUpdatedElem.innerHTML = "This page was updated " + timeSince(date) + " ago";
-}, 30000);
+}, 60000);
 
 /* Get the amount of time since the page was updated */
 function timeSince(date) {
