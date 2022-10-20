@@ -32,3 +32,46 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
     </tr>
   `;
 }
+
+var forecastGraphTemp = document.querySelector(".forecast_graph--temperature");
+
+fetch('https://data.cdc.gov/resource/w9j2-ggv5.csv')
+  .then(function (response) {
+    return response.text();
+  })
+  .then(function (text) {
+    let series = csvToSeries(text);
+    renderChart(series);
+  })
+  .catch(function (error) {
+    // Something went wrong
+    console.log(error);
+  });
+
+function csvToSeries(text) {
+  const lifeExp = 'average_life_expectancy'
+  // Convert the data text (CSV) to Jason
+  let dataAsJson = JSC.csv2Json(text);
+  let male = [], female = [];
+  dataAsJson.forEach(function (row) {
+    if (row.race === 'All Races') {
+      if (row.sex === 'Male') {
+        // Add data to male array
+        male.push({ x: row.year, y: row[lifeExp] });
+      } else if (row.sex === 'Female') {
+        // Add data to female array
+        female.push({ x: row.year, y: row[lifeExp] });
+      }
+    }
+  });
+  return [
+    { name: 'Male', points: male },
+    { name: 'Female', points: female }
+  ];
+}
+
+function renderChart(series) {
+  JSC.Chart(forecastGraphTemp, {
+    series: series
+  });
+}
