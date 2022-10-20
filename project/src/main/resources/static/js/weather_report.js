@@ -17,17 +17,17 @@ function loadData() {
 
 var forecastTableBody = document.querySelector(".forecast_table--body");
 
-function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount, windDirection) {  
+function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount, windDirection) {
   forecastTableBody.innerHTML += `
     <tr>
       <td>${time}</td>
       <td>
-        <img src="../img/static/${weatherType}.svg">
+        <img src="../static/img/static/${weatherType}.svg">
       </td>
       <td>${temp}&#176C</td>
       <td>${rainAmount}mm</td>
       <td>
-        <div>${windAmount}m/s<img style="transform: rotate(${windDirection}deg)" src="../img/static/arrow.svg"></div>
+        <div>${windAmount}m/s<img style="transform: rotate(${windDirection}deg)" src="../static/img/static/arrow.svg"></div>
       </td>
     </tr>
   `;
