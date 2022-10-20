@@ -1,0 +1,9 @@
+{
+    "Millis": 1666280000000,
+    "Temperature": 8.0,
+    "Precipitation": 12.0,
+    "Air_pressure": 1013.25,
+    "Light": 100.0,
+    "Wind_Speed": 1,
+    "Wind_Dir": 90.0
+}
