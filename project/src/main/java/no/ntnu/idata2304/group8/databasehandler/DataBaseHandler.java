@@ -1,12 +1,22 @@
 package no.ntnu.idata2304.group8.databasehandler;
 
+import java.util.ArrayList;
+
 public class DataBaseHandler {
-  no.ntnu.idata2304.group8.databasehandler.SQLHandler sqlHandler = new SQLHandler();
+  SQLHandler sqlHandler = new SQLHandler();
 
 
-  public void writeToDB() {
-    sqlHandler.insert(12345, "testing");
+
+
+  public void writeToDB(ArrayList array) {
     //TODO: Implement method
+    sqlHandler.insert(Integer.parseInt(array.get(0).toString()), //TIME
+        Float.parseFloat(array.get(1).toString()), //TEMPERATURE
+        Float.parseFloat(array.get(2).toString()), //PRECIPITATION
+        Integer.parseInt(array.get(3).toString()), //AIR_PRESSURE
+        Float.parseFloat(array.get(4).toString()), //LIGHT
+        Float.parseFloat(array.get(5).toString()), //WIND_SPEED
+        Float.parseFloat(array.get(6).toString())); //WIND_DIR
   }
 
 
@@ -19,32 +29,20 @@ public class DataBaseHandler {
     //TODO: Implement method
   }
 
-  /**
-   * Splits the incoming string into separate numbers and returns an int[].
-   *
-   * @param incomingString - String of numbers from sensorNode
-   * @return Int[]
-   */
-  public static int[] convertStringToArray(String incomingString) {
-    int[] intArray = new int[5];
-    String[] parts = incomingString.split("(?<=\\G..)");
-    for (int i = 0; i < parts.length; i++) {
-      intArray[i] = Integer.parseInt(parts[i]);
-    }
-    return intArray;
-  }
-
-
   //TESTING
 
   public static void main(String[] args)
   {
-    int[] a = convertStringToArray("112233113");
-    for (int i = 0; i < a.length; i++) {
-      System.out.println(a[i]);
-      DataBaseHandler dataBaseHandler = new DataBaseHandler();
-      dataBaseHandler.writeToDB();
-    }
+    ArrayList test = new ArrayList<>();
+    test.add(12345);
+    test.add(12.2f);
+    test.add(0.2f);
+    test.add(22);
+    test.add(100);
+    test.add(2);
+    test.add(90);
+    DataBaseHandler data = new DataBaseHandler();
+    data.writeToDB(test);
   }
 
 
