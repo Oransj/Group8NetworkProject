@@ -1,4 +1,4 @@
-package no.idata2304.ntnu.group8;
+package no.ntnu.idata2304.group8.webserver;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
