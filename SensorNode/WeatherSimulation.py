@@ -51,6 +51,25 @@ class day:
         print(f"{self.weather_list[time]} TIME: {time}")
         
 def sinus(x : float):
+class weights:
+    def __init__(self) -> None:
+        """The constructor of the weights class. The weights class hold the weights for each weather parameter.
+        """        
+        #Weights are in the following format: [Change rate, Mininum change, Maximum change]
+        self.temp_weights = [0.7, 0.0, 5.0]
+        self.air_pressure_weights = [0.75, 0.1, 1.33]
+        self.light_weights = [1.0, 10.0, 100.0]
+        self.wind_weights = [0.3, 0.0, 10.0]
+        self.precipiation_weights = [0.3, 0.01, 1.0]
+        
+        #The air pressure min, avg, max values
+        self.pressure_extreme_points = [970.00, 1013.25, 1040.00]
+        #The average precipitation per month and the wettest day of the month.
+        # If the wettest day is none that means we dont have data for that.
+        self.precipitation_months = [[149.00, None], [130.00, None], [128.00, None], [78.00, 9.70],
+                                    [75.00, 17.00], [85.00, 10.00], [84.00, 10.00], [126.00, 17.00],
+                                    [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
+        
     A = 1
     w = 2*pi
     phi = 0
