@@ -1,0 +1,30 @@
+/* Modell for hvordan JSon filen sendt
+kommer til å se ut. */
+[
+    {
+        "Info_type": "Time",
+        "Millis": "1666262249302"
+
+    },
+    {
+        "Info_type": "Temperture",
+        "Temp": "25.0"
+    },
+    {
+        "Info_type": "Precipitation",
+        "mm": "1.39"
+    },
+    {
+        "Info_type": "Air_pressure",
+        "Air_pres_hPa": "1000"
+    },
+    {
+        "Info_type": "Light",
+        "Lux": "50000.0000" /* 128-bit float, so double probably */
+    },
+    {
+        "Info_type": "Wind",
+        "W_speed": "1.6",
+        "W_direction": "337"
+    }
+]
