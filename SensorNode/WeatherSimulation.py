@@ -98,3 +98,23 @@ def sinus_temp_year(x : float) -> float:
     phi = pi - 4*2*pi/12
     return A * sin(w * x + phi)
 
+def generate_percipitation():
+    month = []
+    days = monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
+    precipitation_bucket, wettestday = weights().precipitation_months[datetime.datetime.now().month - 1]
+    precipitation_bucket = precipitation_bucket + randrange(-20, 20)
+    if(wettestday == None or wettestday == 0):
+        wettestday = precipitation_bucket / 8
+    elif(wettestday > 10):
+        wettestday = wettestday + uniform(-10, 10)
+    print(precipitation_bucket)
+    print(wettestday)
+    for _ in range(days):
+        month.append(day())
+    while(precipitation_bucket > 0):
+        start_day = month[randrange(days)]
+        precipitation_bucket = 0
+        
+print(sinus_day(0))
+
+generate_percipitation()
