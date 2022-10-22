@@ -83,6 +83,18 @@ def sinus_day(x : float) -> float:
     phi = pi + 3*2*pi/24
     return A * sin(w * x + phi)
 
+def sinus_temp_year(x : float) -> float:
+    """Generates a sinus curve with a period of 12 months.
+    The curve simulates the change in temperature over the year in Ålesund.
 
-newDay = day()
-newDay.add_weather(datetime.time(0,0,0), weather(10, 0.0, 0.0, 0, 0, 'N'))
+    Args:
+        x (float): The x value of the sinus curve.
+
+    Returns:
+        float: The y value of the sinus curve.
+    """       
+    A = 12
+    w = (2*pi)/12
+    phi = pi - 4*2*pi/12
+    return A * sin(w * x + phi)
+
