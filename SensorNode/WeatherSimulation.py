@@ -1,11 +1,13 @@
+from calendar import monthrange
 import datetime
+from random import randrange, uniform
 
-from numpy import pi, sin
+from numpy import pi, round_, sin
 
     
 class weather:
 
-    def __init__(self, temperature : int, precipitation : float, lux : float, pascal : int, windpower : int, winddir : chr) -> None:
+    def __init__(self, temperature : int, precipitation : float, lux : float, pascal : int, windpower : int, winddir : int) -> None:
         """The constructor of the weather class. The weather class hold the weather data for the simulation and one unit of time.
 
         Args:
@@ -30,12 +32,11 @@ class day:
     def __init__(self) -> None:
         """The constructor of the day class. The day class hold the weather data for each time slot of the day.
         """                
-        self.weatherList = {}
-        i=0
+        self.weather_list = {}
         minutes_to_add = 15
         time = datetime.datetime(2020, 1, 1, 0, 0, 0)
         for i in range(int(24*60/minutes_to_add)):
-            self.weatherList[time.time()] = None
+            self.weather_list[time.time()] = None
             time = time + datetime.timedelta(minutes=minutes_to_add)
 
     def add_weather(self, time : datetime.time, weather : weather):
@@ -45,9 +46,9 @@ class day:
             time (datetime.time): The time slot.
             weather (weather): The weather object to assign to the time slot.
         """        
-        self.weatherList[time] = weather
+        self.weather_list[time] = weather
         print(time)
-        print(f"{self.weatherList[time]} TIME: {time}")
+        print(f"{self.weather_list[time]} TIME: {time}")
         
 def sinus(x : float):
     A = 1
