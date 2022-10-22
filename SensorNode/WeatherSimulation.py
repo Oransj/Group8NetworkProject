@@ -50,7 +50,6 @@ class day:
         print(time)
         print(f"{self.weather_list[time]} TIME: {time}")
         
-def sinus(x : float):
 class weights:
     def __init__(self) -> None:
         """The constructor of the weights class. The weights class hold the weights for each weather parameter.
@@ -70,12 +69,20 @@ class weights:
                                     [75.00, 17.00], [85.00, 10.00], [84.00, 10.00], [126.00, 17.00],
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         
+def sinus_day(x : float) -> float:
+    """Generates a sinus curve with a period of 24 hours.
+
+    Args:
+        x (float): The x value of the sinus curve.
+
+    Returns:
+        float: The y value of the sinus curve.
+    """    
     A = 1
-    w = 2*pi
-    phi = 0
+    w = (2*pi)/24
+    phi = pi + 3*2*pi/24
     return A * sin(w * x + phi)
 
-print(sinus(0))
 
 newDay = day()
 newDay.add_weather(datetime.time(0,0,0), weather(10, 0.0, 0.0, 0, 0, 'N'))
