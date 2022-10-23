@@ -72,6 +72,75 @@ class weights:
         
 class percipitation_simulation:
     
+    def generate_percipitation(self) -> list[float]:
+        """Generates a list of precipitation values for the month based upon the average precipitation per month and the wettest day of the month, while considering the weights.
+
+        Returns:
+            list[float]: A list of precipitation values for the month.
+        """        
+        month = []
+        days = monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
+        precipitation_bucket, wettestday = weights().precipitation_months[datetime.datetime.now().month - 1]
+        precipitation_bucket = precipitation_bucket + randrange(-20, 20)
+        if(wettestday == None or wettestday == 0):
+            wettestday = precipitation_bucket / 8
+        elif(wettestday > 10):
+            wettestday = wettestday + uniform(-10, 10)
+        print(precipitation_bucket)
+        print(wettestday)
+        for _ in range(days):
+            month.append(0)
+        print(month)
+        current_day = randrange(days-1)
+        month[current_day] = wettestday
+        rainy_days = 0
+        chance_of_end = precipitation_bucket*weights().chance_of_continued_rain
+        print(f"Chance of end: {chance_of_end}")
+        while(randrange(100) < chance_of_end*0.95**rainy_days and rainy_days+current_day < days-1):
+            rainy_days += 1
+        print(f"Days1 {rainy_days}")
+        precipitation_left = self.create_precipitation_pattern(precipitation_bucket, wettestday, rainy_days)
+        print(f"PrecipL {precipitation_left}")
+        i = 1
+        for precipitation in precipitation_left:
+            month[current_day+i] = precipitation
+            i += 1
+        
+        rainy_days = 0
+        while(randrange(100) < chance_of_end*0.95**rainy_days and rainy_days+current_day < days-1):
+            rainy_days += 1
+        print(f"Days2 {rainy_days}")
+        precipitation_bucket = precipitation_bucket - sum(month)
+        print(f"PrecipB {precipitation_bucket}")
+        precipitation_right = self.create_precipitation_pattern(precipitation_bucket, wettestday, rainy_days)
+        precipitation_right.reverse()
+        print(f"PrecipR {precipitation_right}")
+        i = 1
+        for precipitation in precipitation_right:
+            month[current_day-i] = precipitation
+            i += 1
+        precipitation_bucket = precipitation_bucket - sum(precipitation_right)
+        print(f"PrecipB {precipitation_bucket}")
+        print(month)
+        
+        if(precipitation_bucket > 0):
+            month, precipitation_bucket = self.fill_zeroes(month, precipitation_bucket)
+        else:
+            instances = self.find_indices_of_condition(month, lambda x: x > 5)
+            print(f"instances {instances}")
+            i = 0
+            while(precipitation_bucket < 0):
+                month[instances[i]] = month[instances[i]] - 1
+                precipitation_bucket += 1
+                if(i+1 > len(instances)-1):
+                    i = 0
+                else:
+                    i += 1
+            print(month)
+            print(precipitation_bucket)
+            month = self.fill_zeroes(wettestday, month)[0]
+        return month
+    
     def fill_zeroes(self, bucket : float, month : list[float]) -> list[float] | float:
         """Fills the days with zero precipitation with some precipitation and empties the bucket.
 
@@ -111,6 +180,16 @@ class percipitation_simulation:
         """        
         return [i for i, elem in enumerate(lst) if condition(elem)]
     
+    def create_precipitation_pattern(self, precipitation_bucket : float, wettestday : float, days : int) -> list[float]:
+        precipitation_list = []
+        drain = wettestday
+        i = 0
+        while(precipitation_bucket > 0 and i < days and drain > 0.1):
+            drain = uniform((2*drain)/7, wettestday-0.65*i)
+            precipitation_bucket = precipitation_bucket - drain
+            precipitation_list.append(round(drain, 2))
+            i += 1
+        return precipitation_list
         
 def sinus_day(x : float) -> float:
     """Generates a sinus curve with a period of 24 hours.
