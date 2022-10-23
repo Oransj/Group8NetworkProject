@@ -1,4 +1,5 @@
 window.onload = function () {
+  /* Add table rows */
   insertForecastTableRow("00:00", "moon", "2", "0.4", "1.5", 90);
   insertForecastTableRow("01:00", "moon", "2", "0.4", "2.0", 85);
   insertForecastTableRow("02:00", "moon", "2", "0.3", "1.8", 70);
@@ -23,6 +24,13 @@ window.onload = function () {
   insertForecastTableRow("21:00", "sun", "9", "0.2", "2.0", 60);
   insertForecastTableRow("22:00", "sun", "9", "0.2", "2.0", 60);
   insertForecastTableRow("23:00", "sun", "9", "0.2", "2.0", 60);
+
+  /* Render the graphs */
+  let tempSeries = tempToSeries(tempArray);
+  renderTemperatureChart(tempSeries);
+
+  let precipSeries = precipToSeries2(precipArray);
+  renderPrecipitationChart(precipSeries);
 }
 
 var forecastTableBody = document.querySelector(".forecast_table--body");
