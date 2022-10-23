@@ -124,7 +124,7 @@ class percipitation_simulation:
         print(month)
         
         if(precipitation_bucket > 0):
-            month, precipitation_bucket = self.fill_zeroes(month, precipitation_bucket)
+            month, precipitation_bucket = self.fill_zeroes(precipitation_bucket, month)
         else:
             instances = self.find_indices_of_condition(month, lambda x: x > 5)
             print(f"instances {instances}")
@@ -139,6 +139,7 @@ class percipitation_simulation:
             print(month)
             print(precipitation_bucket)
             month = self.fill_zeroes(wettestday, month)[0]
+        self.rainy_days_in_month = month
         return month
     
     def fill_zeroes(self, bucket : float, month : list[float]) -> list[float] | float:
@@ -151,7 +152,7 @@ class percipitation_simulation:
         Returns:
             list[float] | float: The month with filled zeroes and the bucket with precipitation.
         """        
-        instances = self.find_indices_of_condition(month, lambda x: x == 0)
+        instances = self.find_indices_of_condition(month, lambda x: x == 0.0)
         print(f"instances {instances}")
         i = 0
         while(bucket > 0):
@@ -177,10 +178,20 @@ class percipitation_simulation:
 
         Returns:
             list[int]: The indices of the list that meet the condition.
-        """        
+        """     
         return [i for i, elem in enumerate(lst) if condition(elem)]
     
     def create_precipitation_pattern(self, precipitation_bucket : float, wettestday : float, days : int) -> list[float]:
+        """Creates a list of precipitation values for the days based upon the average precipitation per month and the wettest day of the month.
+
+        Args:
+            precipitation_bucket (float): The average precipitation per month.
+            wettestday (float): The wettest day of the month.
+            days (int): The number of days to create precipitation values for.
+
+        Returns:
+            list[float]: A list of precipitation values for the days.
+        """        
         precipitation_list = []
         drain = wettestday
         i = 0
