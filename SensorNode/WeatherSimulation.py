@@ -2,7 +2,7 @@ from calendar import monthrange
 import datetime
 from random import randrange, uniform
 
-from numpy import pi, round_, sin
+from numpy import pi, sin
 
     
 class weather:
@@ -33,11 +33,10 @@ class day:
         """The constructor of the day class. The day class hold the weather data for each time slot of the day.
         """                
         self.weather_list = {}
-        minutes_to_add = 15
         time = datetime.datetime(2020, 1, 1, 0, 0, 0)
-        for i in range(int(24*60/minutes_to_add)):
+        for _ in range(int(24*60/weights().minutes_update)):
             self.weather_list[time.time()] = None
-            time = time + datetime.timedelta(minutes=minutes_to_add)
+            time = time + datetime.timedelta(minutes=weights().minutes_update)
 
     def add_weather(self, time : datetime.time, weather : weather):
         """Adds a weather object to the assigned time slot.
@@ -55,7 +54,7 @@ class weights:
         """The constructor of the weights class. The weights class hold the weights for each weather parameter.
         """        
         #Weights are in the following format: [Change rate, Mininum change, Maximum change]
-        self.temp_weights = [0.7, 0.0, 5.0]
+        self.temp_weights = [0.7, -5.0, 5.0]
         self.air_pressure_weights = [0.75, 0.1, 1.33]
         self.light_weights = [1.0, 10.0, 100.0]
         self.wind_weights = [0.3, 0.0, 10.0]
@@ -212,6 +211,31 @@ class percipitation_simulation:
             i += 1
         return precipitation_list
     
+    def generate_percipitation_today(self, bucket2) -> list[float]:
+        #TODO: Make this actually realistic and not just plain random
+        times = []
+        phase = pi/12
+        #bucket = self.rainy_days_in_month[datetime.datetime.now().day-1]
+        bucket = bucket2
+        chance = 0.3
+        for _ in range(24):
+            times.append(0)
+        i = 0
+        while(bucket > 0):
+            if(times[i] < 0):
+                chance = 0.75
+            else:
+                chance = 0.3
+            if(randrange(100) < chance*100):
+                times[i] = times[i] + 0.1
+                bucket -= 0.1
+            if(i+1 > 23):
+                i = 0
+            else:
+                i += 1
+        self.precipitation_today = times
+        return times
+        
 class temperature_simulation:
     
     def __init__(self):
