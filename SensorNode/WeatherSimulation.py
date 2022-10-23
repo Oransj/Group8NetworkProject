@@ -207,34 +207,34 @@ class temperature_simulation:
     def __init__(self):
         print("Created")
     
-def sinus_day(x : float) -> float:
-    """Generates a sinus curve with a period of 24 hours.
-
-    Args:
-        x (float): The x value of the sinus curve.
-
-    Returns:
-        float: The y value of the sinus curve.
-    """    
-    A = 1
-    w = (2*pi)/24
-    phi = pi + 3*2*pi/24
-    return A * sin(w * x + phi)
-
-def sinus_temp_year(x : float) -> float:
-    """Generates a sinus curve with a period of 12 months.
-    The curve simulates the change in temperature over the year in Ålesund.
-
-    Args:
-        x (float): The x value of the sinus curve.
-
-    Returns:
-        float: The y value of the sinus curve.
-    """       
-    A = 12
-    w = (2*pi)/12
-    phi = pi - 4*2*pi/12
-    return A * sin(w * x + phi)
         
-test = percipitation_simulation()
-print(test.generate_percipitation_month())
+        
+    def sinus_day(self, x : float) -> float:
+        """Generates a sinus curve with a period of 24 hours.
+
+        Args:
+            x (float): The x value of the sinus curve.
+
+        Returns:
+            float: The y value of the sinus curve.
+        """    
+        A = 1
+        w = (2*pi)/24
+        phi = pi + 3*2*pi/24
+        return A * sin(w * x + phi)
+
+    def sinus_temp_year(self, x : float) -> float:
+        """Generates a sinus curve with a period of 12 months.
+        The curve simulates the change in temperature over the year in Ålesund.
+
+        Args:
+            x (float): The x value of the sinus curve.
+
+        Returns:
+            float: The y value of the sinus curve.
+        """       
+        A = 5.8
+        w = (2*pi)/12
+        phi = pi - 9.5*2*pi/12
+        up = 8
+        return A * sin(w * x + phi)+up
