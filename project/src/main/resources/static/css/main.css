@@ -72,11 +72,14 @@ main {
 }
 
 footer {
+    padding: 0.5em;
+    z-index: -1;
+}
+
+.time-updated {
     color: rgb(var(--clr-secondary-1));
     font-size: var(--fs-small);
-    padding: 0.5em;
-    filter: drop-shadow(0 0 0.3rem rgb(var(--clr-primary-2)));
-    z-index: -1;
+    filter: drop-shadow(0 0 0.1em rgb(var(--clr-primary-2)));
 }
 
 /* Scrollbar */
