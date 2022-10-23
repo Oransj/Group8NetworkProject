@@ -3,7 +3,26 @@ window.onload = function () {
   insertForecastTableRow("01:00", "moon", "2", "0.4", "2.0", 85);
   insertForecastTableRow("02:00", "moon", "2", "0.3", "1.8", 70);
   insertForecastTableRow("03:00", "moon", "3", "0.3", "2.4", 60);
-  insertForecastTableRow("03:00", "cloud-with-moon", "4", "0.2", "2.0", 60);
+  insertForecastTableRow("04:00", "cloud-with-moon", "4", "0.2", "2.0", 60);
+  insertForecastTableRow("05:00", "cloud", "4", "0.2", "2.0", 60);
+  insertForecastTableRow("06:00", "cloud", "4", "0.2", "2.0", 60);
+  insertForecastTableRow("07:00", "cloud", "4", "0.2", "2.0", 60);
+  insertForecastTableRow("08:00", "cloud-with-sun", "5", "0.2", "2.0", 60);
+  insertForecastTableRow("09:00", "cloud-with-sun", "5", "0.2", "2.0", 60);
+  insertForecastTableRow("10:00", "cloud-with-sun", "6", "0.2", "2.0", 60);
+  insertForecastTableRow("11:00", "cloud-with-sun", "7", "0.2", "2.0", 60);
+  insertForecastTableRow("12:00", "cloud-with-sun", "8", "0.2", "2.0", 60);
+  insertForecastTableRow("13:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("14:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("15:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("16:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("17:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("18:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("19:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("20:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("21:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("22:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("23:00", "sun", "9", "0.2", "2.0", 60);
 }
 
 var forecastTableBody = document.querySelector(".forecast_table--body");
