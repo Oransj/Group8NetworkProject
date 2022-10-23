@@ -43,7 +43,6 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
   `;
 }
 
-var forecastGraphTemp = document.querySelector(".forecast_graph--temperature");
 
 fetch('https://data.cdc.gov/resource/w9j2-ggv5.csv')
   .then(function (response) {
@@ -95,12 +94,13 @@ function csvToSeries(text) {
   ];
 }
 
-function renderChart(series) {
+const forecastGraphTemp = document.querySelector(".forecast_graph--temperature");
+
+function renderTemperatureChart(series) {
   return JSC.Chart(forecastGraphTemp, {
     type: 'Line',
     elements_point_radius: 0,
     title_label_text: 'Temperature',
-    titleBox_position: 'center',
     xAxis_label_text: 'Time',
     yAxis_label_text: 'Celsius',
     legend_visible: false,
@@ -108,4 +108,55 @@ function renderChart(series) {
     defaultPoint_marker_visible: false,
     series: series
   });
+}
+
+function precipToSeries(text) {
+  let precip = [{
+    "time": "00:00",
+    "value": 2.0
+  }, {
+    "time": "01:00",
+    "value": 1.8
+  }];
+
+  let array = [];
+  precip.forEach(function (obj) {
+    array.push({ x: obj.time, y: obj.value })
+  });
+
+  return [{
+    name: 'Precipitation', points: array
+  }];
+}
+
+function precipToSeries2(text) {
+  let precip = {
+    "time": ["00:00", "01:00"],
+    "value": [2.0, 1.8]
+  }
+
+  let array = [];
+  for (var i = 0; i < precip.time.length; i++) {
+    array.push({x: precip.time[i], y: precip.value[i]});
+  };
+
+  return [{
+    name: 'Precipitation', points: array
+  }];
+}
+
+const forecastGraphPrecip = document.querySelector(".forecast_graph--precipitation");
+
+function renderPrecipitationChart(series) {
+  return JSC.Chart(forecastGraphPrecip, {
+    type: 'Line',
+    elements_point_radius: 0,
+    title_label_text: 'Precipitation',
+    xAxis_label_text: 'Time',
+    yAxis_label_text: 'Millimeter',
+    legend_visible: false,
+    defaultPoint_tooltip: '%xValue &nbsp;&nbsp;<b>%yValue</b> mm',
+    defaultPoint_marker_visible: false,
+    series: series
+  })
 }
