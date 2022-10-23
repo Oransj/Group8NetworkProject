@@ -78,6 +78,10 @@ class weights:
         
 class percipitation_simulation:
     
+    def __init__(self) -> None:
+        self.rainy_days_in_month = []
+        self.precipitation_today = []
+    
     def generate_percipitation_month(self) -> list[float]:
         """Generates a list of precipitation values for the month based upon the average precipitation per month and the wettest day of the month, while considering the weights.
 
