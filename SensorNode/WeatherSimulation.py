@@ -301,9 +301,6 @@ class mqtt_client:
         self.standard_path = "ntnu/ankeret/c220/multisensor/gruppe8/"
         self.sensorID = "0601holmes"
         self.client.on_connect = self.on_connect
-        self.ip = "localhost"
-        self.ip = 1883
-        self.keepalive = 60
         self.client.connect("localhost", 1883, 60)
     
     def publish(self, topic : str, payload : str):
