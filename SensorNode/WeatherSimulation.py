@@ -69,6 +69,12 @@ class weights:
                                     [75.00, 17.00], [85.00, 10.00], [84.00, 10.00], [126.00, 17.00],
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         self.chance_of_continued_rain = 0.85
+        self.minutes_update = 15
+        
+        self.avg_temp = 9.55
+        self.temperature_months = [[12.0, -3.0], [11.5, -2.0], [16.5, -2.5], [17.0, -3.0],
+                                   [19.0, 2.0], [24.0, 5.0], [26.5, 8.0], [21.0, 4.0],
+                                   [23.5, 6.0], [19.5, 1.5], [15.1, -5.7], [12.5, -6.5]]
         
 class percipitation_simulation:
     
@@ -207,6 +213,25 @@ class temperature_simulation:
     def __init__(self):
         print("Created")
     
+    def simulate_temperature_today(self, add_on : float) -> float:
+        """Simulates the temperature today at the current time. The add on temperature is chosen by the invoker of the function to simulate hotter or colder days.
+
+        Args:
+            add_on (float): The add on temperature.
+
+        Returns:
+            float: The temperature today at the current time.
+        """        
+        percentage_of_month = datetime.datetime.now().day/monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
+        avg_today = self.sinus_temp_year(datetime.datetime.now().month-1 + percentage_of_month)
+        avg_today = round(avg_today, 2)
+        print(avg_today)
+        time_now_conv = datetime.datetime.now().hour + datetime.datetime.now().minute/60
+        sin_now = self.sinus_day(time_now_conv)
+        temp_now = sin_now*avg_today+add_on
+        temp_now = round(temp_now, 2)
+        print(temp_now)
+        return temp_now
         
         
     def sinus_day(self, x : float) -> float:
@@ -238,3 +263,6 @@ class temperature_simulation:
         phi = pi - 9.5*2*pi/12
         up = 8
         return A * sin(w * x + phi)+up
+    
+test = temperature_simulation()
+test.simulate_temperature_today(12)
