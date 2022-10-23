@@ -68,6 +68,10 @@ class weights:
         self.precipitation_months = [[149.00, None], [130.00, None], [128.00, None], [78.00, 9.70],
                                     [75.00, 17.00], [85.00, 10.00], [84.00, 10.00], [126.00, 17.00],
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
+        self.chance_of_continued_rain = 0.85
+        
+class percipitation_simulation:
+    
         
 def sinus_day(x : float) -> float:
     """Generates a sinus curve with a period of 24 hours.
@@ -97,24 +101,6 @@ def sinus_temp_year(x : float) -> float:
     w = (2*pi)/12
     phi = pi - 4*2*pi/12
     return A * sin(w * x + phi)
-
-def generate_percipitation():
-    month = []
-    days = monthrange(datetime.datetime.now().year, datetime.datetime.now().month)[1]
-    precipitation_bucket, wettestday = weights().precipitation_months[datetime.datetime.now().month - 1]
-    precipitation_bucket = precipitation_bucket + randrange(-20, 20)
-    if(wettestday == None or wettestday == 0):
-        wettestday = precipitation_bucket / 8
-    elif(wettestday > 10):
-        wettestday = wettestday + uniform(-10, 10)
-    print(precipitation_bucket)
-    print(wettestday)
-    for _ in range(days):
-        month.append(day())
-    while(precipitation_bucket > 0):
-        start_day = month[randrange(days)]
-        precipitation_bucket = 0
         
-print(sinus_day(0))
-
-generate_percipitation()
+test = percipitation_simulation()
+print(test.generate_percipitation())
