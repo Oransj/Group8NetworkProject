@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,7 +12,7 @@
 
 <body>
     <script src="https://code.jscharting.com/2.9.0/jscharting.js"></script>
-    
+
     <div class="content-container">
         <header>
             <a href="index.html">
@@ -26,19 +27,22 @@
             <div class="forecast-container">
                 <table class="forecast_table">
                     <thead>
-                      <tr>
-                        <th>Time</th>
-                        <th>Weather</th>
-                        <th>Temperature</th>
-                        <th>Precipitation</th>
-                        <th>Wind</th>
-                      </tr>
+                        <tr>
+                            <th>Time</th>
+                            <th>Weather</th>
+                            <th>Temperature</th>
+                            <th>Precipitation</th>
+                            <th>Wind</th>
+                        </tr>
                     </thead>
                     <tbody class="forecast_table--body">
-                      
+
                     </tbody>
                 </table>
-                <div id="forecast_graph--temperature" class="forecast_graph--temperature"></div>
+                <div class="forecast_graph_container">
+                    <div class="forecast_graph--temperature"></div>
+                    <div class="forecast_graph--precipitation"></div>
+                </div>
             </div>
         </main>
         <footer>
@@ -46,8 +50,9 @@
         </footer>
     </div>
 
-    <script src="../static/data/data.json"></script>
+    <script type="text" src="../static/data/data.json"></script>
     <script src="../static/js/main.js"></script>
     <script src="../static/js/weather_report.js"></script>
 </body>
+
 </html>
