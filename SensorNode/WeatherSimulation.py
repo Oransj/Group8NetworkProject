@@ -72,6 +72,33 @@ class weights:
         
 class percipitation_simulation:
     
+    def fill_zeroes(self, bucket : float, month : list[float]) -> list[float] | float:
+        """Fills the days with zero precipitation with some precipitation and empties the bucket.
+
+        Args:
+            bucket (float): The bucket with precipitation.
+            month (list[float]): The month to find zeroes and fill.
+
+        Returns:
+            list[float] | float: The month with filled zeroes and the bucket with precipitation.
+        """        
+        instances = self.find_indices_of_condition(month, lambda x: x == 0)
+        print(f"instances {instances}")
+        i = 0
+        while(bucket > 0):
+            if(randrange(100) < weights().chance_of_continued_rain*50+month[instances[i]]*100):
+                drain = 1 + uniform(0.0, 2.0)
+                drain = round(drain, 2)
+                month[instances[i]] = drain
+                bucket -= drain
+            if(i+1 > len(instances)-1):
+                i = 0
+            else:
+                i += 1
+        print(month)
+        print(bucket)
+        return month, bucket
+                        
         
 def sinus_day(x : float) -> float:
     """Generates a sinus curve with a period of 24 hours.
