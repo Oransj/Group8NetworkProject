@@ -202,6 +202,10 @@ class percipitation_simulation:
             i += 1
         return precipitation_list
     
+class temperature_simulation:
+    
+    def __init__(self):
+        print("Created")
     
 def sinus_day(x : float) -> float:
     """Generates a sinus curve with a period of 24 hours.
