@@ -26,10 +26,62 @@ window.onload = function () {
   insertForecastTableRow("23:00", "sun", "9", "0.2", "2.0", 60);
 
   /* Render the graphs */
-  let tempSeries = tempToSeries(tempArray);
+  let temp = [
+    { x: "00:00", y: 2.0 },
+    { x: "01:00", y: 2.0 },
+    { x: "02:00", y: 2.0 },
+    { x: "03:00", y: 3.0 },
+    { x: "04:00", y: 4.0 },
+    { x: "05:00", y: 4.0 },
+    { x: "06:00", y: 4.0 },
+    { x: "07:00", y: 4.0 },
+    { x: "08:00", y: 5.0 },
+    { x: "09:00", y: 5.0 },
+    { x: "10:00", y: 6.0 },
+    { x: "11:00", y: 7.0 },
+    { x: "12:00", y: 8.0 },
+    { x: "13:00", y: 9.0 },
+    { x: "14:00", y: 9.0 },
+    { x: "15:00", y: 9.0 },
+    { x: "16:00", y: 9.0 },
+    { x: "17:00", y: 9.0 },
+    { x: "18:00", y: 9.0 },
+    { x: "19:00", y: 9.0 },
+    { x: "20:00", y: 9.0 },
+    { x: "21:00", y: 9.0 },
+    { x: "22:00", y: 9.0 },
+    { x: "23:00", y: 9.0 }
+  ];
+  let tempSeries = arrayToSeries('Temperature', temp);
   renderTemperatureChart(tempSeries);
 
-  let precipSeries = precipToSeries2(precipArray);
+  let precip = [
+    { x: "00:00", y: 0.4 },
+    { x: "01:00", y: 0.4 },
+    { x: "02:00", y: 0.3 },
+    { x: "03:00", y: 0.3 },
+    { x: "04:00", y: 0.2 },
+    { x: "05:00", y: 0.2 },
+    { x: "06:00", y: 0.2 },
+    { x: "07:00", y: 0.2 },
+    { x: "08:00", y: 0.2 },
+    { x: "09:00", y: 0.2 },
+    { x: "10:00", y: 0.2 },
+    { x: "11:00", y: 0.2 },
+    { x: "12:00", y: 0.2 },
+    { x: "13:00", y: 0.2 },
+    { x: "14:00", y: 0.2 },
+    { x: "15:00", y: 0.2 },
+    { x: "16:00", y: 0.2 },
+    { x: "17:00", y: 0.2 },
+    { x: "18:00", y: 0.2 },
+    { x: "19:00", y: 0.2 },
+    { x: "20:00", y: 0.2 },
+    { x: "21:00", y: 0.2 },
+    { x: "22:00", y: 0.2 },
+    { x: "23:00", y: 0.2 }
+  ];
+  let precipSeries = arrayToSeries('Precipation', precip);
   renderPrecipitationChart(precipSeries);
 }
 
@@ -51,30 +103,9 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
   `;
 }
 
-function tempToSeries(text) {
-  let temp = [
-    { x: "00:00", y: 7.0 },
-    { x: "01:00", y: 8.0 },
-    { x: "02:00", y: 7.6 },
-    { x: "03:00", y: 8.2 },
-    { x: "04:00", y: 8.3 },
-    { x: "05:00", y: 8.6 },
-    { x: "06:00", y: 8.7 },
-    { x: "07:00", y: 10.1 },
-    { x: "08:00", y: 12.3 },
-    { x: "09:00", y: 12.6 },
-    { x: "10:00", y: 12.9 },
-    { x: "11:00", y: 13.0 },
-    { x: "12:00", y: 13.6 },
-    { x: "13:00", y: 13.8 },
-    { x: "14:00", y: 13.7 },
-    { x: "15:00", y: 13.6 },
-    { x: "16:00", y: 13.7 },
-    { x: "17:00", y: 13.5 }
-  ];
-
+function arrayToSeries(type, array) {
   return [{
-    name: 'Temperature', points: temp
+    name: type, points: array
   }];
 }
 
@@ -94,41 +125,6 @@ function renderTemperatureChart(series) {
   });
 }
 
-function precipToSeries(text) {
-  let precip = [{
-    "time": "00:00",
-    "value": 2.0
-  }, {
-    "time": "01:00",
-    "value": 1.8
-  }];
-
-  let array = [];
-  precip.forEach(function (obj) {
-    array.push({ x: obj.time, y: obj.value })
-  });
-
-  return [{
-    name: 'Precipitation', points: array
-  }];
-}
-
-function precipToSeries2(text) {
-  let precip = {
-    "time": ["00:00", "01:00"],
-    "value": [2.0, 1.8]
-  }
-
-  let array = [];
-  for (var i = 0; i < precip.time.length; i++) {
-    array.push({x: precip.time[i], y: precip.value[i]});
-  };
-
-  return [{
-    name: 'Precipitation', points: array
-  }];
-}
-
 const forecastGraphPrecip = document.querySelector(".forecast_graph--precipitation");
 
 function renderPrecipitationChart(series) {
@@ -142,5 +138,5 @@ function renderPrecipitationChart(series) {
     defaultPoint_tooltip: '%xValue &nbsp;&nbsp;<b>%yValue</b> mm',
     defaultPoint_marker_visible: false,
     series: series
-  })
+  });
 }
