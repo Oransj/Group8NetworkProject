@@ -1,5 +1,6 @@
 from calendar import monthrange
 import datetime
+import time
 from random import randrange, uniform
 import paho.mqtt.client as mqtt
 import json
@@ -300,10 +301,10 @@ class mqtt_client:
         self.standard_path = "ntnu/ankeret/c220/multisensor/gruppe8/"
         self.sensorID = "0601holmes"
         self.client.on_connect = self.on_connect
-        self.ip = "129.241.152.12"
+        self.ip = "localhost"
         self.ip = 1883
         self.keepalive = 60
-        self.client.connect(self.ip, 1883, 60)
+        self.client.connect("localhost", 1883, 60)
     
     def publish(self, topic : str, payload : str):
         self.client.publish(topic, payload)
@@ -323,7 +324,8 @@ class mqtt_client:
         Returns:
             str: The json string.
         """        
-        json_string = json.dumps({})
+        t_ms = int(time.time()*1000)
+        json_string = json.dumps({"Time": {"ms" : t_ms}, "Temperature": {"celsius" : temperature}, "Precipitation": {"mm" : precipitation}, "AirPressure": {"hPa" : air_pressure}, "Lux": {"lux" : lux}, "WindSpeed": {"m/s" : wind_speed}, "WindDirection": {"degrees" : wind_direction}})
         return json_string
     
 test = temperature_simulation()
@@ -331,4 +333,4 @@ test.simulate_temperature_today(12)
 mqttclient = mqtt_client()
 #mqtt_client.publish("ntnu/ankeret/c220/multisensor/gruppe8/0601holmes", "test")
 
-print(mqttclient.format_to_json(12, 12, 12))
+print(mqttclient.format_to_json(12, 13, 14, 15, 16, 17))
