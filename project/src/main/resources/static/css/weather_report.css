@@ -36,10 +36,10 @@
     align-items: center;
 }
 
-.forecast_graph--temperature {
+.forecast_graph--temperature, .forecast_graph--precipitation {
     display: block;
-    margin: 10px auto;
-    padding: 1em;
+    margin: 20px auto;
+    padding: 0.5em;
     width: 30em;
     max-width: 50em;
     height: 20em;
