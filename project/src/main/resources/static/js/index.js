@@ -7,17 +7,6 @@ window.onload = function() {
     addEventListeners();
 }
 
-/* Setup weather cards with correct data */
-var weatherData = [];
-
-function getWeatherData() {
-    throw "Not implemented yet";
-}
-
-function insertWeatherCards() {
-    throw "Not implemented yet";
-}
-
 function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmount, windAmount) {
     let weatherCardContainer = document.querySelector(".weather-card-container");
     
