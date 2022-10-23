@@ -1,4 +1,8 @@
 window.onload = function () {
+  /* Set the weekday and date as undertitle */
+  let date = parseClickedDate();
+  setForecastDayUndertitle(date);
+
   /* Add table rows */
   insertForecastTableRow("00:00", "moon", "2", "0.4", "1.5", 90);
   insertForecastTableRow("01:00", "moon", "2", "0.4", "2.0", 85);
@@ -83,6 +87,29 @@ window.onload = function () {
   ];
   let precipSeries = arrayToSeries('Precipation', precip);
   renderPrecipitationChart(precipSeries);
+}
+
+/* TODO: Fix date undertitle */
+
+/* Parse String in the format 'YYYY-MM-DD' to Date */
+function parseClickedDate() {
+  let clickedDate = localStorage.getItem("clicked_date");
+  let parts = clickedDate.split('-');
+  // Beware: JS counts months from 0: January - 0, February - 1, etc.
+  let date = new Date(parts[0], parts[1] - 1, parts[2]);
+  return date;
+}
+
+function setForecastDayUndertitle(date) {
+  let forecastDay = document.querySelector('.forecast--day');
+
+  var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  let newDate = new Date(date);
+  forecastDay.innerHTML = `
+    ${days[newDate.getDay()]}, ${newDate.getDate()}. ${months[newDate.getMonth()]}
+    `;
 }
 
 var forecastTableBody = document.querySelector(".forecast_table--body");
