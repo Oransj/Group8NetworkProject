@@ -72,7 +72,7 @@ class weights:
         
 class percipitation_simulation:
     
-    def generate_percipitation(self) -> list[float]:
+    def generate_percipitation_month(self) -> list[float]:
         """Generates a list of precipitation values for the month based upon the average precipitation per month and the wettest day of the month, while considering the weights.
 
         Returns:
@@ -190,7 +190,8 @@ class percipitation_simulation:
             precipitation_list.append(round(drain, 2))
             i += 1
         return precipitation_list
-        
+    
+    
 def sinus_day(x : float) -> float:
     """Generates a sinus curve with a period of 24 hours.
 
@@ -221,4 +222,4 @@ def sinus_temp_year(x : float) -> float:
     return A * sin(w * x + phi)
         
 test = percipitation_simulation()
-print(test.generate_percipitation())
+print(test.generate_percipitation_month())
