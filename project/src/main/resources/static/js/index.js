@@ -1,8 +1,8 @@
 window.onload = function() {
-    insertWeatherCard("1", "Today", "sun", "6", "8", "4.0", "2.0");
-    insertWeatherCard("2", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
-    insertWeatherCard("3", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
-    insertWeatherCard("4", "Monday", "thunder", "6", "8", "4.0", "2.0");
+    insertWeatherCard("2022-10-23", "Today", "sun", "6", "8", "4.0", "2.0");
+    insertWeatherCard("2022-10-24", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
+    insertWeatherCard("2022-10-25", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
+    insertWeatherCard("2022-10-26", "Monday", "thunder", "6", "8", "4.0", "2.0");
 
     addEventListeners();
 }
@@ -20,8 +20,10 @@ function insertWeatherCards() {
 
 function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmount, windAmount) {
     let weatherCardContainer = document.querySelector(".weather-card-container");
+    
+    /* The data-date value here is in format YYYY-MM-DD */
     weatherCardContainer.innerHTML += `
-        <li class="weather-card" data-value="${date}" tabindex="0">
+        <li class="weather-card" data-date="${date}" tabindex="0">
             <h4 class="weather-card--date">${weekday}</h4>
             <img class="weather-card--icon" src="../static/img/animated/${weatherType}.svg" alt="Weather icon">
             <div class="weather-card--min-temp">${minTemp}&#176C</div>
@@ -48,16 +50,16 @@ function addEventListeners() {
     }));
 }
 
-function switchToForecastPage(element) {
-    saveDate(element);
-    setPage("weather_report.html");
-}
-
 function saveDate(element) {
-    let data = element.getAttribute("data-value");
+    let data = element.getAttribute("data-date");
     localStorage.setItem("clicked_date", data);
 }
 
 function setPage(url) {
     window.location.href = url;
+}
+
+function switchToForecastPage(element) {
+    saveDate(element);
+    setPage("weather_report.html");
 }
