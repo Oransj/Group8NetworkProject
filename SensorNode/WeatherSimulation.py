@@ -1,6 +1,8 @@
 from calendar import monthrange
 import datetime
+from http import client
 from random import randrange, uniform
+import paho.mqtt.client as mqtt
 
 from numpy import pi, sin
 
@@ -291,6 +293,21 @@ class temperature_simulation:
         phi = pi - 9.5*2*pi/12
         up = 8
         return A * sin(w * x + phi)+up
+
+class mqtt_client:
+    def __init__(self):
+        self.client = mqtt.Client()
+        self.standard_path = "ntnu/ankeret/c220/multisensor/gruppe8/"
+        self.sensorID = "0601holmes"
+        self.client.on_connect = self.on_connect
+        self.client.connect("localhost", 1883, 60)
+    
+    def publish(self, topic : str, payload : str):
+        self.client.publish(topic, payload)
+    
+    def on_connect(self, client, userdata, flags, rc):
+        print("Connected with result code "+str(rc))
+        self.client.subscribe(self.standard_path + self.sensorID)
     
 test = temperature_simulation()
 test.simulate_temperature_today(12)
