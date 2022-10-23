@@ -99,6 +99,18 @@ class percipitation_simulation:
         print(bucket)
         return month, bucket
                         
+    def find_indices_of_condition(self, lst : list, condition) -> list[int]:
+        """Finds the indices of a list that meet a condition.
+
+        Args:
+            lst (list): The list to find the indices of.
+            condition (_type_): The condition to find the indices of.
+
+        Returns:
+            list[int]: The indices of the list that meet the condition.
+        """        
+        return [i for i, elem in enumerate(lst) if condition(elem)]
+    
         
 def sinus_day(x : float) -> float:
     """Generates a sinus curve with a period of 24 hours.
