@@ -1,11 +1,10 @@
 .weather-card-container {
-    margin: 10vh 0;
+    width: 90vw;
+    margin: 10vh auto;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    width: 100vw;
-    overflow-x: auto;
     list-style: none;
 }
 

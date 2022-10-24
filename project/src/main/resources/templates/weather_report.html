@@ -1,57 +1,58 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Weather App</title>
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/weather_report.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/weather_report.css">
 </head>
 
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://code.jscharting.com/2.9.0/jscharting.js"></script>
+
     <div class="content-container">
         <header>
-            <a href="/">
-                <img class="logo" src="../img/Logo.png" alt="Logo">
+            <a href="index.html">
+                <img class="logo" src="../static/img/Logo.png" alt="Logo">
             </a>
             <div class="title">
                 <h2 style="margin: 0">Ålesund</h2>
-                <h4 style="margin: 0">Today</h4>
+                <h4 style="margin: 0" class="forecast--day"></h4>
             </div>
         </header>
         <main>
-            <table class="forecast_table">
-                <thead>
-                  <tr>
-                    <th>Time</th>
-                    <th>Weather</th>
-                    <th>Temperature</th>
-                    <th>Precipitation</th>
-                    <th>Wind</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>08:00</td>
-                    <td>
-                        <img src="../img/static/sun.svg">
-                    </td>
-                    <td>8&#176C</td>
-                    <td>4.0mm</td>
-                    <td>2.0m/s</td>
-                  </tr>
-                </tbody>
-            </table>
-            <canvas id="myChart" class="forecast_graph--temperature"></canvas>
+            <div class="forecast-container">
+                <table class="forecast_table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Weather</th>
+                            <th>Temperature</th>
+                            <th>Precipitation</th>
+                            <th>Wind</th>
+                        </tr>
+                    </thead>
+                    <tbody class="forecast_table--body">
+
+                    </tbody>
+                </table>
+                <div class="forecast_graph_container">
+                    <div class="forecast_graph--temperature"></div>
+                    <div class="forecast_graph--precipitation"></div>
+                </div>
+            </div>
         </main>
         <footer>
-            <div class="time-updated">Last updated 14.10.2022 19:37</div>
+            <div class="time-updated"></div>
         </footer>
     </div>
 
-    <script src="../js/weather_report.js"></script>
+    <script type="text" src="../static/data/data.json"></script>
+    <script src="../static/js/main.js"></script>
+    <script src="../static/js/weather_report.js"></script>
 </body>
+
 </html>
