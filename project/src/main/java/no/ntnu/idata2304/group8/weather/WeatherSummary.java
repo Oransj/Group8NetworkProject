@@ -24,21 +24,19 @@ public class WeatherSummary {
      * Get the weather summary for a data set.
      *
      * @param data Array of data in the format
-     *             '[time, temperature, precipitation, pressure, light, wind_strength]'.
+     *             '[temperature, precipitation, pressure, light, wind_strength]'.
      * @return List of the weather summary in the format
      * '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
      */
-    public HashMap<LocalTime, List<Integer>> getWeatherSummary(String[] data) {
+    public List<Integer> getWeatherSummary(String[] data) {
         List<Integer> weatherSummary = new ArrayList<>();
-        HashMap<LocalTime, List<Integer>> map = new HashMap<>();
         
         // The items in the data array
-        LocalTime time = LocalTime.parse(data[0]);
-        int temp = Integer.parseInt(data[1]);
-        int precipitation = Integer.parseInt(data[2]);
-        int pressure = Integer.parseInt(data[3]);
-        int light = Integer.parseInt(data[4]);
-        int wind = Integer.parseInt(data[5]);
+        int temp = Integer.parseInt(data[0]);
+        int precipitation = Integer.parseInt(data[1]);
+        int pressure = Integer.parseInt(data[2]);
+        int light = Integer.parseInt(data[3]);
+        int wind = Integer.parseInt(data[4]);
         
         // The summaries
         int sunOrMoon = getSunSummary(light);
@@ -49,9 +47,8 @@ public class WeatherSummary {
         weatherSummary.add(sunOrMoon);
         weatherSummary.add(rainOrSnow);
         weatherSummary.add(thunder);
-        map.put(time, weatherSummary);
         
-        return map;
+        return weatherSummary;
     }
     
     /**
