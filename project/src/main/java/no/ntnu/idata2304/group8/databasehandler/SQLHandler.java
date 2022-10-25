@@ -22,7 +22,8 @@ public class SQLHandler {
 
     private Connection connect() {
         // Location of SQLlite database
-        String fileName = "project/src/main/resources/database/test.db";
+//        String fileName = "project/src/main/resources/database/test.db";
+        String fileName = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and network programming\\Group8NetworkProject\\project\\src\\main\\resources\\database\\test.db";
         String url = "jdbc:sqlite:" + fileName;
         Connection connection = null;
         try {
@@ -129,15 +130,15 @@ public class SQLHandler {
      */
     //TESTING
 
-    public static void main(String[] args) throws IOException, ParseException {
-        SQLHandler app = new SQLHandler();
-
-
-        System.out.println(app.selectAll());
-
-
-
-
-    }
+//    public static void main(String[] args) throws IOException, ParseException {
+//        SQLHandler app = new SQLHandler();
+//
+//
+//        System.out.println(app.selectAll());
+//
+//
+//
+//
+//    }
 }
 
