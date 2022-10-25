@@ -52,3 +52,13 @@ function switchToForecastPage(element) {
     saveDate(element);
     setPage("weather_report.html");
 }
+
+const test = async () => {
+    const res = await axios({
+        method: 'GET',
+        url: 'http://127.0.0.1:8080/test',
+    });
+    console.log(res.data);
+}
+
+test();
