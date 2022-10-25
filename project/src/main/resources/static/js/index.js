@@ -1,5 +1,5 @@
 window.onload = function() {
-    const data = getDataFromAPI();
+    const data = getDataFromAPI2();
     insertWeatherCard(data.date, data.weekday, data.weatherType, data.minTemp, data.maxTemp, data.rainAmount, data.windAmount);
     insertWeatherCard("2022-10-24", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
     insertWeatherCard("2022-10-25", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
@@ -8,7 +8,37 @@ window.onload = function() {
     addEventListeners();
 }
 
-function getDataFromAPI() {
+async function getDataFromAPI() {
+    const currentDate = new Date(Date.now()).toLocaleDateString('en-US').split('/');
+
+    const year = +currentDate.at(2);
+    const month = +currentDate.at(0);
+
+    const today = +currentDate.at(1);
+    const day2 = +currentDate.at(1) + 1;
+    const day3 = +currentDate.at(1) + 2;
+    const day4 = +currentDate.at(1) + 3;
+
+    const todayMs = new Date(`${month}/${today}/${year}, 00:00:00`).getTime();
+    const day2Ms = new Date(`${month}/${day2}/${year}, 00:00:00`).getTime();
+    const day3Ms = new Date(`${month}/${day3}/${year}, 00:00:00`).getTime();
+    const day4Ms = new Date(`${month}/${day4}/${year}, 00:00:00`).getTime();
+
+    const frontPageData = await axios({
+        method: 'POST',
+        url: 'http://127.0.0.1:8080/test',
+        data: {
+            todayMs,
+            day2Ms,
+            day3Ms,
+            day4Ms,
+        }
+    });
+
+    return frontPageData;
+}
+
+function getDataFromAPI2() {
     const data = {
         date: "2022-10-23",
         weekday: "Today",
