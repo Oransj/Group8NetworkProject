@@ -1,10 +1,25 @@
 window.onload = function() {
-    insertWeatherCard("2022-10-23", "Today", "sun", "6", "8", "4.0", "2.0");
+    const data = getDataFromAPI();
+    insertWeatherCard(data.date, data.weekday, data.weatherType, data.minTemp, data.maxTemp, data.rainAmount, data.windAmount);
     insertWeatherCard("2022-10-24", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
     insertWeatherCard("2022-10-25", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
     insertWeatherCard("2022-10-26", "Monday", "thunder", "6", "8", "4.0", "2.0");
 
     addEventListeners();
+}
+
+function getDataFromAPI() {
+    const data = {
+        date: "2022-10-23",
+        weekday: "Today",
+        weatherType: "sun",
+        minTemp: "6",
+        maxTemp:"8",
+        rainAmount: "4.0",
+        windAmount: "2,0",
+    }
+
+    return data;
 }
 
 function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmount, windAmount) {
