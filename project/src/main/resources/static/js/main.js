@@ -1,15 +1,6 @@
-function setLastUpdatedTime() {
-    localStorage.setItem("last_updated", new Date());
-}
-
-var lastUpdatedElem = document.querySelector(".time-updated");
-
-function getLastUpdatedTime() {
-    return localStorage.getItem("last_updated")
-}
-
 var date = new Date();
 var finaltime = timeSince(date);
+var lastUpdatedElem = document.querySelector(".time-updated");
 lastUpdatedElem.innerHTML = "This page was updated " + timeSince(date) + " ago";
 
 /* Set an interval (milliseconds) for the text to be refreshed on the page */

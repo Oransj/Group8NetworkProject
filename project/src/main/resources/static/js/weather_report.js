@@ -89,9 +89,7 @@ window.onload = function () {
   renderPrecipitationChart(precipSeries);
 }
 
-/* TODO: Fix date undertitle */
-
-/* Parse String in the format 'YYYY-MM-DD' to Date */
+/* Parse from String (in the format 'YYYY-MM-DD') to Date */
 function parseClickedDate() {
   let clickedDate = localStorage.getItem("clicked_date");
   let parts = clickedDate.split('-');
@@ -100,6 +98,7 @@ function parseClickedDate() {
   return date;
 }
 
+/* Set the weekday and date as the undertitle */
 function setForecastDayUndertitle(date) {
   let forecastDay = document.querySelector('.forecast--day');
 
@@ -112,6 +111,7 @@ function setForecastDayUndertitle(date) {
     `;
 }
 
+/* Insert a row into the forecast table */
 var forecastTableBody = document.querySelector(".forecast_table--body");
 
 function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount, windDirection) {
@@ -130,6 +130,7 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
   `;
 }
 
+/* Render graphs */
 function arrayToSeries(type, array) {
   return [{
     name: type, points: array

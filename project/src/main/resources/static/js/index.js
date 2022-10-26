@@ -10,7 +10,7 @@ window.onload = function() {
 function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmount, windAmount) {
     let weatherCardContainer = document.querySelector(".weather-card-container");
     
-    /* The data-date value here is in format YYYY-MM-DD */
+    /* The 'data-date' value here is in format YYYY-MM-DD */
     weatherCardContainer.innerHTML += `
         <li class="weather-card" data-date="${date}" tabindex="0">
             <h4 class="weather-card--date">${weekday}</h4>
