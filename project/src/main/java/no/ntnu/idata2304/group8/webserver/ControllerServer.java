@@ -1,14 +1,17 @@
 package no.ntnu.idata2304.group8.webserver;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 public class ControllerServer {
+  SQLHandler sqlHandler = new SQLHandler();
 
-  @GetMapping("/test")
-  public String today() {
-    return "asdsadsadsad";
+  @PostMapping(value = "/api/front")
+  public void processJSON(@RequestBody Map<String, Object> payload) {
+    System.out.println(payload);
   }
 }
