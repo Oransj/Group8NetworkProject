@@ -78,6 +78,13 @@ class weights:
                                    [19.0, 2.0], [24.0, 5.0], [26.5, 8.0], [21.0, 4.0],
                                    [23.5, 6.0], [19.5, 1.5], [15.1, -5.7], [12.5, -6.5]]
         
+        self.wind_change = [-7, 7]
+        self.gust_power = 10.0
+        self.storm_power = 20.0
+        self.chance_of_direction_change = 0.15
+        #North, East, South, West
+        self.avg_wind_speed_direction = [4, 4, 4, 4]
+        
 class percipitation_simulation:
     
     def __init__(self) -> None:
@@ -338,10 +345,10 @@ class mqtt_client:
         t_ms = int(time.time()*1000)
         json_string = json.dumps({"Time": {"ms" : t_ms}, "Temperature": {"celsius" : temperature}, "Precipitation": {"mm" : precipitation}, "AirPressure": {"hPa" : air_pressure}, "Lux": {"lux" : lux}, "WindSpeed": {"m/s" : wind_speed}, "WindDirection": {"degrees" : wind_direction}})
         return json_string
-    
-test = temperature_simulation()
-test.simulate_temperature_today(12)
-mqttclient = mqtt_client()
-#mqtt_client.publish("ntnu/ankeret/c220/multisensor/gruppe8/0601holmes", "test")
 
-print(mqttclient.format_to_json(12, 13, 14, 15, 16, 17))
+class pressure_simulation():
+    
+    def __init__(self):
+        self.pressure = weights().pressure_extreme_points[1]
+        
+
