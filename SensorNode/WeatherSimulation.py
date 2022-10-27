@@ -369,3 +369,57 @@ class pressure_simulation():
             self.pressure += uniform(-2.65, 2.65)
         self.pressure = round(self.pressure, 2)
 
+class wind_simulation():
+    def __init__(self) -> None:
+        self.wind_direction = 0
+        self.change_in_wind_direction = 1
+        self.average_wind_speed_direction = self.generate_avg_wind_speed_direction()
+    
+    def generate_avg_wind_speed_direction(self, current_temperature : float, previous_temperature : float) -> list[float]:
+        avg = []
+        for i in weights().avg_wind_speed_direction:
+            max = i + uniform(-i + 5)
+            where = uniform(0, 2)
+            avg_wind = i*where
+            if(avg_wind > max):
+                avg_wind = max * uniform(0.7, 1)
+            avg_wind = round(avg_wind, 2)
+            avg.append(avg_wind)
+          
+    def simulate_wind(self, storm : bool) -> int | float:
+        self.calculate_wind_direction()
+        wind_speed = self.calculate_wind_speed(storm)
+        return self.wind_direction, wind_speed
+        
+    def calculate_wind_speed(self, storm : bool) -> float:
+        #TODO: Vindhastighet e avhengig av vind retning. Nordavind e mye sterkere enn andre vind retninger.
+        if(not storm):
+            if(self.wind_direction in range(0, 45) or self.wind_direction in range(315, 360)):
+                direction = 0
+            elif(self.wind_direction in range(45, 135)):
+                direction = 1
+            elif(self.wind_direction in range(135, 225)):
+                direction = 2
+            else:
+                direction = 3
+            wind_speed = self.average_wind_speed_direction[direction] + uniform(-2, 2)
+            if(wind_speed < 0):
+                wind_speed = 0
+        else:
+            weight = weights()
+            max_storm = weight.storm_power + uniform(-5, 5)
+            wind_speed = uniform(weight.gust_power, max_storm)
+        
+        return round(wind_speed, 2)
+            
+    def calculate_wind_direction(self) -> int:
+        weight = weights()
+        if(self.change_in_wind_direction == 1):
+            self.wind_direction -= randrange(1, weight.wind_change[1])
+        elif(self.change_in_wind_direction == 0):
+            self.wind_direction += randrange(weight.wind_change[0], weight.wind_change[1])
+        elif(self.change_in_wind_direction == -1):
+            self.wind_direction += randrange(weight.wind_change[0], -1)
+        if(randrange(100) < weight.chance_of_direction_change*100):
+            self.change_in_wind_direction = randrange(-1, 1)
+        return self.wind_direction
