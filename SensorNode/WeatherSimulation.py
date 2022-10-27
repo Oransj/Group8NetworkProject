@@ -351,4 +351,21 @@ class pressure_simulation():
     def __init__(self):
         self.pressure = weights().pressure_extreme_points[1]
         
+    def simulate_pressure(self, temperature_now : float, previous_temperature : float) -> int:
+        """Simulates the pressure today at the current time.
+
+        Args:
+            temperature_now (float): The temperature at the current time.
+            previous_temperature (float): The temperature at the last simulation.
+
+        Returns:
+            int: The pressure today at the current time.
+        """        
+        if(temperature_now > previous_temperature):
+            self.pressure += uniform(1, 4.5)
+        elif(temperature_now < previous_temperature):
+            self.pressure -= uniform(1, 4.5)
+        else:
+            self.pressure += uniform(-2.65, 2.65)
+        self.pressure = round(self.pressure, 2)
 
