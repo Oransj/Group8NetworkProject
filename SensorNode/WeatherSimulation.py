@@ -304,9 +304,23 @@ class mqtt_client:
         self.client.connect("localhost", 1883, 60)
     
     def publish(self, topic : str, payload : str):
+        """Publishes a message to the MQTT broker.
+
+        Args:
+            topic (str): The topic to publish to.
+            payload (str): The payload to publish.
+        """        
         self.client.publish(topic, payload)
     
     def on_connect(self, client, userdata, flags, rc):
+        """The callback for when the client receives a CONNACK response from the server.
+
+        Args:
+            client (_type_): The client instance for this callback.
+            userdata (_type_): The private user data as set in Client() or userdata_set().
+            flags (_type_): Response flags sent by the broker.
+            rc (_type_): The connection result.
+        """        
         print("Connected with result code "+str(rc))
         self.client.subscribe(self.standard_path + self.sensorID)
     
