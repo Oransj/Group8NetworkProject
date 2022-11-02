@@ -2,7 +2,6 @@ package no.ntnu.idata2304.group8.databasehandler;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import org.json.simple.JSONObject;
@@ -81,7 +79,7 @@ public class SQLHandler {
      * @Return - ArrayList
      * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
      */
-    public ArrayList selectDate(long dayStart, long dayEnd){
+    public ArrayList selectDate(Long dayStart, Long dayEnd){
         String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir " +
                      "FROM Weather " +
                      "WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
