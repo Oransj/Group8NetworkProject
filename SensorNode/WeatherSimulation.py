@@ -488,3 +488,79 @@ class lux_simulation():
         return min, max
       
 def main():
+    now = datetime.now()
+    month = now.month
+    day = now.day
+    time = now.time()
+    percipitation_sim = percipitation_simulation()
+    month_percipitation = percipitation_sim.generate_percipitation_month()
+    percipitation_today = month_percipitation[now.day-1]
+    if(percipitation_today > 20):
+        storm = True
+    else:
+        storm = False
+    percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
+    percipitation_now = percipitation_today[now.hour]
+    lux_sim = lux_simulation()
+    lux_now = lux_sim.simulate_lux(percipitation_now)
+    temp_sim = temperature_simulation()
+    temp_now = temp_sim.simulate_temperature_today(calculate_temp_add_on(lux_now))
+    previous_temp = temp_now -1
+    pressure_sim = pressure_simulation()
+    pressure_now = pressure_sim.simulate_pressure(temp_now, previous_temp)
+    wind_sim = wind_simulation()
+    wind_speed_now = wind_sim.calculate_wind_speed(storm)
+    wind_direction_now = wind_sim.calculate_wind_direction()
+    weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
+    mqtt_cli = mqtt_client()
+    mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+    
+    while(True):
+        if(month != now.month):
+            month = now.month
+            percipitation_sim = percipitation_simulation()
+            month_percipitation = percipitation_sim.generate_percipitation_month()
+        if(day != now.day):
+            day = now.day
+            percipitation_today = month_percipitation[now.day-1]
+            if(percipitation_today > 20):
+                storm = True
+            else:
+                storm = False
+            percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
+        if(time.minute+14 < now.minute):
+            time = now.time()
+            percipitation_now = percipitation_today[now.hour]
+            lux_sim = lux_simulation()
+            lux_now = lux_sim.simulate_lux(percipitation_now)
+            temp_sim = temperature_simulation()
+            previous_temp = temp_now
+            temp_now = temp_sim.simulate_temperature_today(calculate_temp_add_on(lux_now))
+            pressure_sim = pressure_simulation()
+            pressure_now = pressure_sim.simulate_pressure(temp_now, previous_temp)
+            wind_sim = wind_simulation()
+            wind_speed_now = wind_sim.calculate_wind_speed(storm)
+            wind_direction_now = wind_sim.calculate_wind_direction()
+            weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
+            weather__now = create_spikes(weather__now)
+            mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+        t.sleep(300)
+        
+def create_spikes(check_weather : weather) -> weather:
+    values = [check_weather.temperature, check_weather.precipitation, check_weather.lux, check_weather.pascal, check_weather.wind_speed, check_weather.winddir]
+    if(randrange(100) <= 10):
+        random_val = randrange(6)
+        values[random_val] = values[random_val]*randrange(10,20)
+    return weather(values[0], values[1], values[2], values[3], values[4], values[5])
+    
+def calculate_temp_add_on(lux : float) -> float:
+    if(lux < 1000):
+        return uniform(-0.5, 0.5)
+    if(lux >= 1000 and lux < 5000):
+        return uniform(0.5, 2)
+    if(lux >= 5000 and lux < 10000):
+        return uniform(2, 4)
+    if(lux >= 10000):
+        return uniform(4, 6)
+if __name__ == "__main__":
+    main()
