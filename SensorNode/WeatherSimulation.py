@@ -1,6 +1,7 @@
 from calendar import monthrange
+from datetime import datetime
 import datetime
-import time
+import time as t
 from random import randrange, uniform
 import paho.mqtt.client as mqtt
 import json
@@ -25,11 +26,11 @@ class weather:
         self.precipitation = precipitation
         self.lux = lux
         self.pascal = pascal
-        self.windpower = windpower
+        self.wind_speed = windpower
         self.winddir = winddir
 
     def __str__(self) -> str:
-        return f"Temperature: {self.temperature}°C, Precipitation: {self.precipitation}mm, Lux: {self.lux}lx, Pascal: {self.pascal}Pa, Windpower: {self.windpower}m/s, Winddir: {self.winddir}"
+        return f"Temperature: {self.temperature}°C, Precipitation: {self.precipitation}mm, Lux: {self.lux}lx, Pascal: {self.pascal}Pa, Windpower: {self.wind_speed}m/s, Winddir: {self.winddir}"
 
 class day:
     def __init__(self) -> None:
@@ -305,19 +306,19 @@ class temperature_simulation:
 class mqtt_client:
     def __init__(self):
         self.client = mqtt.Client()
-        self.standard_path = "ntnu/ankeret/c220/multisensor/gruppe8/"
+        self.topic = "ntnu/ankeret/c220/multisensor/gruppe8/"
         self.sensorID = "0601holmes"
         self.client.on_connect = self.on_connect
         self.client.connect("localhost", 1883, 60)
     
-    def publish(self, topic : str, payload : str):
+    def publish(self, payload : str):
         """Publishes a message to the MQTT broker.
 
         Args:
             topic (str): The topic to publish to.
             payload (str): The payload to publish.
         """        
-        self.client.publish(topic, payload)
+        self.client.publish(self.topic + self.sensorID, payload)
     
     def on_connect(self, client, userdata, flags, rc):
         """The callback for when the client receives a CONNACK response from the server.
@@ -331,7 +332,7 @@ class mqtt_client:
         print("Connected with result code "+str(rc))
         self.client.subscribe(self.standard_path + self.sensorID)
     
-    def format_to_json(self, temperature : float, precipitation : float, air_pressure : int, lux : float, wind_speed : float, wind_direction : int) -> str:
+    def format_to_json(self, weather : weather) -> str:
         """Formats the data to a json string.
 
         Args:
@@ -342,8 +343,8 @@ class mqtt_client:
         Returns:
             str: The json string.
         """        
-        t_ms = int(time.time()*1000)
-        json_string = json.dumps({"Time": {"ms" : t_ms}, "Temperature": {"celsius" : temperature}, "Precipitation": {"mm" : precipitation}, "AirPressure": {"hPa" : air_pressure}, "Lux": {"lux" : lux}, "WindSpeed": {"m/s" : wind_speed}, "WindDirection": {"degrees" : wind_direction}})
+        t_ms = int(t.time()*1000)
+        json_string = json.dumps({"Time": {"ms" : t_ms}, "Temperature": {"celsius" : weather.temperature}, "Precipitation": {"mm" : weather.precipitation}, "AirPressure": {"hPa" : weather.pascal}, "Lux": {"lux" : weather.lux}, "WindSpeed": {"m/s" : weather.wind_speed}, "WindDirection": {"degrees" : weather.winddir}})
         return json_string
 
 class pressure_simulation():
@@ -375,7 +376,12 @@ class wind_simulation():
         self.change_in_wind_direction = 1
         self.average_wind_speed_direction = self.generate_avg_wind_speed_direction()
     
-    def generate_avg_wind_speed_direction(self, current_temperature : float, previous_temperature : float) -> list[float]:
+    def generate_avg_wind_speed_direction(self) -> list[float]:
+        """Generates a list of average wind speeds and directions for each hour of the day.
+
+        Returns:
+            list[float]: A list of average wind speeds and directions for each hour of the day.
+        """        
         avg = []
         for i in weights().avg_wind_speed_direction:
             max = i + uniform(-i + 5)
@@ -387,11 +393,27 @@ class wind_simulation():
             avg.append(avg_wind)
           
     def simulate_wind(self, storm : bool) -> int | float:
+        """Simulates the wind today at the current time.
+
+        Args:
+            storm (bool): If there is a storm or not.
+
+        Returns:
+            int | float: The wind today at the current time.
+        """        
         self.calculate_wind_direction()
         wind_speed = self.calculate_wind_speed(storm)
         return self.wind_direction, wind_speed
         
     def calculate_wind_speed(self, storm : bool) -> float:
+        """Calculates the wind speed today at the current time.
+
+        Args:
+            storm (bool): If there is a storm or not.
+
+        Returns:
+            float: The wind speed today at the current time.
+        """        
         #TODO: Vindhastighet e avhengig av vind retning. Nordavind e mye sterkere enn andre vind retninger.
         if(not storm):
             if(self.wind_direction in range(0, 45) or self.wind_direction in range(315, 360)):
@@ -413,6 +435,11 @@ class wind_simulation():
         return round(wind_speed, 2)
             
     def calculate_wind_direction(self) -> int:
+        """Calculates the wind direction today at the current time.
+
+        Returns:
+            int: The wind direction today at the current time.
+        """        
         weight = weights()
         if(self.change_in_wind_direction == 1):
             self.wind_direction -= randrange(1, weight.wind_change[1])
@@ -423,3 +450,41 @@ class wind_simulation():
         if(randrange(100) < weight.chance_of_direction_change*100):
             self.change_in_wind_direction = randrange(-1, 1)
         return self.wind_direction
+
+class lux_simulation():
+    
+    def simulate_lux(self, precipitation : float) -> float:
+        """Simulates the lux at the current time.
+
+        Args:
+            precipitation (float): The precipitation at the current time.
+
+        Returns:
+            float: The lux at the current time.
+        """        
+        time_now = datetime.now().time()
+        min, max = self.min_max_light(time_now)
+        print(min, max)
+        if(precipitation > 0):
+            max = max - ((max-min)/4)*precipitation
+        else:
+            min = min + ((max-min)/uniform(0.9, 3))
+        print(f"new min: {min}, new max: {max}")
+        random_light = uniform(min, max)
+        return round(random_light, 2)
+        
+    def min_max_light(self, time_now : time) -> float|float:
+        """Calculates the min and max lux at the given time.
+
+        Args:
+            time_now (time): The time.
+
+        Returns:
+            float|float: The min and max lux.
+        """        
+        current_time = time_now.hour + time_now.minute/60
+        max = 50000 * sin(current_time/12 * pi - 6 * pi/12) + 50001
+        min = 16000 * sin(current_time/12 * pi - 6 * pi/12) + 16000.0001
+        return min, max
+      
+def main():
