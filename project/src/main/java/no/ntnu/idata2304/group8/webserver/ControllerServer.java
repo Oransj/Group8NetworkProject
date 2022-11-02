@@ -15,16 +15,20 @@ public class ControllerServer {
   SQLHandler sqlHandler = new SQLHandler();
 
   @PostMapping(value = "/api/front")
-  public void processJSON(@RequestBody Map<String, Object> payload) {
-    System.out.println(payload);
+  public String processJSON(@RequestBody Map<String, Object> payload) {
+    Long today = Long.parseLong((String) payload.get("todayMs"));
+    Long day4Ms = Long.parseLong((String) payload.get("day4Ms"));
+    ArrayList<String> list = sqlHandler.selectDate(today, day4Ms);
+    Gson gson = new Gson();
+    return gson.toJson(list);
   }
 
   @GetMapping("/api/front")
   public String getReports() throws IOException, ParseException {
     SQLHandler sqlHandler = new SQLHandler();
-//    ArrayList<String> list = sqlHandler.selectAll();
+    ArrayList<String> list = sqlHandler.selectAll();
 
-    ArrayList<String> list = sqlHandler.selectDate(1666262249300L, 1666262249400L);
+//    ArrayList<String> list = sqlHandler.selectDate(1666262249300L, 1666262249400L);
     Gson gson = new Gson();
     String jsonArray = gson.toJson(list);
     return jsonArray;
