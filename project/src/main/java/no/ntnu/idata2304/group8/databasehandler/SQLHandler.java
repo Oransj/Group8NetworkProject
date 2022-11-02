@@ -47,7 +47,8 @@ public class SQLHandler {
      */
         //TODO: TAKE A JSON AS PARAMETER THEN READ FROM THAT
     public void addData() throws IOException, ParseException {
-        String jsonString = "project/src/main/resources/database/test_json2.json";
+//        String jsonString = "project/src/main/resources/database/test_json2.json";
+        String jsonString = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and network programming\\Group8NetworkProject\\project\\src\\main\\resources\\database\\test_json2.json";
         Object obj = new JSONParser().parse(new FileReader(jsonString));
         JSONObject jsonObject = (JSONObject) obj;
         JSONObject time = (JSONObject) jsonObject.get("Time");
@@ -159,15 +160,10 @@ public class SQLHandler {
      */
     //TESTING
 
-    public static void main(String[] args) throws IOException, ParseException {
-        SQLHandler app = new SQLHandler();
-
-
-        System.out.println(app.selectAll());
-        System.out.println();
-        System.out.println(app.selectDate(1666262249302l,1666262249308l));
-        //app.addData2();
-
-    }
+//    public static void main(String[] args) throws IOException, ParseException {
+//        SQLHandler app = new SQLHandler();
+//        app.addData();
+//
+//    }
 }
 

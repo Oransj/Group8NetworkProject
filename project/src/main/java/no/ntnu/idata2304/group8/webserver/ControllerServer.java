@@ -3,8 +3,10 @@ package no.ntnu.idata2304.group8.webserver;
 
 import com.google.gson.Gson;
 import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -18,7 +20,7 @@ public class ControllerServer {
   }
 
   @GetMapping("/api/front")
-  public String getReports() {
+  public String getReports() throws IOException, ParseException {
     SQLHandler sqlHandler = new SQLHandler();
 //    ArrayList<String> list = sqlHandler.selectAll();
 
