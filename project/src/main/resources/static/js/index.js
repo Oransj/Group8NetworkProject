@@ -1,13 +1,21 @@
-window.onload = function() {
-    const data = getDataFromAPI2();
-    insertWeatherCard(data.date, data.weekday, data.weatherType, data.minTemp, data.maxTemp, data.rainAmount, data.windAmount);
+window.onload = async function() {
+    const res = await getDataFromAPI()
+    console.log(res.data);
+    const data = res.data;
+    const today = new Date(data.at(0).time);
+    insertWeatherCard(today.toLocaleDateString('sv'),
+        today.toLocaleString('en-us', {  weekday: 'long' }),
+        "sun",
+        0, data.at(0).Temperature.celsius.num,
+        data.at(0).Precipitation.mm.num,
+        data.at(0).Wind.W_speed.num);
     insertWeatherCard("2022-10-24", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
     insertWeatherCard("2022-10-25", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
     insertWeatherCard("2022-10-26", "Monday", "thunder", "6", "8", "4.0", "2.0");
 
     addEventListeners();
 }
-
+//TODO: Fix the date issue (something wrong with the converting) and fix json string to have all the attributes
 async function getDataFromAPI() {
     const currentDate = new Date(Date.now()).toLocaleDateString('en-US').split('/');
 
@@ -28,10 +36,10 @@ async function getDataFromAPI() {
         method: 'POST',
         url: 'http://127.0.0.1:8080/api/front',
         data: {
-            todayMs,
+            todayMs: todayMs.toString(),
             day2Ms,
             day3Ms,
-            day4Ms,
+            day4Ms: day4Ms.toString(),
         }
     });
 
@@ -110,4 +118,4 @@ const test = async () => {
 
 }
 
-test();
+// test();
