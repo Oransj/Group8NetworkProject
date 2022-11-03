@@ -1,22 +1,22 @@
 {
     "Time": {
-        "ms": "1667422533463"
+        "ms": "1667689200000"
 
     },
     "Temperature": {
-        "celsius": "37.1"
+        "celsius": "22.1"
     },
     "Precipitaion": {
-        "mm": "3.23"
+        "mm": "2.5"
     },
     "Air_pressure": {
-        "hPa": "500"
+        "hPa": "510"
     },
     "Light": {
-        "lux": "31000.0000"
+        "lux": "52000.0000"
     },
     "Wind": {
-        "W_speed": "2.5",
-        "W_direction": "620"
+        "W_speed": "5.5",
+        "W_direction": "120"
     }
 }
