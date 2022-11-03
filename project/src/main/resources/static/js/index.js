@@ -2,16 +2,38 @@ window.onload = async function() {
     const res = await getDataFromAPI()
     console.log(res.data);
     const data = res.data;
-    const today = new Date(data.at(0).time);
+    const today = new Date(data.at(0).Time.ms.num);
+    const day2 = new Date(data.at(1).Time.ms.num);
+    const day3 = new Date(data.at(2).Time.ms.num);
+    const day4 = new Date(data.at(3).Time.ms.num);
     insertWeatherCard(today.toLocaleDateString('sv'),
         today.toLocaleString('en-us', {  weekday: 'long' }),
         "sun",
-        0, data.at(0).Temperature.celsius.num,
+        20,
+        data.at(0).Temperature.celsius.num,
         data.at(0).Precipitation.mm.num,
         data.at(0).Wind.W_speed.num);
-    insertWeatherCard("2022-10-24", "Tomorrow", "rain-with-sun", "6", "8", "4.0", "2.0");
-    insertWeatherCard("2022-10-25", "Sunday", "cloud-with-sun", "6", "8", "4.0", "2.0");
-    insertWeatherCard("2022-10-26", "Monday", "thunder", "6", "8", "4.0", "2.0");
+    insertWeatherCard(day2.toLocaleDateString('sv'),
+        day2.toLocaleString('en-us', {  weekday: 'long' }),
+        "rain-with-sun",
+        "16",
+        data.at(1).Temperature.celsius.num,
+        data.at(1).Precipitation.mm.num,
+        data.at(1).Wind.W_speed.num);
+    insertWeatherCard(day3.toLocaleDateString('sv'),
+        day3.toLocaleString('en-us', {  weekday: 'long' }),
+        "cloud-with-sun",
+        "26",
+        data.at(2).Temperature.celsius.num,
+        data.at(2).Precipitation.mm.num,
+        data.at(2).Wind.W_speed.num);
+    insertWeatherCard(day4.toLocaleDateString('sv'),
+        day4.toLocaleString('en-us', {  weekday: 'long' }),
+        "thunder",
+        "21",
+        data.at(3).Temperature.celsius.num,
+        data.at(3).Precipitation.mm.num,
+        data.at(3).Wind.W_speed.num);
 
     addEventListeners();
 }
