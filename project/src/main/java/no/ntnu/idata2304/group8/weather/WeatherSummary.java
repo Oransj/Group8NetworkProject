@@ -21,7 +21,7 @@ public class WeatherSummary {
      * @param dayData A list of weather data rows for the entire day.
      *                Each row in the format {temperature, precipitation, pressure, light, wind}.
      * @return  A list of minimum temperature, maximum temperature,
-     *          average precipitation and average wind strength.
+     *          average precipitation and average wind speed.
      */
     public Float[] getDaySummary(List<Float[]> dayData) {
         float minTemp = dayData.get(0)[0];
@@ -125,7 +125,7 @@ public class WeatherSummary {
      * Get the weather summary for a data set.
      *
      * @param data Array of data in the format
-     *             '[temperature, precipitation, pressure, light, wind_strength]'.
+     *             '[temperature, precipitation, pressure, light, wind speed]'.
      * @return List of the weather summary in the format
      * '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
      */
@@ -206,7 +206,7 @@ public class WeatherSummary {
      *
      * @param temperature The temperature (celsius).
      * @param precipitationLevel The precipitation level (-1, 0, 1).
-     * @param wind The wind strength (m/s).
+     * @param wind The wind speed (m/s).
      * @return 0 for no thunder, 1 for thunder.
      */
     private int getThunderSummary(float temperature, int precipitationLevel, float wind) {
