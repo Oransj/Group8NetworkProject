@@ -7,7 +7,7 @@ import org.json.simple.parser.ParseException;
 
 public class MQTTListener implements Runnable {
 
-    private static final String broker = "tcp://localhost:1883";
+    private static final String broker = "tcp://129.241.152.12:1883";
     private final String username;
     private final String password;
     private static int clientNumber;
@@ -15,12 +15,12 @@ public class MQTTListener implements Runnable {
     private final String topic;
 
     private int qos = 0;
-    public MQTTListener(String username, String sensorID) {
+    public MQTTListener(String username) {
         this.username = username;
         this.password = "public";
         this.clientId = "client" + clientNumber;
         clientNumber++;
-        topic = "test/" + sensorID;
+        topic = "ntnu/ankeret/c220/multisensor/gruppe8/" + "0601holmes"; //TODO: Check if topic needs to include sensor id or if we can subscribe to a level over
     }
 
     public void run() {

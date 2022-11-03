@@ -309,7 +309,7 @@ class mqtt_client:
         self.topic = "ntnu/ankeret/c220/multisensor/gruppe8/"
         self.sensorID = "0601holmes"
         self.client.on_connect = self.on_connect
-        self.client.connect("localhost", 1883, 60)
+        self.client.connect("129.241.152.12", 1883, 60)
     
     def publish(self, payload : str):
         """Publishes a message to the MQTT broker.
