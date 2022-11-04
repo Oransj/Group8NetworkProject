@@ -24,6 +24,10 @@ public class WeatherSummary {
      *          average precipitation and average wind speed.
      */
     public Float[] getDaySummary(List<Float[]> dayData) {
+        if (dayData == null || dayData.isEmpty()) {
+            throw new IllegalArgumentException("Data cannot be null or empty.");
+        }
+        
         float minTemp = dayData.get(0)[0];
         float maxTemp = dayData.get(0)[0];
         float totalPrecip = 0;
@@ -58,6 +62,10 @@ public class WeatherSummary {
      *          {temperature, precipitation, pressure, light, wind}.
      */
     public Float[] getAverageValuesInInterval(List<Float[]> dataRows) {
+        if (dataRows == null || dataRows.isEmpty()) {
+            throw new IllegalArgumentException("Data cannot be null or empty.");
+        }
+        
         float totalTemp = 0;
         float totalPrecip = 0;
         float totalPressure = 0;
@@ -85,6 +93,10 @@ public class WeatherSummary {
      * @return The type of weather.
      */
     public String getWeatherType(List<Integer> summary) {
+        if (summary == null || summary.isEmpty()) {
+            throw new IllegalArgumentException("Data cannot be null or empty.");
+        }
+        
         // The values in the summary list
         int sunOrMoon = summary.get(0);
         int rainOrSnow = summary.get(1);
@@ -130,6 +142,10 @@ public class WeatherSummary {
      * '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
      */
     public List<Integer> getWeatherSummary(Float[] data) {
+        if (data == null || data.length == 0) {
+            throw new IllegalArgumentException("Data cannot be null or empty.");
+        }
+        
         List<Integer> weatherSummary = new ArrayList<>();
         
         // The items in the data array
@@ -159,6 +175,10 @@ public class WeatherSummary {
      * @return -2 for cloudy night, -1 for moonlight, 0 for clouds, 1 for clouds and sun, 2 for sun.
      */
     private int getSunSummary(float light) {
+        if (light < 0) {
+            throw new IllegalArgumentException("Light cannot be below zero.");
+        }
+        
         int sun;
         if (light < 1) {
             sun = -2; // Cloudy night
@@ -182,6 +202,10 @@ public class WeatherSummary {
      * @return -2 for much snow, -1 for snow, 0 for no precipitation, 1 for rain, 2 for much rain.
      */
     private int getPrecipitationSummary(float temperature, float precipitation) {
+        if (precipitation < 0) {
+            throw new IllegalArgumentException("Precipitation cannot be below zero.");
+        }
+        
         int rain;
         if (precipitation < 0.2) {
             rain = 0;
@@ -210,6 +234,10 @@ public class WeatherSummary {
      * @return 0 for no thunder, 1 for thunder.
      */
     private int getThunderSummary(float temperature, int precipitationLevel, float wind) {
+        if (wind < 0) {
+            throw new IllegalArgumentException("Wind speed cannot be below zero.");
+        }
+        
         int thunder = 0;
         if ((temperature > 13 && precipitationLevel == 1)
         || (precipitationLevel == 2 && wind > 10)) {
@@ -218,5 +246,5 @@ public class WeatherSummary {
         return thunder;
     }
     
-    // TODO: Implement method to get changes in pressure, for a more complex summary method
+    // TODO: Implement method to get changes in pressure, for a more complex thunder summary method
 }
