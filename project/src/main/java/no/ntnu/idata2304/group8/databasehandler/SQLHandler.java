@@ -2,6 +2,7 @@ package no.ntnu.idata2304.group8.databasehandler;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import org.json.simple.JSONObject;
@@ -49,26 +51,34 @@ public class SQLHandler {
         String jsonString = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and network programming\\Group8NetworkProject\\project\\src\\main\\resources\\database\\test_json2.json";
         Object obj = new JSONParser().parse(new FileReader(jsonString));
         JSONObject jsonObject = (JSONObject) obj;
-        JSONObject time = (JSONObject) jsonObject.get("Time");
-        JSONObject temperature = (JSONObject) jsonObject.get("Temperature");
-        JSONObject precipitaion = (JSONObject) jsonObject.get("Precipitaion");
-        JSONObject air_pressure = (JSONObject) jsonObject.get("Air_pressure");
-        JSONObject light = (JSONObject) jsonObject.get("Light");
-        JSONObject wind = (JSONObject) jsonObject.get("Wind");
+        for (int i = 1; i <= jsonObject.size(); i++) {
+            String read = "Reading" + i;
+            try{
+            JSONObject object = (JSONObject) jsonObject.get(read);
+            JSONObject time = (JSONObject) object.get("Time");
+            JSONObject temperature = (JSONObject) object.get("Temperature");
+            JSONObject precipitaion = (JSONObject) object.get("Precipitaion");
+            JSONObject air_pressure = (JSONObject) object.get("Air_pressure");
+            JSONObject light = (JSONObject) object.get("Light");
+            JSONObject wind = (JSONObject) object.get("Wind");
 
-        String sql = "INSERT INTO Weather(Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
-        try (Connection connection = this.connect();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, Long.parseLong(time.get("ms").toString()));
-            pstmt.setDouble(2, Double.parseDouble(temperature.get("celsius").toString()));
-            pstmt.setDouble(3,Double.parseDouble(precipitaion.get("mm").toString()));
-            pstmt.setDouble(4,Integer.parseInt(air_pressure.get("hPa").toString()));
-            pstmt.setDouble(5,Double.parseDouble(light.get("lux").toString()));
-            pstmt.setDouble(6,Double.parseDouble(wind.get("W_speed").toString()));
-            pstmt.setDouble(7,Double.parseDouble(wind.get("W_direction").toString()));
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String sql = "INSERT INTO Weather(Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
+            try (Connection connection = this.connect();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setLong(1, Long.parseLong(time.get("ms").toString()));
+                pstmt.setDouble(2, Double.parseDouble(temperature.get("celsius").toString()));
+                pstmt.setDouble(3,Double.parseDouble(precipitaion.get("mm").toString()));
+                pstmt.setDouble(4,Integer.parseInt(air_pressure.get("hPa").toString()));
+                pstmt.setDouble(5,Double.parseDouble(light.get("lux").toString()));
+                pstmt.setDouble(6,Double.parseDouble(wind.get("W_speed").toString()));
+                pstmt.setDouble(7,Double.parseDouble(wind.get("W_direction").toString()));
+                pstmt.executeUpdate();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -158,10 +168,15 @@ public class SQLHandler {
      */
     //TESTING
 
-//    public static void main(String[] args) throws IOException, ParseException {
-//        SQLHandler app = new SQLHandler();
-//        app.addData();
+    public static void main(String[] args) throws IOException, ParseException {
+        SQLHandler app = new SQLHandler();
+
 //
-//    }
+//        System.out.println(app.selectAll());
+//        System.out.println();
+//        System.out.println(app.selectDate(1666262249302l,1666262249308l));
+        app.addData();
+
+    }
 }
 
