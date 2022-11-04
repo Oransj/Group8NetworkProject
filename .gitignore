@@ -31,8 +31,8 @@ hs_err_pid*
 
 #Gradle
 .gradle
-.build/
-.bin/
+build/
+bin/
 gradle-app.setting
 !graddle-wrapper.jar
 .gradletasknamecache
