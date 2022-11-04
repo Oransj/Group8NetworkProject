@@ -25,7 +25,7 @@ public class WeatherSummary {
      */
     public Float[] getDaySummary(List<Float[]> dayData) {
         if (dayData == null || dayData.isEmpty()) {
-            throw new IllegalArgumentException("Data cannot be null or empty.");
+            throw new IllegalArgumentException("Day data cannot be null or empty.");
         }
         
         float minTemp = dayData.get(0)[0];
@@ -63,7 +63,7 @@ public class WeatherSummary {
      */
     public Float[] getAverageValuesInInterval(List<Float[]> dataRows) {
         if (dataRows == null || dataRows.isEmpty()) {
-            throw new IllegalArgumentException("Data cannot be null or empty.");
+            throw new IllegalArgumentException("Data rows cannot be null or empty.");
         }
         
         float totalTemp = 0;
