@@ -2,7 +2,9 @@ package no.ntnu.idata2304.group8.webserver;
 
 
 import com.google.gson.Gson;
+import no.ntnu.idata2304.group8.MQTT.MQTTListener;
 import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,10 @@ public class ControllerServer {
 
   @GetMapping("/api/front")
   public String getReports() throws IOException, ParseException {
+    MQTTListener listener = new MQTTListener("admin");
+    Thread thread = new Thread(listener);
+    thread.start();
+
     SQLHandler sqlHandler = new SQLHandler();
     ArrayList<String> list = sqlHandler.selectAll();
 
