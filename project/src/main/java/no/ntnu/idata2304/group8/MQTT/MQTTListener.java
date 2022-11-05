@@ -1,5 +1,6 @@
 package no.ntnu.idata2304.group8.MQTT;
 
+import no.ntnu.idata2304.group8.webserver.WeatherSorting;
 import org.eclipse.paho.client.mqttv3.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -46,7 +47,7 @@ public class MQTTListener implements Runnable {
     }
 
     private void connect() throws MqttException {
-        MqttClient client = new MqttClient(username, topic);
+        MqttClient client = new MqttClient(broker, username);
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(username);
         options.setPassword(password.toCharArray());
@@ -68,7 +69,8 @@ public class MQTTListener implements Runnable {
                 System.out.println("message content: " + msg);
                 JSONParser parser = new JSONParser();
                 JSONObject json = (JSONObject) parser.parse(msg);
-                //TODO:Add json object to database
+                WeatherSorting weatherSorting = new WeatherSorting();
+                weatherSorting.printJSON(json);
 
             }
 
