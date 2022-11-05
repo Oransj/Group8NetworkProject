@@ -532,7 +532,7 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(time.minute+14 > now.minute):
+        if(time.minute+14 < now.minute):
             time = now.time()
             percipitation_now = percipitation_today[now.hour]
             lux_sim = lux_simulation()
