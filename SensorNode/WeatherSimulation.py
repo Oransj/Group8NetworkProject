@@ -532,7 +532,7 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(time.minute+14 < now.minute):
+        if(time.minute+14 > now.minute):
             time = now.time()
             percipitation_now = percipitation_today[now.hour]
             lux_sim = lux_simulation()
@@ -548,6 +548,7 @@ def main():
             weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
             weather__now = create_spikes(weather__now)
             mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+        now = datetime.datetime.now()
         print("sleeping" + str(now))
         t.sleep(300)
         
