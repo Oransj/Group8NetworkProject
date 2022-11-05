@@ -1,13 +1,13 @@
 package no.ntnu.idata2304.group8.weather;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the Weather Summary class. Tests for positive,
@@ -39,7 +39,7 @@ public class WeatherSummaryTest {
     }
     
     @Test
-    public void testGetDaySummaryWithPositiveValues () {
+    public void testGetDaySummaryWithPositiveValues() {
         setUpPositive();
         
         Float[] exp = new Float[]{8.10f, 8.90f, 0.40f, 1.77f};
@@ -50,7 +50,7 @@ public class WeatherSummaryTest {
     }
     
     @Test
-    public void testGetDaySummaryWithNegativeValues () {
+    public void testGetDaySummaryWithNegativeValues() {
         setUpNegative();
         
         Float[] expected = new Float[]{-8.90f, -8.10f, -0.40f, -1.77f};
@@ -61,7 +61,7 @@ public class WeatherSummaryTest {
     }
     
     @Test
-    public void testGetDaySummaryWithZeroValues () {
+    public void testGetDaySummaryWithZeroValues() {
         setUpZero();
         
         Float[] expected = new Float[]{0.00f, 0.00f, 0.00f, 0.00f};
@@ -72,7 +72,7 @@ public class WeatherSummaryTest {
     }
     
     @Test
-    public void testGetDaySummaryWithNoValues () {
+    public void testGetDaySummaryWithNoValues() {
         assertThrows(IllegalArgumentException.class, () -> ws.getDaySummary(dayData));
     }
     
@@ -110,7 +110,7 @@ public class WeatherSummaryTest {
     }
     
     @Test
-    public void testGetAvgInIntervalWithNoValues () {
+    public void testGetAvgInIntervalWithNoValues() {
         assertThrows(IllegalArgumentException.class, () -> ws.getAverageValuesInInterval(dayData));
     }
     

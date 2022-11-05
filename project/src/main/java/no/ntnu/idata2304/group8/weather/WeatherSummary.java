@@ -7,12 +7,6 @@ import java.util.List;
 /**
  * Get a simplified summary of the weather based on factors like
  * time, temperature, precipitation, atmospheric pressure, and wind.
- *
- * Sources
- * Sun/moon:    https://wolfcrow.com/wp-content/uploads/2013/04/QuantityLightChart.jpg
- *              https://shamay.com/content/images/2022/01/image.png
- * Rain/snow:   http://www.bom.gov.au/climate/data-services/content/faqs-elements.html
- * Thunder:     https://www.weather.gov/source/zhu/ZHU_Training_Page/thunderstorm_stuff/Thunderstorms/thunderstorms.htm
  */
 public class WeatherSummary {
     /**
@@ -81,8 +75,8 @@ public class WeatherSummary {
             totalWind += row[4];
         }
         
-        return new Float[]{totalTemp/size, totalPrecip/size,
-            totalPressure/size, totalLight/size, totalWind/size};
+        return new Float[]{totalTemp / size, totalPrecip / size,
+            totalPressure / size, totalLight / size, totalWind / size};
     }
     
     /**
@@ -138,8 +132,8 @@ public class WeatherSummary {
      *
      * @param data Array of data in the format
      *             '[temperature, precipitation, pressure, light, wind speed]'.
-     * @return List of the weather summary in the format
-     * '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
+     * @return  List of the weather summary in the format
+     *          '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
      */
     public List<Integer> getWeatherSummary(Float[] data) {
         if (data == null || data.length == 0) {
@@ -186,7 +180,7 @@ public class WeatherSummary {
             sun = -1; // Night
         } else if (light < 1000) {
             sun = 0; // Clouds
-        } else if (light < 10000){
+        } else if (light < 10000) {
             sun = 1; // Sun with clouds
         } else {
             sun = 2; // Sun
