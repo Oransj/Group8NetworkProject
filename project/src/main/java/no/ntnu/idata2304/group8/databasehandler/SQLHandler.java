@@ -161,22 +161,5 @@ public class SQLHandler {
         }
         return jArray;
     }
-
-
-    /**
-     * @param args the command line arguments
-     */
-    //TESTING
-
-    public static void main(String[] args) throws IOException, ParseException {
-        SQLHandler app = new SQLHandler();
-
-//
-//        System.out.println(app.selectAll());
-//        System.out.println();
-//        System.out.println(app.selectDate(1666262249302l,1666262249308l));
-        app.addData();
-
-    }
 }
 
