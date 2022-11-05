@@ -344,7 +344,7 @@ class mqtt_client:
             str: The json string.
         """        
         t_ms = int(t.time()*1000)
-        json_string = json.dumps({"Time": {"ms" : t_ms}, "Temperature": {"celsius" : weather.temperature}, "Precipitation": {"mm" : weather.precipitation}, "AirPressure": {"hPa" : weather.pascal}, "Lux": {"lux" : weather.lux}, "WindSpeed": {"m/s" : weather.wind_speed}, "WindDirection": {"degrees" : weather.winddir}})
+        json_string = json.dumps({"Reading1": {"Time": {"ms" : t_ms}, "Temperature": {"celsius" : weather.temperature}, "Precipitation": {"mm" : weather.precipitation}, "AirPressure": {"hPa" : weather.pascal}, "Lux": {"lux" : weather.lux}, "WindSpeed": {"m/s" : weather.wind_speed}, "WindDirection": {"degrees" : weather.winddir}}})
         return json_string
 
 class pressure_simulation():
@@ -384,13 +384,14 @@ class wind_simulation():
         """        
         avg = []
         for i in weights().avg_wind_speed_direction:
-            max = i + uniform(-i + 5)
+            max = i + uniform(-i + 5, i + 5)
             where = uniform(0, 2)
             avg_wind = i*where
             if(avg_wind > max):
                 avg_wind = max * uniform(0.7, 1)
             avg_wind = round(avg_wind, 2)
             avg.append(avg_wind)
+        return avg
           
     def simulate_wind(self, storm : bool) -> int | float:
         """Simulates the wind today at the current time.
@@ -462,7 +463,7 @@ class lux_simulation():
         Returns:
             float: The lux at the current time.
         """        
-        time_now = datetime.now().time()
+        time_now = datetime.datetime.now().time()
         min, max = self.min_max_light(time_now)
         print(min, max)
         if(precipitation > 0):
@@ -473,7 +474,7 @@ class lux_simulation():
         random_light = uniform(min, max)
         return round(random_light, 2)
         
-    def min_max_light(self, time_now : time) -> float|float:
+    def min_max_light(self, time_now : t.time) -> float|float:
         """Calculates the min and max lux at the given time.
 
         Args:
@@ -488,7 +489,7 @@ class lux_simulation():
         return min, max
       
 def main():
-    now = datetime.now()
+    now = datetime.datetime.now()
     month = now.month
     day = now.day
     time = now.time()
