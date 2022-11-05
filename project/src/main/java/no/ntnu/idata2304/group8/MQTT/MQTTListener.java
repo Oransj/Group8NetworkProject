@@ -5,6 +5,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.net.ConnectException;
+
 public class MQTTListener implements Runnable {
 
     private static final String broker = "tcp://129.241.152.12:1883";
@@ -15,6 +17,12 @@ public class MQTTListener implements Runnable {
     private final String topic;
 
     private int qos = 0;
+
+    /**
+     * Constructor for the MQTTListener class
+     *
+     * @param username The username for the MQTT broker
+     */
     public MQTTListener(String username) {
         this.username = username;
         this.password = "public";
@@ -29,10 +37,11 @@ public class MQTTListener implements Runnable {
             System.out.println(
                     "Thread " + Thread.currentThread().getId()
                             + " is running");
+            connect();
         }
-        catch (Exception e) {
+        catch (MqttException e) {
             // Throwing an exception
-            System.out.println("Exception is caught");
+            System.out.printf("Exception caught: %s%n", e);
         }
     }
 
@@ -71,17 +80,5 @@ public class MQTTListener implements Runnable {
 
         client.connect(options);
         client.subscribe(this.topic, this.qos);
-    }
-}
-
-class Multithread {
-    public static void main(String[] args)
-    {
-        int n = 8; // Number of threads
-        for (int i = 0; i < n; i++) {
-            Thread object
-                    = new Thread(new MQTTListener("admin"));
-            object.start();
-        }
     }
 }
