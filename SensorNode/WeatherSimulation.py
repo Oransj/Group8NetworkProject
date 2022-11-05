@@ -72,7 +72,9 @@ class weights:
                                     [75.00, 17.00], [85.00, 10.00], [84.00, 10.00], [126.00, 17.00],
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         self.chance_of_continued_rain = 0.85
+        #How often the sensor node should update the weather data in minutes.
         self.minutes_update = 15
+        #Sleep time for each weather update check in seconds.
         self.sleep_time = 300
         
         self.avg_temp = 9.55
@@ -535,7 +537,7 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(next_time-1 <= now.minute):
+        if(next_time <= now.minute):
             print("Creating new data")
             time = now.time()
             percipitation_now = percipitation_today[now.hour]
