@@ -72,8 +72,10 @@ class weights:
                                     [75.00, 17.00], [85.00, 10.00], [84.00, 10.00], [126.00, 17.00],
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         self.chance_of_continued_rain = 0.85
-        self.minutes_update = 15
-        self.sleep_time = 300
+        #How often the sensor node should update the weather data in minutes.
+        self.minutes_update = 2
+        #Sleep time for each weather update check in seconds.
+        self.sleep_time = 30
         
         self.avg_temp = 9.55
         self.temperature_months = [[12.0, -3.0], [11.5, -2.0], [16.5, -2.5], [17.0, -3.0],
@@ -345,7 +347,7 @@ class mqtt_client:
             str: The json string.
         """        
         t_ms = int(t.time()*1000)
-        json_string = json.dumps({"Reading1": {"Time": {"ms" : t_ms}, "Temperature": {"celsius" : weather.temperature}, "Precipitation": {"mm" : weather.precipitation}, "AirPressure": {"hPa" : weather.pascal}, "Lux": {"lux" : weather.lux}, "WindSpeed": {"m/s" : weather.wind_speed}, "WindDirection": {"degrees" : weather.winddir}}})
+        json_string = json.dumps({"Reading1": {"Time": {"ms" : t_ms}, "Temperature": {"celsius" : round(weather.temperature, 2)}, "Precipitation": {"mm" : round(weather.precipitation, 2)}, "Air_pressure": {"hPa" : weather.pascal}, "Light": {"lux" : round(weather.lux, 5)}, "Wind": { "W_speed": round(weather.wind_speed, 2), "W_direction": round(weather.winddir, 2)}}})
         print(json_string)
         return json_string
 
@@ -535,7 +537,7 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(next_time-1 <= now.minute):
+        if(next_time <= now.minute):
             print("Creating new data")
             time = now.time()
             percipitation_now = percipitation_today[now.hour]
