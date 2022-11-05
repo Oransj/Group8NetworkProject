@@ -347,7 +347,7 @@ class mqtt_client:
             str: The json string.
         """        
         t_ms = int(t.time()*1000)
-        json_string = json.dumps({"Reading1": {"Time": {"ms" : t_ms}, "Temperature": {"celsius" : round(weather.temperature, 2)}, "Precipitation": {"mm" : round(weather.precipitation, 2)}, "Air_pressure": {"hPa" : weather.pascal}, "Light": {"lux" : round(weather.lux, 5)}, "Wind": { "W_speed": round(weather.wind_speed, 2), "W_direction": round(weather.winddir, 2)}}})
+        json_string = json.dumps({"Reading1": {"Time": {"ms" : t_ms}, "Temperature": {"celsius" : round(weather.temperature, 2)}, "Precipitaion": {"mm" : round(weather.precipitation, 2)}, "Air_pressure": {"hPa" : weather.pascal}, "Light": {"lux" : round(weather.lux, 5)}, "Wind": { "W_speed": round(weather.wind_speed, 2), "W_direction": round(weather.winddir, 2)}}})
         print(json_string)
         return json_string
 
