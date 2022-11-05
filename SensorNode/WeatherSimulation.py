@@ -73,6 +73,7 @@ class weights:
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         self.chance_of_continued_rain = 0.85
         self.minutes_update = 15
+        self.sleep_time = 300
         
         self.avg_temp = 9.55
         self.temperature_months = [[12.0, -3.0], [11.5, -2.0], [16.5, -2.5], [17.0, -3.0],
@@ -517,6 +518,8 @@ def main():
     wind_direction_now = wind_sim.calculate_wind_direction()
     weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
     mqtt_cli = mqtt_client()
+    next_time = now + datetime.timedelta(minutes=weights().minutes_update)
+    next_time = next_time.time().minute
     mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
     
     while(True):
@@ -532,7 +535,8 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(time.minute+14 < now.minute):
+        if(next_time-1 <= now.minute):
+            print("Creating new data")
             time = now.time()
             percipitation_now = percipitation_today[now.hour]
             lux_sim = lux_simulation()
@@ -547,17 +551,24 @@ def main():
             wind_direction_now = wind_sim.calculate_wind_direction()
             weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
             weather__now = create_spikes(weather__now)
+            print("Data ready to be published")
             mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+            print("Data published")
+            next_time = datetime.datetime.now() + datetime.timedelta(minutes=weights().minutes_update)
+            print(f"Next update at {next_time}")
+            next_time = next_time.time().minute
+        print("sleeping " + str(now))
+        t.sleep(weights().sleep_time)
         now = datetime.datetime.now()
-        print("sleeping" + str(now))
-        t.sleep(300)
         
         
 def create_spikes(check_weather : weather) -> weather:
     values = [check_weather.temperature, check_weather.precipitation, check_weather.lux, check_weather.pascal, check_weather.wind_speed, check_weather.winddir]
     if(randrange(100) <= 10):
         random_val = randrange(6)
+        print(f"spike in {random_val}")
         values[random_val] = values[random_val]*randrange(10,20)
+        print(values[random_val])
     return weather(values[0], values[1], values[2], values[3], values[4], values[5])
     
 def calculate_temp_add_on(lux : float) -> float:
