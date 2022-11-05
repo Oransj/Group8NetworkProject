@@ -80,7 +80,7 @@ class Multithread {
         int n = 8; // Number of threads
         for (int i = 0; i < n; i++) {
             Thread object
-                    = new Thread(new MQTTListener("admin", "sensor1"));
+                    = new Thread(new MQTTListener("admin"));
             object.start();
         }
     }

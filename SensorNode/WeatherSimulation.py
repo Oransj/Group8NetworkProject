@@ -562,5 +562,6 @@ def calculate_temp_add_on(lux : float) -> float:
         return uniform(2, 4)
     if(lux >= 10000):
         return uniform(4, 6)
+
 if __name__ == "__main__":
     main()
