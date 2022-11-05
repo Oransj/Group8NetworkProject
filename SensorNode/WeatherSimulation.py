@@ -345,6 +345,7 @@ class mqtt_client:
         """        
         t_ms = int(t.time()*1000)
         json_string = json.dumps({"Reading1": {"Time": {"ms" : t_ms}, "Temperature": {"celsius" : weather.temperature}, "Precipitation": {"mm" : weather.precipitation}, "AirPressure": {"hPa" : weather.pascal}, "Lux": {"lux" : weather.lux}, "WindSpeed": {"m/s" : weather.wind_speed}, "WindDirection": {"degrees" : weather.winddir}}})
+        print(json_string)
         return json_string
 
 class pressure_simulation():
@@ -369,6 +370,8 @@ class pressure_simulation():
         else:
             self.pressure += uniform(-2.65, 2.65)
         self.pressure = round(self.pressure, 2)
+        
+        return self.pressure
 
 class wind_simulation():
     def __init__(self) -> None:
@@ -545,7 +548,9 @@ def main():
             weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
             weather__now = create_spikes(weather__now)
             mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+        print("sleeping" + str(now))
         t.sleep(300)
+        
         
 def create_spikes(check_weather : weather) -> weather:
     values = [check_weather.temperature, check_weather.precipitation, check_weather.lux, check_weather.pascal, check_weather.wind_speed, check_weather.winddir]
