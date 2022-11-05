@@ -1,22 +1,25 @@
 {
-    "Time": {
-        "ms": "1667689200000"
+    "Reading1":
+    {
+        "Time": {
+            "ms": "1667948400000"
 
-    },
-    "Temperature": {
-        "celsius": "22.1"
-    },
-    "Precipitaion": {
-        "mm": "2.5"
-    },
-    "Air_pressure": {
-        "hPa": "510"
-    },
-    "Light": {
-        "lux": "52000.0000"
-    },
-    "Wind": {
-        "W_speed": "5.5",
-        "W_direction": "120"
+        },
+        "Temperature": {
+            "celsius": "32.1"
+        },
+        "Precipitaion": {
+            "mm": "4.5"
+        },
+        "Air_pressure": {
+            "hPa": "710"
+        },
+        "Light": {
+            "lux": "32000.0000"
+        },
+        "Wind": {
+            "W_speed": "2.5",
+            "W_direction": "90"
+        }
     }
 }
