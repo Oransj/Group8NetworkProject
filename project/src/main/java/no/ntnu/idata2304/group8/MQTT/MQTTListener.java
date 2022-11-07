@@ -1,11 +1,24 @@
 package no.ntnu.idata2304.group8.MQTT;
 
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.net.ConnectException;
+/**
+ * Listens to the MQTT broker and sends the message to another class
+ * as JSON object.
+ * Runs on a separate thread.
+ *
+ * @version 1.0
+ *
+ * @author Oransj
+ */
 
 public class MQTTListener implements Runnable {
 
@@ -19,10 +32,12 @@ public class MQTTListener implements Runnable {
     private int qos = 0;
 
     /**
-     * Constructor for the MQTTListener class
+     * The constructor for the MQTTListener class.
+     * Sets up the client id and topic.
      *
-     * @param username The username for the MQTT broker
+     * @param username Username for the MQTT broker
      */
+    
     public MQTTListener(String username) {
         this.username = username;
         this.password = "public";
@@ -31,6 +46,11 @@ public class MQTTListener implements Runnable {
         topic = "ntnu/ankeret/c220/multisensor/gruppe8/" + "0601holmes"; //TODO: Check if topic needs to include sensor id or if we can subscribe to a level over
     }
 
+    /**
+     * The run method for the MQTTListener class.
+     * Sets up the connection to the MQTT broker and subscribes to the topic.
+     * When a message is received, it is sent to the //TODO: class that handles the message.
+     */
     public void run() {
         try {
             // Displaying the thread that is running
