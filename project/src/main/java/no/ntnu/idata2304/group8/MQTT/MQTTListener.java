@@ -10,6 +10,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.crypto.*;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
+
+import java.util.Base64;
+import java.util.HashMap;
+
 /**
  * Listens to the MQTT broker and sends the message to another class
  * as JSON object.
@@ -31,6 +39,9 @@ public class MQTTListener implements Runnable {
 
     private int qos = 0;
 
+    private PrivateKey privateKey;
+    private PublicKey publicKey;
+
     /**
      * The constructor for the MQTTListener class.
      * Sets up the client id and topic.
@@ -43,7 +54,7 @@ public class MQTTListener implements Runnable {
         this.password = "public";
         this.clientId = "client" + clientNumber;
         clientNumber++;
-        topic = "ntnu/ankeret/c220/multisensor/gruppe8/" + "0601holmes"; //TODO: Check if topic needs to include sensor id or if we can subscribe to a level over
+        topic = "ntnu/ankeret/c220/gruppe8/weathersenor/#";
     }
 
     /**
@@ -53,15 +64,20 @@ public class MQTTListener implements Runnable {
      */
     public void run() {
         try {
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(4096);
+            KeyPair pair = keyGen.generateKeyPair();
+            privateKey = pair.getPrivate();
+            publicKey = pair.getPublic();
             // Displaying the thread that is running
-            System.out.println(
-                    "Thread " + Thread.currentThread().getId()
-                            + " is running");
+            System.out.println("Thread " + Thread.currentThread().getId() + " is running");
             connect();
         }
         catch (MqttException e) {
             // Throwing an exception
             System.out.printf("Exception caught: %s%n", e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -74,6 +90,7 @@ public class MQTTListener implements Runnable {
         options.setAutomaticReconnect(true);
         options.setConnectionTimeout(10);
         options.setKeepAliveInterval(20);
+        HashMap<String, String> sensors = new HashMap<>();
 
         client.setCallback(new MqttCallback() {
 
@@ -81,14 +98,39 @@ public class MQTTListener implements Runnable {
                 System.err.println("connectionLost: " + cause.getMessage());
             }
 
-            public void messageArrived(String topic, MqttMessage message) throws ParseException {
+            public void messageArrived(String topic, MqttMessage message) throws ParseException, NoSuchPaddingException {
                 System.out.println("topic: " + topic);
                 System.out.println("Qos: " + message.getQos());
                 String msg = new String(message.getPayload());
                 System.out.println("message content: " + msg);
-                JSONParser parser = new JSONParser();
-                JSONObject json = (JSONObject) parser.parse(msg);
-                //TODO:Add json object to database
+                String[] stringArray = msg.split("::", 2);
+                msg = stringArray[1];
+                if(!sensors.containsKey(stringArray[0])) {
+                    sensors.put(stringArray[0], msg);
+                    byte[] bytes = publicKey.getEncoded();
+                    String stringKey = Base64.getEncoder().encodeToString(bytes);
+                    MQTTPublisher publisher = new MQTTPublisher();
+                    publisher.publish(stringKey);
+                }
+                else {
+                    try {
+                        Cipher decrypt = Cipher.getInstance("RSA");
+                        decrypt.init(Cipher.DECRYPT_MODE, privateKey);
+                        msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
+                        JSONParser parser = new JSONParser();
+                        JSONObject json = (JSONObject) parser.parse(msg);
+                        //TODO:Add json object to database
+                    } catch (NoSuchAlgorithmException e){
+                        System.out.println("No such algorithm, something went HORRIBLY wrong");
+                        throw new RuntimeException(e);
+                    } catch (InvalidKeyException e) {
+                        System.err.println("Invalid key");
+                        throw new RuntimeException(e);
+                    } catch (IllegalBlockSizeException | BadPaddingException e) {
+                        //TODO: Figure out how to correctly handle these exceptions
+                        throw new RuntimeException(e);
+                    }
+                }
 
             }
 
