@@ -15,35 +15,35 @@ import org.junit.jupiter.api.Test;
  * getDaySummary, getWeatherSummary and getAvgInInterval
  */
 public class WeatherSummaryTest {
-    private List<Float[]> dayData = new ArrayList<>();
+    private List<Double[]> dayData = new ArrayList<>();
     private WeatherSummary ws = new WeatherSummary();
     private DecimalFormat df = new DecimalFormat("0.0#");
 
     private void setUpZero() {
         // {[temperature, precipitation, pressure, light, wind]}
-        dayData.add(new Float[]{0.0f, 0.0f, 0.0f, 0.0f, 0.0f});
-        dayData.add(new Float[]{0.0f, 0.0f, 0.0f, 0.0f, 0.0f});
-        dayData.add(new Float[]{0.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+        dayData.add(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0});
+        dayData.add(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0});
+        dayData.add(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0});
     }
     
     private void setUpPositive() {
-        dayData.add(new Float[]{8.1f, 0.4f, 24.0f, 1000.0f, 1.3f});
-        dayData.add(new Float[]{8.6f, 0.3f, 24.0f, 2000.0f, 1.7f});
-        dayData.add(new Float[]{8.9f, 0.5f, 24.0f, 3000.0f, 2.3f});
+        dayData.add(new Double[]{8.1, 0.4, 24.0, 1000.0, 1.3});
+        dayData.add(new Double[]{8.6, 0.3, 24.0, 2000.0, 1.7});
+        dayData.add(new Double[]{8.9, 0.5, 24.0, 3000.0, 2.3});
     }
     
     private void setUpNegative() {
-        dayData.add(new Float[]{-8.1f, -0.4f, -24.0f, -1000.0f, -1.3f});
-        dayData.add(new Float[]{-8.6f, -0.3f, -24.0f, -2000.0f, -1.7f});
-        dayData.add(new Float[]{-8.9f, -0.5f, -24.0f, -3000.0f, -2.3f});
+        dayData.add(new Double[]{-8.1, -0.4, -24.0, -1000.0, -1.3});
+        dayData.add(new Double[]{-8.6, -0.3, -24.0, -2000.0, -1.7});
+        dayData.add(new Double[]{-8.9, -0.5, -24.0, -3000.0, -2.3});
     }
     
     @Test
     public void testGetDaySummaryWithPositiveValues() {
         setUpPositive();
-        
-        Float[] exp = new Float[]{8.10f, 8.90f, 0.40f, 1.77f};
-        Float[] real = ws.getDaySummary(dayData);
+    
+        Double[] exp = new Double[]{8.10, 8.90, 0.40, 1.77};
+        Double[] real = ws.getDaySummary(dayData);
         for (int i = 0; i < real.length; i++) {
             assertEquals(String.valueOf(exp[i]), df.format(real[i]));
         }
@@ -52,9 +52,9 @@ public class WeatherSummaryTest {
     @Test
     public void testGetDaySummaryWithNegativeValues() {
         setUpNegative();
-        
-        Float[] expected = new Float[]{-8.90f, -8.10f, -0.40f, -1.77f};
-        Float[] actual = ws.getDaySummary(dayData);
+    
+        Double[] expected = new Double[]{-8.90, -8.10, -0.40, -1.77};
+        Double[] actual = ws.getDaySummary(dayData);
         for (int i = 0; i < actual.length; i++) {
             assertEquals(String.valueOf(expected[i]), df.format(actual[i]));
         }
@@ -63,9 +63,9 @@ public class WeatherSummaryTest {
     @Test
     public void testGetDaySummaryWithZeroValues() {
         setUpZero();
-        
-        Float[] expected = new Float[]{0.00f, 0.00f, 0.00f, 0.00f};
-        Float[] actual = ws.getDaySummary(dayData);
+    
+        Double[] expected = new Double[]{0.00, 0.00, 0.00, 0.00};
+        Double[] actual = ws.getDaySummary(dayData);
         for (int i = 0; i < actual.length; i++) {
             assertEquals(String.valueOf(expected[i]), df.format(actual[i]));
         }
@@ -79,9 +79,9 @@ public class WeatherSummaryTest {
     @Test
     public void testGetAvgInIntervalWithPositiveValues() {
         setUpPositive();
-        
-        Float[] expected = new Float[]{8.53f, 0.40f, 24.00f, 2000.00f, 1.77f};
-        Float[] actual = ws.getAverageValuesInInterval(dayData);
+    
+        Double[] expected = new Double[]{8.53, 0.40, 24.00, 2000.00, 1.77};
+        Double[] actual = ws.getAverageValuesInInterval(dayData);
         for (int i = 0; i < actual.length; i++) {
             assertEquals(String.valueOf(expected[i]), df.format(actual[i]));
         }
@@ -90,9 +90,9 @@ public class WeatherSummaryTest {
     @Test
     public void testGetAvgInIntervalWithNegativeValues() {
         setUpNegative();
-        
-        Float[] expected = new Float[]{-8.53f, -0.40f, -24.00f, -2000.00f, -1.77f};
-        Float[] actual = ws.getAverageValuesInInterval(dayData);
+    
+        Double[] expected = new Double[]{-8.53, -0.40, -24.00, -2000.00, -1.77};
+        Double[] actual = ws.getAverageValuesInInterval(dayData);
         for (int i = 0; i < actual.length; i++) {
             assertEquals(String.valueOf(expected[i]), df.format(actual[i]));
         }
@@ -102,8 +102,8 @@ public class WeatherSummaryTest {
     public void testGetAvgInIntervalWithZeroValues() {
         setUpZero();
     
-        Float[] expected = new Float[]{0.00f, 0.00f, 0.00f, 0.00f, 0.00f};
-        Float[] actual = ws.getAverageValuesInInterval(dayData);
+        Double[] expected = new Double[]{0.00, 0.00, 0.00, 0.00, 0.00};
+        Double[] actual = ws.getAverageValuesInInterval(dayData);
         for (int i = 0; i < actual.length; i++) {
             assertEquals(String.valueOf(expected[i]), df.format(actual[i]));
         }
@@ -146,6 +146,6 @@ public class WeatherSummaryTest {
     
     @Test
     public void testGetWeatherSummaryWithNoValues() {
-        assertThrows(IllegalArgumentException.class, () -> ws.getWeatherSummary(new Float[0]));
+        assertThrows(IllegalArgumentException.class, () -> ws.getWeatherSummary(new Double[0]));
     }
 }
