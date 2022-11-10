@@ -45,10 +45,7 @@ public class SQLHandler {
      * @throws ParseException
      */
         //TODO: TAKE A JSON AS PARAMETER THEN READ FROM THAT
-    public void addData() throws IOException, ParseException {
-        String jsonString = "src/main/resources/database/test_json2.json";
-        Object obj = new JSONParser().parse(new FileReader(jsonString));
-        JSONObject jsonObject = (JSONObject) obj;
+    public void addData(JSONObject jsonObject, String database) throws IOException, ParseException {
         for (int i = 1; i <= jsonObject.size(); i++) {
             String read = "Reading" + i;
             try{
@@ -60,7 +57,7 @@ public class SQLHandler {
             JSONObject light = (JSONObject) object.get("Light");
             JSONObject wind = (JSONObject) object.get("Wind");
 
-            String sql = "INSERT INTO Weather(Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO "+database+"(Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
             try (Connection connection = this.connect();
                 PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setLong(1, Long.parseLong(time.get("ms").toString()));
@@ -87,10 +84,10 @@ public class SQLHandler {
      * @Return - ArrayList
      * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
      */
-    public ArrayList selectDate(long dayStart, long dayEnd){
+    public ArrayList selectDate(String database, long dayStart, long dayEnd){
         String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir " +
-                     "FROM Weather " +
-                     "WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
+                     "FROM " +database+
+                     " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
         ArrayList jArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt  = connection.createStatement();
@@ -128,8 +125,8 @@ public class SQLHandler {
      * @Return - List of all values
      * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
      */
-    public ArrayList selectAll(){
-        String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir FROM Weather";
+    public ArrayList selectAll(String database){
+        String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir FROM " +database;
         ArrayList jArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt  = connection.createStatement();
@@ -169,11 +166,8 @@ public class SQLHandler {
     public static void main(String[] args) throws IOException, ParseException {
         SQLHandler app = new SQLHandler();
 
-//
-//        System.out.println(app.selectAll());
-//        System.out.println();
-//        System.out.println(app.selectDate(1666262249302l,1666262249308l));
-        app.addData();
+        System.out.println(app.selectAll("SPIKE"));
+
 
     }
 }
