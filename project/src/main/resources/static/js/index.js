@@ -37,11 +37,11 @@ window.onload = async function() {
 
     addEventListeners();
 }
-//TODO: Fix the date issue (something wrong with the converting) and fix json string to have all the attributes
-async function getDataFromAPI() {
-    const currentDate = new Date(Date.now()).toLocaleDateString('en-US').split('/');
 
-    const year = +currentDate.at(2);
+async function getDataFromAPI() {
+    const currentDate = new Date(Date.now()).toLocaleString('en-US').split('/');
+
+    const year = +currentDate.at(2).split(',').at(0);
     const month = +currentDate.at(0);
 
     const today = +currentDate.at(1);
