@@ -25,7 +25,7 @@ public class ControllerServer {
   public String processJSON(@RequestBody Map<String, Object> payload) {
     Long today = Long.parseLong((String) payload.get("todayMs"));
     Long day4Ms = Long.parseLong((String) payload.get("day4Ms"));
-    ArrayList<String> list = sqlHandler.selectDate(today, day4Ms);
+    ArrayList<String> list = sqlHandler.selectDate(today, day4Ms, "weather");
     Gson gson = new Gson();
     return gson.toJson(list);
   }

@@ -72,7 +72,7 @@ public class MQTTListener implements Runnable {
                 JSONParser parser = new JSONParser();
                 JSONObject json = (JSONObject) parser.parse(msg);
                 SQLHandler sqlHandler = new SQLHandler();
-                sqlHandler.addData(json);
+                sqlHandler.addData(json, "weather");
             }
 
             public void deliveryComplete(IMqttDeliveryToken token) {
