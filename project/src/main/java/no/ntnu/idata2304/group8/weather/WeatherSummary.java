@@ -1,18 +1,11 @@
 package no.ntnu.idata2304.group8.weather;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Get a simplified summary of the weather based on factors like
  * time, temperature, precipitation, atmospheric pressure, and wind.
- *
- * Sources
- * Sun/moon:    https://wolfcrow.com/wp-content/uploads/2013/04/QuantityLightChart.jpg
- *              https://shamay.com/content/images/2022/01/image.png
- * Rain/snow:   http://www.bom.gov.au/climate/data-services/content/faqs-elements.html
- * Thunder:     https://www.weather.gov/source/zhu/ZHU_Training_Page/thunderstorm_stuff/Thunderstorms/thunderstorms.htm
  */
 public class WeatherSummary {
     /**
@@ -23,15 +16,19 @@ public class WeatherSummary {
      * @return  A list of minimum temperature, maximum temperature,
      *          average precipitation and average wind speed.
      */
-    public Float[] getDaySummary(List<Float[]> dayData) {
-        float minTemp = dayData.get(0)[0];
-        float maxTemp = dayData.get(0)[0];
-        float totalPrecip = 0;
-        float totalWind = 0;
-        float avgPrecip;
-        float avgWind;
+    public Double[] getDaySummary(List<Double[]> dayData) {
+        if (dayData == null || dayData.isEmpty()) {
+            throw new IllegalArgumentException("Day data cannot be null or empty.");
+        }
     
-        for (Float[] row : dayData) {
+        double minTemp = dayData.get(0)[0];
+        double maxTemp = dayData.get(0)[0];
+        double totalPrecip = 0;
+        double totalWind = 0;
+        double avgPrecip;
+        double avgWind;
+    
+        for (Double[] row : dayData) {
             if (row[0] < minTemp) {
                 minTemp = row[0];
             } else if (row[0] > maxTemp) {
@@ -45,7 +42,7 @@ public class WeatherSummary {
         avgPrecip = totalPrecip / dayData.size();
         avgWind = totalWind / dayData.size();
         
-        return new Float[]{minTemp, maxTemp, avgPrecip, avgWind};
+        return new Double[]{minTemp, maxTemp, avgPrecip, avgWind};
     }
     
     /**
@@ -54,18 +51,22 @@ public class WeatherSummary {
      * @param dataRows A list of weather data rows for a time interval.
      *                 Each row is in the format {temperature,
      *                 precipitation, pressure, light, wind}.
-     * @return  An array of float values in the format
+     * @return  An array of double values in the format
      *          {temperature, precipitation, pressure, light, wind}.
      */
-    public Float[] getAverageValuesInInterval(List<Float[]> dataRows) {
-        float totalTemp = 0;
-        float totalPrecip = 0;
-        float totalPressure = 0;
-        float totalLight = 0;
-        float totalWind = 0;
+    public Double[] getAverageValuesInInterval(List<Double[]> dataRows) {
+        if (dataRows == null || dataRows.isEmpty()) {
+            throw new IllegalArgumentException("Data rows cannot be null or empty.");
+        }
+    
+        double totalTemp = 0;
+        double totalPrecip = 0;
+        double totalPressure = 0;
+        double totalLight = 0;
+        double totalWind = 0;
         int size = dataRows.size();
         
-        for (Float[] row : dataRows) {
+        for (Double[] row : dataRows) {
             totalTemp += row[0];
             totalPrecip += row[1];
             totalPressure += row[2];
@@ -73,8 +74,8 @@ public class WeatherSummary {
             totalWind += row[4];
         }
         
-        return new Float[]{totalTemp/size, totalPrecip/size,
-            totalPressure/size, totalLight/size, totalWind/size};
+        return new Double[]{totalTemp / size, totalPrecip / size,
+            totalPressure / size, totalLight / size, totalWind / size};
     }
     
     /**
@@ -85,6 +86,10 @@ public class WeatherSummary {
      * @return The type of weather.
      */
     public String getWeatherType(List<Integer> summary) {
+        if (summary == null || summary.isEmpty()) {
+            throw new IllegalArgumentException("Data cannot be null or empty.");
+        }
+        
         // The values in the summary list
         int sunOrMoon = summary.get(0);
         int rainOrSnow = summary.get(1);
@@ -126,18 +131,22 @@ public class WeatherSummary {
      *
      * @param data Array of data in the format
      *             '[temperature, precipitation, pressure, light, wind speed]'.
-     * @return List of the weather summary in the format
-     * '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
+     * @return  List of the weather summary in the format
+     *          '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
      */
-    public List<Integer> getWeatherSummary(Float[] data) {
+    public List<Integer> getWeatherSummary(Double[] data) {
+        if (data == null || data.length == 0) {
+            throw new IllegalArgumentException("Data cannot be null or empty.");
+        }
+        
         List<Integer> weatherSummary = new ArrayList<>();
         
         // The items in the data array
-        float temp = data[0];
-        float precipitation = data[1];
-        float pressure = data[2];
-        float light = data[3];
-        float wind = data[4];
+        double temp = data[0];
+        double precipitation = data[1];
+        double pressure = data[2];
+        double light = data[3];
+        double wind = data[4];
         
         // The summaries
         int sunOrMoon = getSunSummary(light);
@@ -158,7 +167,11 @@ public class WeatherSummary {
      * @param light The amount of light (lux).
      * @return -2 for cloudy night, -1 for moonlight, 0 for clouds, 1 for clouds and sun, 2 for sun.
      */
-    private int getSunSummary(float light) {
+    private int getSunSummary(double light) {
+        if (light < 0) {
+            throw new IllegalArgumentException("Light cannot be below zero.");
+        }
+        
         int sun;
         if (light < 1) {
             sun = -2; // Cloudy night
@@ -166,7 +179,7 @@ public class WeatherSummary {
             sun = -1; // Night
         } else if (light < 1000) {
             sun = 0; // Clouds
-        } else if (light < 10000){
+        } else if (light < 10000) {
             sun = 1; // Sun with clouds
         } else {
             sun = 2; // Sun
@@ -181,7 +194,11 @@ public class WeatherSummary {
      * @param precipitation The amount of precipitation (millimeter).
      * @return -2 for much snow, -1 for snow, 0 for no precipitation, 1 for rain, 2 for much rain.
      */
-    private int getPrecipitationSummary(float temperature, float precipitation) {
+    private int getPrecipitationSummary(double temperature, double precipitation) {
+        if (precipitation < 0) {
+            throw new IllegalArgumentException("Precipitation cannot be below zero.");
+        }
+        
         int rain;
         if (precipitation < 0.2) {
             rain = 0;
@@ -209,7 +226,11 @@ public class WeatherSummary {
      * @param wind The wind speed (m/s).
      * @return 0 for no thunder, 1 for thunder.
      */
-    private int getThunderSummary(float temperature, int precipitationLevel, float wind) {
+    private int getThunderSummary(double temperature, int precipitationLevel, double wind) {
+        if (wind < 0) {
+            throw new IllegalArgumentException("Wind speed cannot be below zero.");
+        }
+        
         int thunder = 0;
         if ((temperature > 13 && precipitationLevel == 1)
         || (precipitationLevel == 2 && wind > 10)) {
@@ -217,6 +238,4 @@ public class WeatherSummary {
         }
         return thunder;
     }
-    
-    // TODO: Implement method to get changes in pressure, for a more complex summary method
 }
