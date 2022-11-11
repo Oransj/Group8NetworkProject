@@ -546,9 +546,7 @@ def main():
             temp_sim = temperature_simulation()
             previous_temp = temp_now
             temp_now = temp_sim.simulate_temperature_today(calculate_temp_add_on(lux_now))
-            pressure_sim = pressure_simulation()
             pressure_now = pressure_sim.simulate_pressure(temp_now, previous_temp)
-            wind_sim = wind_simulation()
             wind_speed_now = wind_sim.calculate_wind_speed(storm)
             wind_direction_now = wind_sim.calculate_wind_direction()
             weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
