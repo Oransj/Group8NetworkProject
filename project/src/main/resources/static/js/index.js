@@ -1,7 +1,10 @@
 window.onload = async function() {
-    const res = await getDataFromAPI()
-    console.log(res.data);
-    const data = res.data;
+    const daysData = await getDataFromAPI()
+    const daysType = (await getWeatherType()).data;
+
+    console.log(daysData.data);
+    console.log(daysType)
+    const data = daysData.data;
 
     const currentDate = new Date(Date.now()).toLocaleString('en-US').split('/');
     const year = +currentDate.at(2).split(',').at(0);
@@ -22,34 +25,71 @@ window.onload = async function() {
 
     insertWeatherCard(todayDate.toLocaleDateString('sv'),
         todayDate.toLocaleString('en-us', {  weekday: 'long' }),
-        "sun",
+        // "sun",
+        daysType.at(0),
         data.at(0).at(0),
         data.at(0).at(1),
         data.at(0).at(2).toFixed(2),
         data.at(0).at(3).toFixed(2));
     insertWeatherCard(day2Date.toLocaleDateString('sv'),
         day2Date.toLocaleString('en-us', {  weekday: 'long' }),
-        "rain-with-sun",
+        // "rain-with-sun",
+        daysType.at(1),
         data.at(1).at(0),
         data.at(1).at(1),
         data.at(1).at(2).toFixed(2),
         data.at(1).at(3).toFixed(2));
     insertWeatherCard(day3Date.toLocaleDateString('sv'),
         day3Date.toLocaleString('en-us', {  weekday: 'long' }),
-        "cloud-with-sun",
+        // "cloud-with-sun",
+        daysType.at(2),
         data.at(2).at(0),
         data.at(2).at(1),
         data.at(2).at(2).toFixed(2),
         data.at(2).at(3).toFixed(2));
     insertWeatherCard(day4Date.toLocaleDateString('sv'),
         day4Date.toLocaleString('en-us', {  weekday: 'long' }),
-        "thunder",
+        // "thunder",
+        daysType.at(3),
         data.at(3).at(0),
         data.at(3).at(1),
         data.at(3).at(2).toFixed(2),
         data.at(3).at(3).toFixed(2));
 
     addEventListeners();
+}
+
+async function getWeatherType() {
+    const currentDate = new Date(Date.now()).toLocaleString('en-US').split('/');
+
+    const year = +currentDate.at(2).split(',').at(0);
+    const month = +currentDate.at(0);
+
+    const today = +currentDate.at(1);
+    const day2 = +currentDate.at(1) + 1;
+    const day3 = +currentDate.at(1) + 2;
+    const day4 = +currentDate.at(1) + 3;
+    const day5 = +currentDate.at(1) + 4;
+
+    const todayMs = new Date(`${month}/${today}/${year}, 00:00:00`).getTime();
+    const day2Ms = new Date(`${month}/${day2}/${year}, 00:00:00`).getTime();
+    const day3Ms = new Date(`${month}/${day3}/${year}, 00:00:00`).getTime();
+    const day4Ms = new Date(`${month}/${day4}/${year}, 00:00:00`).getTime();
+    const day5Ms = new Date(`${month}/${day5}/${year}, 00:00:00`).getTime();
+
+    const frontPageData = await axios({
+        method: 'POST',
+        url: 'http://127.0.0.1:8080/api/getWeatherType',
+        data: [
+            todayMs.toString(),
+            day2Ms.toString(),
+            day3Ms.toString(),
+            day4Ms.toString(),
+            day5Ms.toString()
+        ]
+    });
+
+    return frontPageData;
 }
 
 async function getDataFromAPI() {
@@ -72,7 +112,7 @@ async function getDataFromAPI() {
 
     const frontPageData = await axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8080/api/front',
+        url: 'http://127.0.0.1:8080/api/getData',
         data: [
             todayMs.toString(),
             day2Ms.toString(),
