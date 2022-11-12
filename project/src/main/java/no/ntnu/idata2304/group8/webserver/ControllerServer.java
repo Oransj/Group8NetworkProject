@@ -15,11 +15,17 @@ import java.util.ArrayList;
 @RestController
 public class ControllerServer {
   SQLHandler sqlHandler = new SQLHandler();
+  WeatherSorting weatherSorting = new WeatherSorting();
 
-  @PostMapping(value = "/api/front")
+  @PostMapping(value = "/api/getData")
   public ArrayList<Double[]> getHomePageHandler(@RequestBody String[] days) {
-    WeatherSorting weatherSorting = new WeatherSorting();
      return weatherSorting.getHomePage(days);
+  }
+
+  @PostMapping(value = "/api/getWeatherType")
+  public String[] getWeatherType(@RequestBody String[] days) {
+    WeatherSorting weatherSorting = new WeatherSorting();
+    return weatherSorting.getWeatherType(days);
   }
 
   @GetMapping("/api/front")
