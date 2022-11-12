@@ -2,38 +2,52 @@ window.onload = async function() {
     const res = await getDataFromAPI()
     console.log(res.data);
     const data = res.data;
-    const today = new Date(data.at(0).Time.ms.num);
-    const day2 = new Date(data.at(1).Time.ms.num);
-    const day3 = new Date(data.at(2).Time.ms.num);
-    const day4 = new Date(data.at(3).Time.ms.num);
-    insertWeatherCard(today.toLocaleDateString('sv'),
-        today.toLocaleString('en-us', {  weekday: 'long' }),
+
+    const currentDate = new Date(Date.now()).toLocaleString('en-US').split('/');
+    const year = +currentDate.at(2).split(',').at(0);
+    const month = +currentDate.at(0);
+    const today = +currentDate.at(1);
+    const day2 = +currentDate.at(1) + 1;
+    const day3 = +currentDate.at(1) + 2;
+    const day4 = +currentDate.at(1) + 3;
+    const todayMs = new Date(`${month}/${today}/${year}, 00:00:00`).getTime();
+    const day2Ms = new Date(`${month}/${day2}/${year}, 00:00:00`).getTime();
+    const day3Ms = new Date(`${month}/${day3}/${year}, 00:00:00`).getTime();
+    const day4Ms = new Date(`${month}/${day4}/${year}, 00:00:00`).getTime();
+
+    const todayDate = new Date(todayMs);
+    const day2Date = new Date(day2Ms);
+    const day3Date = new Date(day3Ms);
+    const day4Date = new Date(day4Ms);
+
+    insertWeatherCard(todayDate.toLocaleDateString('sv'),
+        todayDate.toLocaleString('en-us', {  weekday: 'long' }),
         "sun",
-        20,
-        data.at(0).Temperature.celsius.num,
-        data.at(0).Precipitation.mm.num,
-        data.at(0).Wind.W_speed.num);
-    insertWeatherCard(day2.toLocaleDateString('sv'),
-        day2.toLocaleString('en-us', {  weekday: 'long' }),
+        data.at(0).at(0),
+        data.at(0).at(1),
+        data.at(0).at(2).toFixed(2),
+        data.at(0).at(3).toFixed(2));
+    insertWeatherCard(day2Date.toLocaleDateString('sv'),
+        day2Date.toLocaleString('en-us', {  weekday: 'long' }),
         "rain-with-sun",
-        "16",
-        data.at(1).Temperature.celsius.num,
-        data.at(1).Precipitation.mm.num,
-        data.at(1).Wind.W_speed.num);
-    insertWeatherCard(day3.toLocaleDateString('sv'),
-        day3.toLocaleString('en-us', {  weekday: 'long' }),
+        data.at(1).at(0),
+        data.at(1).at(1),
+        data.at(1).at(2).toFixed(2),
+        data.at(1).at(3).toFixed(2));
+    insertWeatherCard(day3Date.toLocaleDateString('sv'),
+        day3Date.toLocaleString('en-us', {  weekday: 'long' }),
         "cloud-with-sun",
-        "26",
-        data.at(2).Temperature.celsius.num,
-        data.at(2).Precipitation.mm.num,
-        data.at(2).Wind.W_speed.num);
-    insertWeatherCard(day4.toLocaleDateString('sv'),
-        day4.toLocaleString('en-us', {  weekday: 'long' }),
+        data.at(2).at(0),
+        data.at(2).at(1),
+        data.at(2).at(2).toFixed(2),
+        data.at(2).at(3).toFixed(2));
+    insertWeatherCard(day4Date.toLocaleDateString('sv'),
+        day4Date.toLocaleString('en-us', {  weekday: 'long' }),
         "thunder",
-        "21",
-        data.at(3).Temperature.celsius.num,
-        data.at(3).Precipitation.mm.num,
-        data.at(3).Wind.W_speed.num);
+        data.at(3).at(0),
+        data.at(3).at(1),
+        data.at(3).at(2).toFixed(2),
+        data.at(3).at(3).toFixed(2));
 
     addEventListeners();
 }
