@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import org.json.simple.JSONObject;
@@ -75,7 +76,7 @@ public class SQLHandler {
      * @Return - ArrayList
      * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
      */
-    public ArrayList selectDate(Long dayStart, Long dayEnd, String database){
+    public ArrayList selectAllBetween(Long dayStart, Long dayEnd, String database){
         String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir " +
                      "FROM " +database+
                      " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
@@ -107,6 +108,32 @@ public class SQLHandler {
             System.out.println(e.getMessage());
         }
         return jArray;
+    }
+
+    public List<Double[]> selectWeatherDataBetween(Long dayStart, Long dayEnd, String database){
+        String sql = "SELECT Temprature, Precipitation, Air_pressure, Light, Wind_Speed " +
+                "FROM " +database+
+                " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
+        List<Double[]> dataList = new ArrayList();
+
+        try (Connection connection = this.connect();
+             Statement stmt  = connection.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                Double[] data = new Double[]{rs.getDouble("Temprature"),
+                        rs.getDouble("Precipitation"),
+                        rs.getDouble("Air_pressure"),
+                        rs.getDouble("Light"),
+                        rs.getDouble("Wind_Speed")
+                };
+                dataList.add(data);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return dataList;
     }
 
 
