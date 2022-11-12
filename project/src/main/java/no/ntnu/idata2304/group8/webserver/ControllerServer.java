@@ -1,33 +1,25 @@
 package no.ntnu.idata2304.group8.webserver;
 
 
-import com.google.gson.Gson;
 import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
-import no.ntnu.idata2304.group8.MQTT.MQTTListener;
 import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
-import com.workday.insights.timeseries.arima.Arima;
-import com.workday.insights.timeseries.arima.struct.ForecastResult;
+
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Map;
 
 @RestController
 public class ControllerServer {
   SQLHandler sqlHandler = new SQLHandler();
 
   @PostMapping(value = "/api/front")
-  public String processJSON(@RequestBody Map<String, Object> payload) {
-    Long today = Long.parseLong((String) payload.get("todayMs"));
-    Long day4Ms = Long.parseLong((String) payload.get("day4Ms"));
-    ArrayList<String> list = sqlHandler.selectDate(today, day4Ms, "weather");
-    Gson gson = new Gson();
-    return gson.toJson(list);
+  public ArrayList<Double[]> getHomePageHandler(@RequestBody String[] days) {
+    WeatherSorting weatherSorting = new WeatherSorting();
+     return weatherSorting.getHomePage(days);
   }
 
   @GetMapping("/api/front")
