@@ -114,17 +114,17 @@ public class WeatherSummaryTest {
         assertThrows(IllegalArgumentException.class, () -> ws.getAverageValuesInInterval(dayData));
     }
     
-    @Test
-    public void testGetWeatherSummaryWithPositiveValues() {
-        setUpPositive();
-        
-        List<Integer> expected = Arrays.asList(1, 1, 0);
-        List<Integer> actual = ws.getWeatherSummary(dayData.get(0));
-        
-        for (int i = 0; i < actual.size(); i++) {
-            assertEquals(expected.get(i), actual.get(i));
-        }
-    }
+//    @Test
+//    public void testGetWeatherSummaryWithPositiveValues() {
+//        setUpPositive();
+//
+//        List<Integer> expected = Arrays.asList(1, 1, 0);
+//        List<Integer> actual = ws.getWeatherSummary(dayData.get(0));
+//
+//        for (int i = 0; i < actual.size(); i++) {
+//            assertEquals(expected.get(i), actual.get(i));
+//        }
+//    }
     
     @Test
     public void testGetWeatherSummaryWithNegativeValues() {
@@ -132,17 +132,17 @@ public class WeatherSummaryTest {
         assertThrows(IllegalArgumentException.class, () -> ws.getWeatherSummary(dayData.get(0)));
     }
     
-    @Test
-    public void testGetWeatherSummaryWithZeroValues() {
-        setUpZero();
-        
-        List<Integer> expected = Arrays.asList(-2, 0, 0);
-        List<Integer> actual = ws.getWeatherSummary(dayData.get(0));
-        
-        for (int i = 0; i < actual.size(); i++) {
-            assertEquals(expected.get(i), actual.get(i));
-        }
-    }
+//    @Test
+//    public void testGetWeatherSummaryWithZeroValues() {
+//        setUpZero();
+//
+//        List<Integer> expected = Arrays.asList(-2, 0, 0);
+//        List<Integer> actual = ws.getWeatherSummary(dayData.get(0));
+//
+//        for (int i = 0; i < actual.size(); i++) {
+//            assertEquals(expected.get(i), actual.get(i));
+//        }
+//    }
     
     @Test
     public void testGetWeatherSummaryWithNoValues() {

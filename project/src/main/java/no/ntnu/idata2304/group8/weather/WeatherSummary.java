@@ -134,7 +134,7 @@ public class WeatherSummary {
      * @return  List of the weather summary in the format
      *          '{sunOrMoon, rainOrSnow, thunder}', where each variable has numerical values.
      */
-    public List<Integer> getWeatherSummary(Double[] data) {
+    public String getWeatherSummary(Double[] data) {
         if (data == null || data.length == 0) {
             throw new IllegalArgumentException("Data cannot be null or empty.");
         }
@@ -158,7 +158,7 @@ public class WeatherSummary {
         weatherSummary.add(rainOrSnow);
         weatherSummary.add(thunder);
         
-        return weatherSummary;
+        return getWeatherType(weatherSummary);
     }
     
     /**
