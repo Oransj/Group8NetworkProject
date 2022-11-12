@@ -48,21 +48,24 @@ async function getDataFromAPI() {
     const day2 = +currentDate.at(1) + 1;
     const day3 = +currentDate.at(1) + 2;
     const day4 = +currentDate.at(1) + 3;
+    const day5 = +currentDate.at(1) + 4;
 
     const todayMs = new Date(`${month}/${today}/${year}, 00:00:00`).getTime();
     const day2Ms = new Date(`${month}/${day2}/${year}, 00:00:00`).getTime();
     const day3Ms = new Date(`${month}/${day3}/${year}, 00:00:00`).getTime();
     const day4Ms = new Date(`${month}/${day4}/${year}, 00:00:00`).getTime();
+    const day5Ms = new Date(`${month}/${day5}/${year}, 00:00:00`).getTime();
 
     const frontPageData = await axios({
         method: 'POST',
         url: 'http://127.0.0.1:8080/api/front',
-        data: {
-            todayMs: todayMs.toString(),
-            day2Ms,
-            day3Ms,
-            day4Ms: day4Ms.toString(),
-        }
+        data: [
+            todayMs.toString(),
+            day2Ms.toString(),
+            day3Ms.toString(),
+            day4Ms.toString(),
+            day5Ms.toString()
+        ]
     });
 
     return frontPageData;
