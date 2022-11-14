@@ -232,8 +232,7 @@ public class WeatherSummary {
         }
         
         int thunder = 0;
-        if ((temperature > 13 && precipitationLevel == 1)
-        || (precipitationLevel == 2 && wind > 10)) {
+        if ((temperature > 15 && precipitationLevel == 2 && wind > 15)) {
             thunder = 1;
         }
         return thunder;
