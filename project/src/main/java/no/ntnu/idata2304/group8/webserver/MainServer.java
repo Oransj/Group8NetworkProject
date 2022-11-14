@@ -22,12 +22,12 @@ public class MainServer {
     thread.start();
   }
 
-  private void fillDummyData() throws ParseException {
+  private static void fillDummyData() throws ParseException {
     SQLHandler sqlHandler = new SQLHandler();
-    // The day 00:00 in ms
-    // will be filled with data every 15min until 00:00 excluded
+    // The day at 00:00 in ms - 900000 ms
+    // the DB will be filled with data every 15min until 00:00 excluded
     Long num = 1668379500000L;
-    for (int i = 0; i < 96; i++) {
+    for (int i = 0; i < 384; i++) {
       num += 900000;
       ThreadLocalRandom random = ThreadLocalRandom.current();
       JsonObject json = Json.createObjectBuilder()
