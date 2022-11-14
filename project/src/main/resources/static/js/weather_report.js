@@ -2,6 +2,7 @@ window.onload = function () {
   /* Set the weekday and date as undertitle */
   let date = parseClickedDate();
   setForecastDayUndertitle(date);
+  getDayRapport();
 
   /* Add table rows */
   insertForecastTableRow("00:00", "moon", "2", "0.4", "1.5", 90);
@@ -28,6 +29,73 @@ window.onload = function () {
   insertForecastTableRow("21:00", "sun", "9", "0.2", "2.0", 60);
   insertForecastTableRow("22:00", "sun", "9", "0.2", "2.0", 60);
   insertForecastTableRow("23:00", "sun", "9", "0.2", "2.0", 60);
+
+  async function getDayRapport() {
+    const year = +date.getFullYear();
+    const month = +date.getMonth() + 1;
+
+    const today = +date.getDate();
+
+    const hour00 = new Date(`${month}/${today}/${year}, 00:00:00`).getTime();
+    const hour01 = new Date(`${month}/${today}/${year}, 01:00:00`).getTime();
+    const hour02 = new Date(`${month}/${today}/${year}, 02:00:00`).getTime();
+    const hour03 = new Date(`${month}/${today}/${year}, 03:00:00`).getTime();
+    const hour04 = new Date(`${month}/${today}/${year}, 04:00:00`).getTime();
+    const hour05 = new Date(`${month}/${today}/${year}, 05:00:00`).getTime();
+    const hour06 = new Date(`${month}/${today}/${year}, 06:00:00`).getTime();
+    const hour07 = new Date(`${month}/${today}/${year}, 07:00:00`).getTime();
+    const hour08 = new Date(`${month}/${today}/${year}, 08:00:00`).getTime();
+    const hour09 = new Date(`${month}/${today}/${year}, 09:00:00`).getTime();
+    const hour10 = new Date(`${month}/${today}/${year}, 10:00:00`).getTime();
+    const hour11 = new Date(`${month}/${today}/${year}, 11:00:00`).getTime();
+    const hour12 = new Date(`${month}/${today}/${year}, 12:00:00`).getTime();
+    const hour13 = new Date(`${month}/${today}/${year}, 13:00:00`).getTime();
+    const hour14 = new Date(`${month}/${today}/${year}, 14:00:00`).getTime();
+    const hour15 = new Date(`${month}/${today}/${year}, 15:00:00`).getTime();
+    const hour16 = new Date(`${month}/${today}/${year}, 16:00:00`).getTime();
+    const hour17 = new Date(`${month}/${today}/${year}, 17:00:00`).getTime();
+    const hour18 = new Date(`${month}/${today}/${year}, 18:00:00`).getTime();
+    const hour19 = new Date(`${month}/${today}/${year}, 19:00:00`).getTime();
+    const hour20 = new Date(`${month}/${today}/${year}, 20:00:00`).getTime();
+    const hour21 = new Date(`${month}/${today}/${year}, 21:00:00`).getTime();
+    const hour22 = new Date(`${month}/${today}/${year}, 22:00:00`).getTime();
+    const hour23 = new Date(`${month}/${today}/${year}, 23:00:00`).getTime();
+    const hour24 = new Date(`${month}/${today}/${year}, 24:00:00`).getTime();
+
+    const dayRapport = await axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:8080/api/getDayRapport',
+      data: [
+        hour00.toString(),
+        hour01.toString(),
+        hour02.toString(),
+        hour03.toString(),
+        hour04.toString(),
+        hour05.toString(),
+        hour06.toString(),
+        hour07.toString(),
+        hour08.toString(),
+        hour09.toString(),
+        hour10.toString(),
+        hour11.toString(),
+        hour12.toString(),
+        hour13.toString(),
+        hour14.toString(),
+        hour15.toString(),
+        hour16.toString(),
+        hour17.toString(),
+        hour18.toString(),
+        hour19.toString(),
+        hour20.toString(),
+        hour21.toString(),
+        hour22.toString(),
+        hour23.toString(),
+        hour24.toString(),
+      ]
+    });
+
+    return dayRapport;
+  }
 
   /* Render the graphs */
   let temp = [
