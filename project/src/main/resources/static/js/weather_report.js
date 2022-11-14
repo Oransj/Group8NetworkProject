@@ -1,34 +1,36 @@
-window.onload = function () {
+window.onload = async function () {
   /* Set the weekday and date as undertitle */
   let date = parseClickedDate();
   setForecastDayUndertitle(date);
-  getDayRapport();
+  const dayRapport = (await getDayRapport()).data;
+
+  console.log(dayRapport)
 
   /* Add table rows */
-  insertForecastTableRow("00:00", "moon", "2", "0.4", "1.5", 90);
-  insertForecastTableRow("01:00", "moon", "2", "0.4", "2.0", 85);
-  insertForecastTableRow("02:00", "moon", "2", "0.3", "1.8", 70);
-  insertForecastTableRow("03:00", "moon", "3", "0.3", "2.4", 60);
-  insertForecastTableRow("04:00", "cloud-with-moon", "4", "0.2", "2.0", 60);
-  insertForecastTableRow("05:00", "cloud", "4", "0.2", "2.0", 60);
-  insertForecastTableRow("06:00", "cloud", "4", "0.2", "2.0", 60);
-  insertForecastTableRow("07:00", "cloud", "4", "0.2", "2.0", 60);
-  insertForecastTableRow("08:00", "cloud-with-sun", "5", "0.2", "2.0", 60);
-  insertForecastTableRow("09:00", "cloud-with-sun", "5", "0.2", "2.0", 60);
-  insertForecastTableRow("10:00", "cloud-with-sun", "6", "0.2", "2.0", 60);
-  insertForecastTableRow("11:00", "cloud-with-sun", "7", "0.2", "2.0", 60);
-  insertForecastTableRow("12:00", "cloud-with-sun", "8", "0.2", "2.0", 60);
-  insertForecastTableRow("13:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("14:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("15:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("16:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("17:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("18:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("19:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("20:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("21:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("22:00", "sun", "9", "0.2", "2.0", 60);
-  insertForecastTableRow("23:00", "sun", "9", "0.2", "2.0", 60);
+  insertForecastTableRow("00:00", "moon", dayRapport.at(0).at(0), dayRapport.at(0).at(1), dayRapport.at(0).at(2), dayRapport.at(0).at(3));
+  insertForecastTableRow("01:00", "moon", dayRapport.at(1).at(0), dayRapport.at(1).at(1), dayRapport.at(1).at(2), dayRapport.at(1).at(3));
+  insertForecastTableRow("02:00", "moon", dayRapport.at(2).at(0), dayRapport.at(2).at(1), dayRapport.at(2).at(2), dayRapport.at(2).at(3));
+  insertForecastTableRow("03:00", "moon", dayRapport.at(3).at(0), dayRapport.at(3).at(1), dayRapport.at(3).at(2), dayRapport.at(3).at(3));
+  insertForecastTableRow("04:00", "cloud-with-moon", dayRapport.at(4).at(0), dayRapport.at(4).at(1), dayRapport.at(4).at(2), dayRapport.at(4).at(3));
+  insertForecastTableRow("05:00", "cloud", dayRapport.at(5).at(0), dayRapport.at(5).at(1), dayRapport.at(5).at(2), dayRapport.at(5).at(3));
+  insertForecastTableRow("06:00", "cloud", dayRapport.at(6).at(0), dayRapport.at(6).at(1), dayRapport.at(6).at(2), dayRapport.at(6).at(3));
+  insertForecastTableRow("07:00", "cloud", dayRapport.at(7).at(0), dayRapport.at(7).at(1), dayRapport.at(7).at(2), dayRapport.at(7).at(3));
+  insertForecastTableRow("08:00", "cloud-with-sun", dayRapport.at(8).at(0), dayRapport.at(8).at(1), dayRapport.at(8).at(2), dayRapport.at(8).at(3));
+  insertForecastTableRow("09:00", "cloud-with-sun", dayRapport.at(9).at(0), dayRapport.at(9).at(1), dayRapport.at(9).at(2), dayRapport.at(9).at(3));
+  insertForecastTableRow("10:00", "cloud-with-sun", dayRapport.at(10).at(0), dayRapport.at(10).at(1), dayRapport.at(10).at(2), dayRapport.at(10).at(3));
+  insertForecastTableRow("11:00", "cloud-with-sun", dayRapport.at(11).at(0), dayRapport.at(11).at(1), dayRapport.at(11).at(2), dayRapport.at(11).at(3));
+  insertForecastTableRow("12:00", "cloud-with-sun", dayRapport.at(12).at(0), dayRapport.at(12).at(1), dayRapport.at(12).at(2), dayRapport.at(12).at(3));
+  insertForecastTableRow("13:00", "sun", dayRapport.at(13).at(0), dayRapport.at(13).at(1), dayRapport.at(13).at(2), dayRapport.at(13).at(3));
+  insertForecastTableRow("14:00", "sun", dayRapport.at(14).at(0), dayRapport.at(14).at(1), dayRapport.at(14).at(2), dayRapport.at(14).at(3));
+  insertForecastTableRow("15:00", "sun", dayRapport.at(15).at(0), dayRapport.at(15).at(1), dayRapport.at(15).at(2), dayRapport.at(15).at(3));
+  insertForecastTableRow("16:00", "sun", dayRapport.at(16).at(0), dayRapport.at(16).at(1), dayRapport.at(16).at(2), dayRapport.at(16).at(3));
+  insertForecastTableRow("17:00", "sun", dayRapport.at(17).at(0), dayRapport.at(17).at(1), dayRapport.at(17).at(2), dayRapport.at(17).at(3));
+  insertForecastTableRow("18:00", "sun", dayRapport.at(18).at(0), dayRapport.at(18).at(1), dayRapport.at(18).at(2), dayRapport.at(18).at(3));
+  insertForecastTableRow("19:00", "sun", dayRapport.at(19).at(0), dayRapport.at(19).at(1), dayRapport.at(19).at(2), dayRapport.at(19).at(3));
+  insertForecastTableRow("20:00", "sun", dayRapport.at(20).at(0), dayRapport.at(20).at(1), dayRapport.at(20).at(2), dayRapport.at(20).at(3));
+  insertForecastTableRow("21:00", "sun", dayRapport.at(21).at(0), dayRapport.at(21).at(1), dayRapport.at(21).at(2), dayRapport.at(21).at(3));
+  insertForecastTableRow("22:00", "sun", dayRapport.at(22).at(0), dayRapport.at(22).at(1), dayRapport.at(22).at(2), dayRapport.at(22).at(3));
+  insertForecastTableRow("23:00", "sun", dayRapport.at(23).at(0), dayRapport.at(23).at(1), dayRapport.at(23).at(2), dayRapport.at(23).at(3));
 
   async function getDayRapport() {
     const year = +date.getFullYear();
@@ -99,59 +101,59 @@ window.onload = function () {
 
   /* Render the graphs */
   let temp = [
-    { x: "00:00", y: 2.0 },
-    { x: "01:00", y: 2.0 },
-    { x: "02:00", y: 2.0 },
-    { x: "03:00", y: 3.0 },
-    { x: "04:00", y: 4.0 },
-    { x: "05:00", y: 4.0 },
-    { x: "06:00", y: 4.0 },
-    { x: "07:00", y: 4.0 },
-    { x: "08:00", y: 5.0 },
-    { x: "09:00", y: 5.0 },
-    { x: "10:00", y: 6.0 },
-    { x: "11:00", y: 7.0 },
-    { x: "12:00", y: 8.0 },
-    { x: "13:00", y: 9.0 },
-    { x: "14:00", y: 9.0 },
-    { x: "15:00", y: 9.0 },
-    { x: "16:00", y: 9.0 },
-    { x: "17:00", y: 9.0 },
-    { x: "18:00", y: 9.0 },
-    { x: "19:00", y: 9.0 },
-    { x: "20:00", y: 9.0 },
-    { x: "21:00", y: 9.0 },
-    { x: "22:00", y: 9.0 },
-    { x: "23:00", y: 9.0 }
+    { x: "00:00", y: dayRapport.at(0).at(0) },
+    { x: "01:00", y: dayRapport.at(1).at(0) },
+    { x: "02:00", y: dayRapport.at(2).at(0) },
+    { x: "03:00", y: dayRapport.at(3).at(0) },
+    { x: "04:00", y: dayRapport.at(4).at(0) },
+    { x: "05:00", y: dayRapport.at(5).at(0) },
+    { x: "06:00", y: dayRapport.at(6).at(0) },
+    { x: "07:00", y: dayRapport.at(7).at(0) },
+    { x: "08:00", y: dayRapport.at(8).at(0) },
+    { x: "09:00", y: dayRapport.at(9).at(0) },
+    { x: "10:00", y: dayRapport.at(10).at(0) },
+    { x: "11:00", y: dayRapport.at(11).at(0) },
+    { x: "12:00", y: dayRapport.at(12).at(0) },
+    { x: "13:00", y: dayRapport.at(13).at(0) },
+    { x: "14:00", y: dayRapport.at(14).at(0) },
+    { x: "15:00", y: dayRapport.at(15).at(0) },
+    { x: "16:00", y: dayRapport.at(16).at(0) },
+    { x: "17:00", y: dayRapport.at(17).at(0) },
+    { x: "18:00", y: dayRapport.at(18).at(0) },
+    { x: "19:00", y: dayRapport.at(19).at(0) },
+    { x: "20:00", y: dayRapport.at(20).at(0) },
+    { x: "21:00", y: dayRapport.at(21).at(0) },
+    { x: "22:00", y: dayRapport.at(22).at(0) },
+    { x: "23:00", y: dayRapport.at(23).at(0) }
   ];
   let tempSeries = arrayToSeries('Temperature', temp);
   renderTemperatureChart(tempSeries);
 
   let precip = [
-    { x: "00:00", y: 0.4 },
-    { x: "01:00", y: 0.4 },
-    { x: "02:00", y: 0.3 },
-    { x: "03:00", y: 0.3 },
-    { x: "04:00", y: 0.2 },
-    { x: "05:00", y: 0.2 },
-    { x: "06:00", y: 0.2 },
-    { x: "07:00", y: 0.2 },
-    { x: "08:00", y: 0.2 },
-    { x: "09:00", y: 0.2 },
-    { x: "10:00", y: 0.2 },
-    { x: "11:00", y: 0.2 },
-    { x: "12:00", y: 0.2 },
-    { x: "13:00", y: 0.2 },
-    { x: "14:00", y: 0.2 },
-    { x: "15:00", y: 0.2 },
-    { x: "16:00", y: 0.2 },
-    { x: "17:00", y: 0.2 },
-    { x: "18:00", y: 0.2 },
-    { x: "19:00", y: 0.2 },
-    { x: "20:00", y: 0.2 },
-    { x: "21:00", y: 0.2 },
-    { x: "22:00", y: 0.2 },
-    { x: "23:00", y: 0.2 }
+    { x: "00:00", y: dayRapport.at(0).at(1) },
+    { x: "01:00", y: dayRapport.at(1).at(1) },
+    { x: "02:00", y: dayRapport.at(2).at(1) },
+    { x: "03:00", y: dayRapport.at(3).at(1) },
+    { x: "04:00", y: dayRapport.at(4).at(1) },
+    { x: "05:00", y: dayRapport.at(5).at(1) },
+    { x: "06:00", y: dayRapport.at(6).at(1) },
+    { x: "07:00", y: dayRapport.at(7).at(1) },
+    { x: "08:00", y: dayRapport.at(8).at(1) },
+    { x: "09:00", y: dayRapport.at(9).at(1) },
+    { x: "10:00", y: dayRapport.at(10).at(1) },
+    { x: "11:00", y: dayRapport.at(11).at(1) },
+    { x: "12:00", y: dayRapport.at(12).at(1) },
+    { x: "13:00", y: dayRapport.at(13).at(1) },
+    { x: "14:00", y: dayRapport.at(14).at(1) },
+    { x: "15:00", y: dayRapport.at(15).at(1) },
+    { x: "16:00", y: dayRapport.at(16).at(1) },
+    { x: "17:00", y: dayRapport.at(17).at(1) },
+    { x: "18:00", y: dayRapport.at(18).at(1) },
+    { x: "19:00", y: dayRapport.at(19).at(1) },
+    { x: "20:00", y: dayRapport.at(20).at(1) },
+    { x: "21:00", y: dayRapport.at(21).at(1) },
+    { x: "22:00", y: dayRapport.at(22).at(1) },
+    { x: "23:00", y: dayRapport.at(23).at(1) }
   ];
   let precipSeries = arrayToSeries('Precipation', precip);
   renderPrecipitationChart(precipSeries);
