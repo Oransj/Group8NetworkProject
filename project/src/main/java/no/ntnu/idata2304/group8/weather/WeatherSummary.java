@@ -77,6 +77,37 @@ public class WeatherSummary {
         return new Double[]{totalTemp / size, totalPrecip / size,
             totalPressure / size, totalLight / size, totalWind / size};
     }
+
+    /**
+     * Get list of average values from a list of rows with values.
+     *
+     * @param dataRows A list of weather data rows for a time interval.
+     *                 Each row is in the format {temperature,
+     *                 precipitation, windSpeed, windDirection}.
+     * @return  An array of double values in the format
+     *          {temperature, precipitation, windSpeed, windDirection}.
+     */
+    public Double[] getAverageValuesIDayRapport(List<Double[]> dataRows) {
+        if (dataRows == null || dataRows.isEmpty()) {
+            throw new IllegalArgumentException("Data rows cannot be null or empty.");
+        }
+
+        double totalTemp = 0;
+        double totalPrecip = 0;
+        double totalWindSpeed = 0;
+        double totalWindDirection= 0;
+        int size = dataRows.size();
+
+        for (Double[] row : dataRows) {
+            totalTemp += row[0];
+            totalPrecip += row[1];
+            totalWindSpeed += row[2];
+            totalWindDirection += row[3];
+        }
+
+        return new Double[]{totalTemp / size, totalPrecip / size,
+                totalWindSpeed / size, totalWindDirection / size};
+    }
     
     /**
      * Take numerical values representing weather types and convert it to a single text value.
