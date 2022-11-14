@@ -136,6 +136,32 @@ public class SQLHandler {
         return dataList;
     }
 
+    public List<Double[]> selectWeatherRapportBetween(Long dayStart, Long dayEnd, String database){
+        String sql = "SELECT Temprature, Precipitation, Wind_Speed, Wind_dir " +
+                "FROM " +database+
+                " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
+        List<Double[]> dataList = new ArrayList();
+
+        try (Connection connection = this.connect();
+             Statement stmt  = connection.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                Double[] data = new Double[]{rs.getDouble("Temprature"),
+                        rs.getDouble("Precipitation"),
+                        rs.getDouble("Air_pressure"),
+                        rs.getDouble("Light"),
+                        rs.getDouble("Wind_Speed")
+                };
+                dataList.add(data);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return dataList;
+    }
+
 
 
     /**
