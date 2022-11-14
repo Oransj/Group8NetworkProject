@@ -24,8 +24,12 @@ public class ControllerServer {
 
   @PostMapping(value = "/api/getWeatherType")
   public String[] getWeatherType(@RequestBody String[] days) {
-    WeatherSorting weatherSorting = new WeatherSorting();
     return weatherSorting.getWeatherType(days);
+  }
+
+  @PostMapping(value = "/api/getDayRapport")
+  public ArrayList<Double[]> getDayRepport(@RequestBody String[] hours) {
+    return weatherSorting.getDayRapport(hours);
   }
 
   @GetMapping("/api/front")
