@@ -2,35 +2,37 @@ window.onload = async function () {
   /* Set the weekday and date as undertitle */
   let date = parseClickedDate();
   setForecastDayUndertitle(date);
-  const dayRapport = (await getDayRapport()).data;
+  const dayRapport = (await getDayRapport()).at(0).data;
+  const dayRapportType = (await getDayRapport()).at(1).data;
 
   console.log(dayRapport)
+  console.log(dayRapportType)
 
   /* Add table rows */
-  insertForecastTableRow("00:00", "moon", dayRapport.at(0).at(0), dayRapport.at(0).at(1), dayRapport.at(0).at(2), dayRapport.at(0).at(3));
-  insertForecastTableRow("01:00", "moon", dayRapport.at(1).at(0), dayRapport.at(1).at(1), dayRapport.at(1).at(2), dayRapport.at(1).at(3));
-  insertForecastTableRow("02:00", "moon", dayRapport.at(2).at(0), dayRapport.at(2).at(1), dayRapport.at(2).at(2), dayRapport.at(2).at(3));
-  insertForecastTableRow("03:00", "moon", dayRapport.at(3).at(0), dayRapport.at(3).at(1), dayRapport.at(3).at(2), dayRapport.at(3).at(3));
-  insertForecastTableRow("04:00", "cloud-with-moon", dayRapport.at(4).at(0), dayRapport.at(4).at(1), dayRapport.at(4).at(2), dayRapport.at(4).at(3));
-  insertForecastTableRow("05:00", "cloud", dayRapport.at(5).at(0), dayRapport.at(5).at(1), dayRapport.at(5).at(2), dayRapport.at(5).at(3));
-  insertForecastTableRow("06:00", "cloud", dayRapport.at(6).at(0), dayRapport.at(6).at(1), dayRapport.at(6).at(2), dayRapport.at(6).at(3));
-  insertForecastTableRow("07:00", "cloud", dayRapport.at(7).at(0), dayRapport.at(7).at(1), dayRapport.at(7).at(2), dayRapport.at(7).at(3));
-  insertForecastTableRow("08:00", "cloud-with-sun", dayRapport.at(8).at(0), dayRapport.at(8).at(1), dayRapport.at(8).at(2), dayRapport.at(8).at(3));
-  insertForecastTableRow("09:00", "cloud-with-sun", dayRapport.at(9).at(0), dayRapport.at(9).at(1), dayRapport.at(9).at(2), dayRapport.at(9).at(3));
-  insertForecastTableRow("10:00", "cloud-with-sun", dayRapport.at(10).at(0), dayRapport.at(10).at(1), dayRapport.at(10).at(2), dayRapport.at(10).at(3));
-  insertForecastTableRow("11:00", "cloud-with-sun", dayRapport.at(11).at(0), dayRapport.at(11).at(1), dayRapport.at(11).at(2), dayRapport.at(11).at(3));
-  insertForecastTableRow("12:00", "cloud-with-sun", dayRapport.at(12).at(0), dayRapport.at(12).at(1), dayRapport.at(12).at(2), dayRapport.at(12).at(3));
-  insertForecastTableRow("13:00", "sun", dayRapport.at(13).at(0), dayRapport.at(13).at(1), dayRapport.at(13).at(2), dayRapport.at(13).at(3));
-  insertForecastTableRow("14:00", "sun", dayRapport.at(14).at(0), dayRapport.at(14).at(1), dayRapport.at(14).at(2), dayRapport.at(14).at(3));
-  insertForecastTableRow("15:00", "sun", dayRapport.at(15).at(0), dayRapport.at(15).at(1), dayRapport.at(15).at(2), dayRapport.at(15).at(3));
-  insertForecastTableRow("16:00", "sun", dayRapport.at(16).at(0), dayRapport.at(16).at(1), dayRapport.at(16).at(2), dayRapport.at(16).at(3));
-  insertForecastTableRow("17:00", "sun", dayRapport.at(17).at(0), dayRapport.at(17).at(1), dayRapport.at(17).at(2), dayRapport.at(17).at(3));
-  insertForecastTableRow("18:00", "sun", dayRapport.at(18).at(0), dayRapport.at(18).at(1), dayRapport.at(18).at(2), dayRapport.at(18).at(3));
-  insertForecastTableRow("19:00", "sun", dayRapport.at(19).at(0), dayRapport.at(19).at(1), dayRapport.at(19).at(2), dayRapport.at(19).at(3));
-  insertForecastTableRow("20:00", "sun", dayRapport.at(20).at(0), dayRapport.at(20).at(1), dayRapport.at(20).at(2), dayRapport.at(20).at(3));
-  insertForecastTableRow("21:00", "sun", dayRapport.at(21).at(0), dayRapport.at(21).at(1), dayRapport.at(21).at(2), dayRapport.at(21).at(3));
-  insertForecastTableRow("22:00", "sun", dayRapport.at(22).at(0), dayRapport.at(22).at(1), dayRapport.at(22).at(2), dayRapport.at(22).at(3));
-  insertForecastTableRow("23:00", "sun", dayRapport.at(23).at(0), dayRapport.at(23).at(1), dayRapport.at(23).at(2), dayRapport.at(23).at(3));
+  insertForecastTableRow("00:00", dayRapportType.at(0), dayRapport.at(0).at(0), dayRapport.at(0).at(1), dayRapport.at(0).at(2), dayRapport.at(0).at(3));
+  insertForecastTableRow("01:00", dayRapportType.at(1), dayRapport.at(1).at(0), dayRapport.at(1).at(1), dayRapport.at(1).at(2), dayRapport.at(1).at(3));
+  insertForecastTableRow("02:00", dayRapportType.at(2), dayRapport.at(2).at(0), dayRapport.at(2).at(1), dayRapport.at(2).at(2), dayRapport.at(2).at(3));
+  insertForecastTableRow("03:00", dayRapportType.at(3), dayRapport.at(3).at(0), dayRapport.at(3).at(1), dayRapport.at(3).at(2), dayRapport.at(3).at(3));
+  insertForecastTableRow("04:00", dayRapportType.at(4), dayRapport.at(4).at(0), dayRapport.at(4).at(1), dayRapport.at(4).at(2), dayRapport.at(4).at(3));
+  insertForecastTableRow("05:00", dayRapportType.at(5), dayRapport.at(5).at(0), dayRapport.at(5).at(1), dayRapport.at(5).at(2), dayRapport.at(5).at(3));
+  insertForecastTableRow("06:00", dayRapportType.at(6), dayRapport.at(6).at(0), dayRapport.at(6).at(1), dayRapport.at(6).at(2), dayRapport.at(6).at(3));
+  insertForecastTableRow("07:00", dayRapportType.at(7), dayRapport.at(7).at(0), dayRapport.at(7).at(1), dayRapport.at(7).at(2), dayRapport.at(7).at(3));
+  insertForecastTableRow("08:00", dayRapportType.at(8), dayRapport.at(8).at(0), dayRapport.at(8).at(1), dayRapport.at(8).at(2), dayRapport.at(8).at(3));
+  insertForecastTableRow("09:00", dayRapportType.at(9), dayRapport.at(9).at(0), dayRapport.at(9).at(1), dayRapport.at(9).at(2), dayRapport.at(9).at(3));
+  insertForecastTableRow("10:00", dayRapportType.at(10), dayRapport.at(10).at(0), dayRapport.at(10).at(1), dayRapport.at(10).at(2), dayRapport.at(10).at(3));
+  insertForecastTableRow("11:00", dayRapportType.at(11), dayRapport.at(11).at(0), dayRapport.at(11).at(1), dayRapport.at(11).at(2), dayRapport.at(11).at(3));
+  insertForecastTableRow("12:00", dayRapportType.at(12), dayRapport.at(12).at(0), dayRapport.at(12).at(1), dayRapport.at(12).at(2), dayRapport.at(12).at(3));
+  insertForecastTableRow("13:00", dayRapportType.at(13), dayRapport.at(13).at(0), dayRapport.at(13).at(1), dayRapport.at(13).at(2), dayRapport.at(13).at(3));
+  insertForecastTableRow("14:00", dayRapportType.at(14), dayRapport.at(14).at(0), dayRapport.at(14).at(1), dayRapport.at(14).at(2), dayRapport.at(14).at(3));
+  insertForecastTableRow("15:00", dayRapportType.at(15), dayRapport.at(15).at(0), dayRapport.at(15).at(1), dayRapport.at(15).at(2), dayRapport.at(15).at(3));
+  insertForecastTableRow("16:00", dayRapportType.at(16), dayRapport.at(16).at(0), dayRapport.at(16).at(1), dayRapport.at(16).at(2), dayRapport.at(16).at(3));
+  insertForecastTableRow("17:00", dayRapportType.at(17), dayRapport.at(17).at(0), dayRapport.at(17).at(1), dayRapport.at(17).at(2), dayRapport.at(17).at(3));
+  insertForecastTableRow("18:00", dayRapportType.at(18), dayRapport.at(18).at(0), dayRapport.at(18).at(1), dayRapport.at(18).at(2), dayRapport.at(18).at(3));
+  insertForecastTableRow("19:00", dayRapportType.at(19), dayRapport.at(19).at(0), dayRapport.at(19).at(1), dayRapport.at(19).at(2), dayRapport.at(19).at(3));
+  insertForecastTableRow("20:00", dayRapportType.at(20), dayRapport.at(20).at(0), dayRapport.at(20).at(1), dayRapport.at(20).at(2), dayRapport.at(20).at(3));
+  insertForecastTableRow("21:00", dayRapportType.at(21), dayRapport.at(21).at(0), dayRapport.at(21).at(1), dayRapport.at(21).at(2), dayRapport.at(21).at(3));
+  insertForecastTableRow("22:00", dayRapportType.at(22), dayRapport.at(22).at(0), dayRapport.at(22).at(1), dayRapport.at(22).at(2), dayRapport.at(22).at(3));
+  insertForecastTableRow("23:00", dayRapportType.at(23), dayRapport.at(23).at(0), dayRapport.at(23).at(1), dayRapport.at(23).at(2), dayRapport.at(23).at(3));
 
   async function getDayRapport() {
     const year = +date.getFullYear();
@@ -96,7 +98,39 @@ window.onload = async function () {
       ]
     });
 
-    return dayRapport;
+    const dayRapportType = await axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:8080/api/getWeatherTypeDayRapport',
+      data: [
+        hour00.toString(),
+        hour01.toString(),
+        hour02.toString(),
+        hour03.toString(),
+        hour04.toString(),
+        hour05.toString(),
+        hour06.toString(),
+        hour07.toString(),
+        hour08.toString(),
+        hour09.toString(),
+        hour10.toString(),
+        hour11.toString(),
+        hour12.toString(),
+        hour13.toString(),
+        hour14.toString(),
+        hour15.toString(),
+        hour16.toString(),
+        hour17.toString(),
+        hour18.toString(),
+        hour19.toString(),
+        hour20.toString(),
+        hour21.toString(),
+        hour22.toString(),
+        hour23.toString(),
+        hour24.toString(),
+      ]
+    });
+
+    return [dayRapport, dayRapportType];
   }
 
   /* Render the graphs */
