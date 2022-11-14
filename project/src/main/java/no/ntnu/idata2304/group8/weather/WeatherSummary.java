@@ -200,7 +200,7 @@ public class WeatherSummary {
         }
         
         int rain;
-        if (precipitation < 0.2) {
+        if (precipitation < 0.3) {
             rain = 0;
         } else if (precipitation > 10) {
             if (temperature < 0) {
@@ -209,7 +209,7 @@ public class WeatherSummary {
                 rain = 2;
             }
         } else {
-            if (temperature < 0) {
+            if (temperature < 1) {
                 rain = -1;
             } else {
                 rain = 1;
