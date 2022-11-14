@@ -153,4 +153,131 @@ public class WeatherSorting {
 
         return avgHoursData;
     }
+
+    public String[] getWeatherTypeDayRapport(String[] hours) {
+        List<Double[]> hour0Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[0]), Long.parseLong(hours[1]), "weather");
+        Double[] hour0AvgData = weatherSummary.getAverageValuesInInterval(hour0Data);
+        String hour0Type = weatherSummary.getWeatherSummary(hour0AvgData);
+
+        List<Double[]> hour1Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[1]), Long.parseLong(hours[2]), "weather");
+        Double[] hour1AvgData = weatherSummary.getAverageValuesInInterval(hour1Data);
+        String hour1Type = weatherSummary.getWeatherSummary(hour1AvgData);
+
+        List<Double[]> hour2Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[2]), Long.parseLong(hours[3]), "weather");
+        Double[] hour2AvgData = weatherSummary.getAverageValuesInInterval(hour2Data);
+        String hour2Type = weatherSummary.getWeatherSummary(hour2AvgData);
+
+        List<Double[]> hour3Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[3]), Long.parseLong(hours[4]), "weather");
+        Double[] hour3AvgData = weatherSummary.getAverageValuesInInterval(hour3Data);
+        String hour3Type = weatherSummary.getWeatherSummary(hour3AvgData);
+
+        List<Double[]> hour4Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[4]), Long.parseLong(hours[5]), "weather");
+        Double[] hour4AvgData = weatherSummary.getAverageValuesInInterval(hour4Data);
+        String hour4Type = weatherSummary.getWeatherSummary(hour4AvgData);
+
+        List<Double[]> hour5Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[5]), Long.parseLong(hours[6]), "weather");
+        Double[] hour5AvgData = weatherSummary.getAverageValuesInInterval(hour5Data);
+        String hour5Type = weatherSummary.getWeatherSummary(hour5AvgData);
+
+        List<Double[]> hour6Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[6]), Long.parseLong(hours[7]), "weather");
+        Double[] hour6AvgData = weatherSummary.getAverageValuesInInterval(hour6Data);
+        String hour6Type = weatherSummary.getWeatherSummary(hour6AvgData);
+
+        List<Double[]> hour7Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[7]), Long.parseLong(hours[8]), "weather");
+        Double[] hour7AvgData = weatherSummary.getAverageValuesInInterval(hour7Data);
+        String hour7Type = weatherSummary.getWeatherSummary(hour7AvgData);
+
+
+        List<Double[]> hour8Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[8]), Long.parseLong(hours[9]), "weather");
+        Double[] hour8AvgData = weatherSummary.getAverageValuesInInterval(hour8Data);
+        String hour8Type = weatherSummary.getWeatherSummary(hour8AvgData);
+
+        List<Double[]> hour9Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[9]), Long.parseLong(hours[10]), "weather");
+        Double[] hour9AvgData = weatherSummary.getAverageValuesInInterval(hour9Data);
+        String hour9Type = weatherSummary.getWeatherSummary(hour9AvgData);
+
+        List<Double[]> hour10Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[10]), Long.parseLong(hours[11]), "weather");
+        Double[] hour10AvgData = weatherSummary.getAverageValuesInInterval(hour10Data);
+        String hour10Type = weatherSummary.getWeatherSummary(hour10AvgData);
+
+        List<Double[]> hour11Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[11]), Long.parseLong(hours[12]), "weather");
+        Double[] hour11AvgData = weatherSummary.getAverageValuesInInterval(hour11Data);
+        String hour11Type = weatherSummary.getWeatherSummary(hour11AvgData);
+
+        List<Double[]> hour12Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[12]), Long.parseLong(hours[13]), "weather");
+        Double[] hour12AvgData = weatherSummary.getAverageValuesInInterval(hour12Data);
+        String hour12Type = weatherSummary.getWeatherSummary(hour12AvgData);
+
+        List<Double[]> hour13Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[13]), Long.parseLong(hours[14]), "weather");
+        Double[] hour13AvgData = weatherSummary.getAverageValuesInInterval(hour13Data);
+        String hour13Type = weatherSummary.getWeatherSummary(hour13AvgData);
+
+        List<Double[]> hour14Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[14]), Long.parseLong(hours[15]), "weather");
+        Double[] hour14AvgData = weatherSummary.getAverageValuesInInterval(hour14Data);
+        String hour14Type = weatherSummary.getWeatherSummary(hour14AvgData);
+
+        List<Double[]> hour15Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[15]), Long.parseLong(hours[16]), "weather");
+        Double[] hour15AvgData = weatherSummary.getAverageValuesInInterval(hour15Data);
+        String hour15Type = weatherSummary.getWeatherSummary(hour15AvgData);
+
+        List<Double[]> hour16Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[16]), Long.parseLong(hours[17]), "weather");
+        Double[] hour16AvgData = weatherSummary.getAverageValuesInInterval(hour16Data);
+        String hour16Type = weatherSummary.getWeatherSummary(hour16AvgData);
+
+        List<Double[]> hour17Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[17]), Long.parseLong(hours[18]), "weather");
+        Double[] hour17AvgData = weatherSummary.getAverageValuesInInterval(hour17Data);
+        String hour17Type = weatherSummary.getWeatherSummary(hour17AvgData);
+
+        List<Double[]> hour18Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[18]), Long.parseLong(hours[19]), "weather");
+        Double[] hour18AvgData = weatherSummary.getAverageValuesInInterval(hour18Data);
+        String hour18Type = weatherSummary.getWeatherSummary(hour18AvgData);
+
+        List<Double[]> hour19Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[19]), Long.parseLong(hours[20]), "weather");
+        Double[] hour19AvgData = weatherSummary.getAverageValuesInInterval(hour19Data);
+        String hour19Type = weatherSummary.getWeatherSummary(hour19AvgData);
+
+        List<Double[]> hour20Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[20]), Long.parseLong(hours[21]), "weather");
+        Double[] hour20AvgData = weatherSummary.getAverageValuesInInterval(hour20Data);
+        String hour20Type = weatherSummary.getWeatherSummary(hour20AvgData);
+
+        List<Double[]> hour21Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[21]), Long.parseLong(hours[22]), "weather");
+        Double[] hour21AvgData = weatherSummary.getAverageValuesInInterval(hour21Data);
+        String hour21Type = weatherSummary.getWeatherSummary(hour21AvgData);
+
+        List<Double[]> hour22Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[22]), Long.parseLong(hours[23]), "weather");
+        Double[] hour22AvgData = weatherSummary.getAverageValuesInInterval(hour22Data);
+        String hour22Type = weatherSummary.getWeatherSummary(hour22AvgData);
+
+        List<Double[]> hour23Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[23]), Long.parseLong(hours[24]), "weather");
+        Double[] hour23AvgData = weatherSummary.getAverageValuesInInterval(hour23Data);
+        String hour23Type = weatherSummary.getWeatherSummary(hour23AvgData);
+
+        return new String[]{
+                hour0Type,
+                hour1Type,
+                hour2Type,
+                hour3Type,
+                hour4Type,
+                hour5Type,
+                hour6Type,
+                hour6Type,
+                hour7Type,
+                hour8Type,
+                hour9Type,
+                hour10Type,
+                hour11Type,
+                hour12Type,
+                hour13Type,
+                hour14Type,
+                hour15Type,
+                hour16Type,
+                hour17Type,
+                hour18Type,
+                hour19Type,
+                hour20Type,
+                hour21Type,
+                hour22Type,
+                hour23Type,
+        };
+    }
 }
