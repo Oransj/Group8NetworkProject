@@ -32,6 +32,11 @@ public class ControllerServer {
     return weatherSorting.getDayRapport(hours);
   }
 
+  @PostMapping(value = "/api/getWeatherTypeDayRapport")
+  public String[] getWeatherTypeDayRapport(@RequestBody String[] hours) {
+    return weatherSorting.getWeatherTypeDayRapport(hours);
+  }
+
   @GetMapping("/api/front")
   public void getReports() throws IOException, ParseException {
 //
