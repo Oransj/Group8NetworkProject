@@ -150,9 +150,8 @@ public class SQLHandler {
             while (rs.next()) {
                 Double[] data = new Double[]{rs.getDouble("Temprature"),
                         rs.getDouble("Precipitation"),
-                        rs.getDouble("Air_pressure"),
-                        rs.getDouble("Light"),
-                        rs.getDouble("Wind_Speed")
+                        rs.getDouble("Wind_Speed"),
+                        rs.getDouble("Wind_dir")
                 };
                 dataList.add(data);
             }
