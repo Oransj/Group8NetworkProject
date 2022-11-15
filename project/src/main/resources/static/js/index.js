@@ -125,21 +125,6 @@ async function getDataFromAPI() {
     return frontPageData;
 }
 
-
-function getDataFromAPI2() {
-    const data = {
-        date: "2022-10-23",
-        weekday: "Today",
-        weatherType: "sun",
-        minTemp: "6",
-        maxTemp:"8",
-        rainAmount: "4.0",
-        windAmount: "2,0",
-    }
-
-    return data;
-}
-
 function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmount, windAmount) {
     let weatherCardContainer = document.querySelector(".weather-card-container");
     
