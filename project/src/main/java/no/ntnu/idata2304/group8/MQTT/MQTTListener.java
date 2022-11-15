@@ -1,14 +1,9 @@
 package no.ntnu.idata2304.group8.MQTT;
 
-import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
 import no.ntnu.idata2304.group8.webserver.WeatherSorting;
 import org.eclipse.paho.client.mqttv3.*;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
-import java.net.ConnectException;
 
 public class MQTTListener implements Runnable {
 
@@ -69,10 +64,9 @@ public class MQTTListener implements Runnable {
                 System.out.println("Qos: " + message.getQos());
                 String msg = new String(message.getPayload());
                 System.out.println("message content: " + msg);
-                JSONParser parser = new JSONParser();
-                JSONObject json = (JSONObject) parser.parse(msg);
-                SQLHandler sqlHandler = new SQLHandler();
-                sqlHandler.addData(json, "weather");
+                JSONObject json = new JSONObject(msg);
+                WeatherSorting weatherSorting = new WeatherSorting();
+                weatherSorting.saveData(json);
             }
 
             public void deliveryComplete(IMqttDeliveryToken token) {
