@@ -185,16 +185,3 @@ function switchToForecastPage(element) {
     saveDate(element);
     setPage("weather_report.html");
 }
-
-const test = async () => {
-    const res = await axios({
-        method: 'GET',
-        url: 'http://127.0.0.1:8080/api/front',
-    });
-
-    console.log(res.data);
-    // console.log(res.data[0].Time.ms.num);
-
-}
-
-// test();
