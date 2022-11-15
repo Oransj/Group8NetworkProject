@@ -4,10 +4,10 @@ window.onload = function () {
   setForecastDayUndertitle(date);
 
   /* Add table rows */
-  insertForecastTableRow("00:00", "moon", "2", "0.4", "1.5", 90);
-  insertForecastTableRow("01:00", "moon", "2", "0.4", "2.0", 85);
-  insertForecastTableRow("02:00", "moon", "2", "0.3", "1.8", 70);
-  insertForecastTableRow("03:00", "moon", "3", "0.3", "2.4", 60);
+  insertForecastTableRow("00:00", "moon", "2", "0.40", "1.5", 0);
+  insertForecastTableRow("01:00", "moon", "2", "0.4", "2.0", 90);
+  insertForecastTableRow("02:00", "moon", "2", "0.3", "1.8", 180);
+  insertForecastTableRow("03:00", "moon", "3", "0.3", "2.4", 270);
   insertForecastTableRow("04:00", "cloud-with-moon", "4", "0.2", "2.0", 60);
   insertForecastTableRow("05:00", "cloud", "4", "0.2", "2.0", 60);
   insertForecastTableRow("06:00", "cloud", "4", "0.2", "2.0", 60);
@@ -122,12 +122,16 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
         <img src="../static/img/static/${weatherType}.svg">
       </td>
       <td>${temp}&#176C</td>
-      <td>${rainAmount}mm</td>
+      <td>${roundTwoDecimals(rainAmount)}mm</td>
       <td>
-        <div>${windAmount}m/s<img style="transform: rotate(${windDirection}deg)" src="../static/img/static/arrow.svg"></div>
+        <div>${roundTwoDecimals(windAmount)}m/s<img style="transform: rotate(${windDirection-90}deg); margin: 0 5px" src="../static/img/static/arrow.svg"></div>
       </td>
     </tr>
   `;
+}
+
+function roundTwoDecimals(number) {
+  return (Math.round(number * 100) / 100).toFixed(2);
 }
 
 /* Render graphs */
