@@ -59,7 +59,6 @@ header {
 .logo {
     height: 70px;
     margin: 10px;
-    aspect-ratio: inherit;
     float: left;
 }
 
