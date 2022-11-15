@@ -2,11 +2,10 @@ window.onload = async function () {
   /* Set the weekday and date as undertitle */
   let date = parseClickedDate();
   setForecastDayUndertitle(date);
-  const dayRapport = (await getDayRapport()).at(0).data;
-  const dayRapportType = (await getDayRapport()).at(1).data;
 
-  console.log(dayRapport)
-  console.log(dayRapportType)
+  const data = (await getDayRapport());
+  const dayRapport = data.at(0).data;
+  const dayRapportType = data.at(1).data;
 
   /* Add table rows */
   insertForecastTableRow("00:00", dayRapportType.at(0), dayRapport.at(0).at(0), dayRapport.at(0).at(1), dayRapport.at(0).at(2), dayRapport.at(0).at(3));
