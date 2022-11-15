@@ -2,6 +2,9 @@ package no.ntnu.idata2304.group8.webserver;
 
 import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
 import no.ntnu.idata2304.group8.weather.WeatherSummary;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -279,5 +282,35 @@ public class WeatherSorting {
                 hour22Type,
                 hour23Type,
         };
+    }
+
+    public boolean isSpike(JSONObject jsonObject) {
+        // current data
+        Double tempCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Temperature").get("celsius").toString());
+        Double precipCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Precipitaion").get("mm").toString());
+        Double pressCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Air_pressure").get("hPa").toString());
+        Double lightCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Light").get("lux").toString());
+        Double speedCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Wind").get("W_speed").toString());
+
+        // last data in DB
+        JSONParser parser = new JSONParser();
+        JSONObject json = new JSONObject(sqlHandler.selectLast());
+        Double temp = Double.parseDouble(json.getJSONObject("Temperature").get("celsius").toString());
+        Double precip = Double.parseDouble(json.getJSONObject("Precipitation").get("mm").toString());
+        Double press = Double.parseDouble(json.getJSONObject("Air_Pressure").get("hPa").toString());
+        Double light = Double.parseDouble(json.getJSONObject("Light").get("lux").toString());
+        Double speed = Double.parseDouble(json.getJSONObject("Wind").get("W_speed").toString());
+
+        boolean spike = false;
+
+        if (tempCurrent >= (temp * 10) ||
+                precipCurrent >= (precip * 10) ||
+                pressCurrent >= (press * 20) ||
+                lightCurrent >= (light * 10) ||
+                speedCurrent >= (speed * 10)) {
+            spike = true;
+        }
+
+        return spike;
     }
 }
