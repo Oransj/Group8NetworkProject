@@ -161,6 +161,39 @@ public class SQLHandler {
         return dataList;
     }
 
+    public String selectLast(){
+        String sql = "SELECT * " +
+                "FROM weather " +
+                "DESC LIMIT 1";
+        JsonObject builder = null;
+        try (Connection connection = this.connect();
+             Statement stmt  = connection.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                builder = Json.createObjectBuilder()
+                        .add("Time", Json.createObjectBuilder()
+                                .add("ms", rs.getLong("Time")))
+                        .add("Temperature", Json.createObjectBuilder()
+                                .add("celsius", rs.getLong("Temprature")))
+                        .add("Precipitation", Json.createObjectBuilder()
+                                .add("mm", rs.getLong("Precipitation")))
+                        .add("Air_Pressure", Json.createObjectBuilder()
+                                .add("hPa", rs.getLong("Air_pressure")))
+                        .add("Light", Json.createObjectBuilder()
+                                .add("lux", rs.getLong("Light")))
+                        .add("Wind",
+                                Json.createObjectBuilder().add("W_speed",rs.getLong("Wind_Speed"))
+                                        .add("W_direction",rs.getLong("Wind_Dir")))
+                        .build();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        assert builder != null;
+        return builder.toString();
+    }
 
 
     /**
