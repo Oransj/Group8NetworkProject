@@ -313,4 +313,14 @@ public class WeatherSorting {
 
         return spike;
     }
+
+    public void saveData(JSONObject jsonObject) throws ParseException {
+        JSONParser parser = new JSONParser();
+        org.json.simple.JSONObject object = (org.json.simple.JSONObject) parser.parse(jsonObject.toString());
+        if (isSpike(jsonObject)) {
+            sqlHandler.addData(object, "spike");
+        } else {
+            sqlHandler.addData(object, "weather");
+        }
+    }
 }
