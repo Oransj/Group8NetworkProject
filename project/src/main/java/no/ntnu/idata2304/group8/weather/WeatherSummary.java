@@ -144,7 +144,6 @@ public class WeatherSummary {
         // The items in the data array
         double temp = data[0];
         double precipitation = data[1];
-        double pressure = data[2];
         double light = data[3];
         double wind = data[4];
         
