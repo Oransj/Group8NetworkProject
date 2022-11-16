@@ -1,11 +1,15 @@
 package no.ntnu.idata2304.group8.webserver;
 
+import com.workday.insights.timeseries.arima.Arima;
+import com.workday.insights.timeseries.arima.struct.ArimaParams;
+import com.workday.insights.timeseries.arima.struct.ForecastResult;
 import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
 import no.ntnu.idata2304.group8.weather.WeatherSummary;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -293,7 +297,6 @@ public class WeatherSorting {
         Double speedCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Wind").get("W_speed").toString());
 
         // last data in DB
-        JSONParser parser = new JSONParser();
         JSONObject json = new JSONObject(sqlHandler.selectLast());
         Double temp = Double.parseDouble(json.getJSONObject("Temperature").get("celsius").toString());
         Double precip = Double.parseDouble(json.getJSONObject("Precipitation").get("mm").toString());
@@ -314,6 +317,20 @@ public class WeatherSorting {
         return spike;
     }
 
+    public List<JSONObject> getLastNine(Long ms) {
+        ArrayList<JSONObject> objects = new ArrayList<>();
+        Long time = ms;
+
+        for (int i = 1; i < 10; i++) {
+            time -= 3600000;
+            JSONObject json = new JSONObject(sqlHandler.select(time));
+            objects.add(json);
+        }
+
+        return  objects;
+    }
+
+
     public void saveData(JSONObject jsonObject) throws ParseException {
         JSONParser parser = new JSONParser();
         org.json.simple.JSONObject object = (org.json.simple.JSONObject) parser.parse(jsonObject.toString());
@@ -321,6 +338,7 @@ public class WeatherSorting {
             sqlHandler.addData(object, "spike");
         } else {
             sqlHandler.addData(object, "weather");
+//            predict(jsonObject);
         }
     }
 }
