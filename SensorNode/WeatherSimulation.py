@@ -473,7 +473,10 @@ class lux_simulation():
         min, max = self.min_max_light(time_now)
         print(min, max)
         if(precipitation > 0):
-            max = max - ((max-min)/4)*precipitation
+            current_time = time_now.hour + time_now.minute/60
+            max = min
+            max = max/(precipitation**(1/2))/2 + 1
+            min = 160 * sin(current_time/12 * pi - 6 * pi/12) + 160.0001
         else:
             min = min + ((max-min)/uniform(0.9, 3))
         print(f"new min: {min}, new max: {max}")
@@ -490,8 +493,8 @@ class lux_simulation():
             float|float: The min and max lux.
         """        
         current_time = time_now.hour + time_now.minute/60
-        max = 50000 * sin(current_time/12 * pi - 6 * pi/12) + 50001
-        min = 16000 * sin(current_time/12 * pi - 6 * pi/12) + 16000.0001
+        max = 10000 * sin(current_time/12 * pi - 6 * pi/12) + 10001
+        min = 500 * sin(current_time/12 * pi - 6 * pi/12) + 500.0001
         return min, max
       
 def main():
