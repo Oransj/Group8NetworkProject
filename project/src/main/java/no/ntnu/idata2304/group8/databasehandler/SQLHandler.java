@@ -195,6 +195,39 @@ public class SQLHandler {
         return builder.toString();
     }
 
+    public String select(Long ms){
+        String sql = "SELECT * " +
+                "FROM weather " +
+                "WHERE Time = " + ms;
+        JsonObject builder = null;
+        try (Connection connection = this.connect();
+             Statement stmt  = connection.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                builder = Json.createObjectBuilder()
+                        .add("Time", Json.createObjectBuilder()
+                                .add("ms", rs.getLong("Time")))
+                        .add("Temperature", Json.createObjectBuilder()
+                                .add("celsius", rs.getDouble("Temprature")))
+                        .add("Precipitation", Json.createObjectBuilder()
+                                .add("mm", rs.getDouble("Precipitation")))
+                        .add("Air_Pressure", Json.createObjectBuilder()
+                                .add("hPa", rs.getDouble("Air_pressure")))
+                        .add("Light", Json.createObjectBuilder()
+                                .add("lux", rs.getDouble("Light")))
+                        .add("Wind",
+                                Json.createObjectBuilder().add("W_speed",rs.getDouble("Wind_Speed"))
+                                        .add("W_direction",rs.getDouble("Wind_Dir")))
+                        .build();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        assert builder != null;
+        return builder.toString();
+    }
 
     /**
      * select all rows in the table and returns a ArrayList with all entries
