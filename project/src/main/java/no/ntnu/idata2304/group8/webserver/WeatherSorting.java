@@ -330,6 +330,30 @@ public class WeatherSorting {
         return  objects;
     }
 
+    public double predictValue(double[] previousTenValues) {
+        // Prepare input timeseries data.
+        double[] dataArray = previousTenValues;
+
+        // Set ARIMA model parameters.
+        int p = 3;
+        int d = 0;
+        int q = 3;
+        int P = 1;
+        int D = 1;
+        int Q = 0;
+        int m = 0;
+        ArimaParams arimaParams = new ArimaParams(p, d, q, P, D, Q, m);
+
+        int forecastSize = 1;
+
+        // Obtain forecast result. The structure contains forecasted values and performance metric etc.
+        ForecastResult forecastResult = Arima.forecast_arima(dataArray, forecastSize, arimaParams);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        // Read forecast values
+        double[] forecastData = forecastResult.getForecast(); // in this example, it will return { 2 };
+
+        return Double.parseDouble(decimalFormat.format(forecastData[0]));
+    }
 
     public void saveData(JSONObject jsonObject) throws ParseException {
         JSONParser parser = new JSONParser();
