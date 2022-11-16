@@ -195,6 +195,17 @@ public class SQLHandler {
         return builder.toString();
     }
 
+    public void delete(Long ms) {
+        String sql = "DELETE FROM Weather WHERE Time =" + ms;
+
+        try(Connection connection = this.connect();
+            Statement stmt  = connection.createStatement();) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public String select(Long ms){
         String sql = "SELECT * " +
                 "FROM weather " +
