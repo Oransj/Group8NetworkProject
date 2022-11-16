@@ -176,16 +176,16 @@ public class SQLHandler {
                         .add("Time", Json.createObjectBuilder()
                                 .add("ms", rs.getLong("Time")))
                         .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getLong("Temprature")))
+                                .add("celsius", rs.getDouble("Temprature")))
                         .add("Precipitation", Json.createObjectBuilder()
-                                .add("mm", rs.getLong("Precipitation")))
+                                .add("mm", rs.getDouble("Precipitation")))
                         .add("Air_Pressure", Json.createObjectBuilder()
-                                .add("hPa", rs.getLong("Air_pressure")))
+                                .add("hPa", rs.getDouble("Air_pressure")))
                         .add("Light", Json.createObjectBuilder()
-                                .add("lux", rs.getLong("Light")))
+                                .add("lux", rs.getDouble("Light")))
                         .add("Wind",
-                                Json.createObjectBuilder().add("W_speed",rs.getLong("Wind_Speed"))
-                                        .add("W_direction",rs.getLong("Wind_Dir")))
+                                Json.createObjectBuilder().add("W_speed",rs.getDouble("Wind_Speed"))
+                                        .add("W_direction",rs.getDouble("Wind_Dir")))
                         .build();
             }
         } catch (SQLException e) {
