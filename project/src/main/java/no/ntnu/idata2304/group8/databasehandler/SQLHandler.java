@@ -237,7 +237,7 @@ public class SQLHandler {
             System.out.println(e.getMessage());
         }
         assert builder != null;
-        return builder.toString();
+        return builder == null ? "null" : builder.toString();
     }
 
     /**
