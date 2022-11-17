@@ -94,7 +94,7 @@ public class SQLHandler {
                         .add("celsius", rs.getLong("Temprature")))
                     .add("Precipitation", Json.createObjectBuilder()
                         .add("mm", rs.getLong("Precipitation")))
-                    .add("Air_Pressure", Json.createObjectBuilder()
+                    .add("Air_pressure", Json.createObjectBuilder()
                         .add("hPa", rs.getLong("Air_pressure")))
                     .add("Light", Json.createObjectBuilder()
                         .add("lux", rs.getLong("Light")))
@@ -179,7 +179,7 @@ public class SQLHandler {
                                 .add("celsius", rs.getDouble("Temprature")))
                         .add("Precipitation", Json.createObjectBuilder()
                                 .add("mm", rs.getDouble("Precipitation")))
-                        .add("Air_Pressure", Json.createObjectBuilder()
+                        .add("Air_pressure", Json.createObjectBuilder()
                                 .add("hPa", rs.getDouble("Air_pressure")))
                         .add("Light", Json.createObjectBuilder()
                                 .add("lux", rs.getDouble("Light")))
@@ -193,6 +193,40 @@ public class SQLHandler {
         }
         assert builder != null;
         return builder.toString();
+    }
+
+    public List<String> selectLastNine(Long ms){
+        String sql = "SELECT * " +
+                "FROM weather " +
+                "DESC LIMIT 9";
+        ArrayList<String> jArray = new ArrayList();
+        try (Connection connection = this.connect();
+             Statement stmt  = connection.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+                JsonObject builder = Json.createObjectBuilder()
+                        .add("Time", Json.createObjectBuilder()
+                                .add("ms", rs.getLong("Time")))
+                        .add("Temperature", Json.createObjectBuilder()
+                                .add("celsius", rs.getLong("Temprature")))
+                        .add("Precipitation", Json.createObjectBuilder()
+                                .add("mm", rs.getLong("Precipitation")))
+                        .add("Air_pressure", Json.createObjectBuilder()
+                                .add("hPa", rs.getLong("Air_pressure")))
+                        .add("Light", Json.createObjectBuilder()
+                                .add("lux", rs.getLong("Light")))
+                        .add("Wind",
+                                Json.createObjectBuilder().add("W_speed",rs.getLong("Wind_Speed"))
+                                        .add("W_direction",rs.getLong("Wind_Dir")))
+                        .build();
+                jArray.add(builder.toString());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return jArray;
     }
 
     public void delete(Long ms) {
@@ -224,7 +258,7 @@ public class SQLHandler {
                                 .add("celsius", rs.getDouble("Temprature")))
                         .add("Precipitation", Json.createObjectBuilder()
                                 .add("mm", rs.getDouble("Precipitation")))
-                        .add("Air_Pressure", Json.createObjectBuilder()
+                        .add("Air_pressure", Json.createObjectBuilder()
                                 .add("hPa", rs.getDouble("Air_pressure")))
                         .add("Light", Json.createObjectBuilder()
                                 .add("lux", rs.getDouble("Light")))
@@ -261,7 +295,7 @@ public class SQLHandler {
                         .add("celsius", rs.getLong("Temprature")))
                     .add("Precipitation", Json.createObjectBuilder()
                         .add("mm", rs.getLong("Precipitation")))
-                    .add("Air_Pressure", Json.createObjectBuilder()
+                    .add("Air_pressure", Json.createObjectBuilder()
                         .add("hPa", rs.getLong("Air_pressure")))
                     .add("Light", Json.createObjectBuilder()
                         .add("lux", rs.getLong("Light")))
