@@ -73,7 +73,7 @@ class weights:
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         self.chance_of_continued_rain = 0.85
         #How often the sensor node should update the weather data in minutes.
-        self.minutes_update = 2
+        self.minutes_update = 15
         #Sleep time for each weather update check in seconds.
         self.sleep_time = 30
         
@@ -510,7 +510,7 @@ def main():
     else:
         storm = False
     percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-    percipitation_now = percipitation_today[now.hour]
+    percipitation_now = percipitation_today[now.hour] * (weights().minutes_update/60)
     lux_sim = lux_simulation()
     lux_now = lux_sim.simulate_lux(percipitation_now)
     temp_sim = temperature_simulation()
@@ -543,7 +543,7 @@ def main():
         if(next_time <= now.minute):
             print("Creating new data")
             time = now.time()
-            percipitation_now = percipitation_today[now.hour]
+            percipitation_now = percipitation_today[now.hour]  * (weights().minutes_update/60)
             lux_sim = lux_simulation()
             lux_now = lux_sim.simulate_lux(percipitation_now)
             temp_sim = temperature_simulation()
