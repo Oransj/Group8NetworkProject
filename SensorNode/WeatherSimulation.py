@@ -597,7 +597,7 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(next_time <= now.minute):
+        if(next_time <= (now.minute + now.hour*60)):
             print("Creating new data")
             time = now.time()
             percipitation_now = percipitation_today[now.hour]
@@ -616,7 +616,7 @@ def main():
             print("Data published")
             next_time = datetime.datetime.now() + datetime.timedelta(minutes=weights().minutes_update)
             print(f"Next update at {next_time}")
-            next_time = next_time.time().minute
+            next_time = next_time.time().minute + next_time.time().hour * 60
         print("sleeping " + str(now))
         t.sleep(weights().sleep_time)
         now = datetime.datetime.now()
