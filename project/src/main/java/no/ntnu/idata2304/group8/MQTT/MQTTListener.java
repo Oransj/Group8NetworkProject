@@ -28,7 +28,7 @@ public class MQTTListener implements Runnable {
         this.password = "public";
         this.clientId = "client" + clientNumber;
         clientNumber++;
-        topic = "ntnu/ankeret/c220/multisensor/gruppe8/" + "0601holmes"; //TODO: Check if topic needs to include sensor id or if we can subscribe to a level over
+        topic = "ntnu/ankeret/c220/gruppe8/#"; //TODO: Check if topic needs to include sensor id or if we can subscribe to a level over
     }
 
     public void run() {
@@ -80,5 +80,11 @@ public class MQTTListener implements Runnable {
 
         client.connect(options);
         client.subscribe(this.topic, this.qos);
+    }
+
+    public static void main(String[] args) {
+        MQTTListener listener = new MQTTListener(broker);
+        Thread thread = new Thread(listener);
+        thread.start();
     }
 }

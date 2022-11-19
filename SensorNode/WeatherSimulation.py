@@ -309,7 +309,7 @@ class temperature_simulation:
 class mqtt_client:
     def __init__(self):
         self.client = mqtt.Client()
-        self.topic = "ntnu/ankeret/c220/multisensor/gruppe8/"
+        self.topic = "ntnu/ankeret/c220/gruppe8/multisensor/"
         self.sensorID = "0601holmes"
         self.client.on_connect = self.on_connect
         self.client.connect("129.241.152.12", 1883, 60)
