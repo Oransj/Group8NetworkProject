@@ -510,9 +510,9 @@ def createKeys() -> rsa.RSAPrivateKey | rsa.RSAPublicKey:
     if(os.path.isfile('PRK.ppk') and os.path.isfile('PUK.pem')):
         print("Keys exists! Load em up!")
         with open('PUK.pem', 'rb') as public_read:
-            public_key = serialization.load_ssh_public_key(public_read.read(), backend=crypto_default_backend())
+            public_key = serialization.load_ssh_public_key(public_read.read())
         with open('PRK.ppk', 'rb') as private_read:
-            private_key = serialization.load_pem_private_key(private_read.read(), None, backend=crypto_default_backend())
+            private_key = serialization.load_pem_private_key(private_read.read(), None)
     else:
         print("Keys dont exists! Create new keys!")
         key = rsa.generate_private_key(
