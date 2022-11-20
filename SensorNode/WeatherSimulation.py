@@ -621,7 +621,6 @@ def main():
     weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
     mqtt_cli = mqtt_client()
     next_time = now + datetime.timedelta(minutes=weights().minutes_update)
-    next_time = next_time.time().minute
     messageBytes = mqtt_cli.format_to_json(weather__now).encode("utf-8")
     
     messageBytes = public_key.encrypt(messageBytes,
