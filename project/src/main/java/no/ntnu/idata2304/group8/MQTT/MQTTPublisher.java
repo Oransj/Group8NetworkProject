@@ -23,6 +23,7 @@ public class MQTTPublisher {
 
     public void publish(String message) {
         try {
+            System.out.println("Publishing key");
             MqttClient client = new MqttClient(broker, publisherID);
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(username);
