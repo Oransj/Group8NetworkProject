@@ -64,8 +64,7 @@ public class MQTTListener implements Runnable {
         this.password = "public";
         this.clientId = "client" + clientNumber;
         clientNumber++;
-        topic = "ntnu/ankeret/c220/gruppe8/weathersensor/#";
-        sensors = new HashMap<>();
+        topic = "ntnu/ankeret/c220/gruppe8/#"; //TODO: Check if topic needs to include sensor id or if we can subscribe to a level over
     }
 
     /**
@@ -217,7 +216,8 @@ public class MQTTListener implements Runnable {
     }
 
     public static void main(String[] args) {
-        Thread thread = new Thread(new MQTTListener("HelloKitty"));
+        MQTTListener listener = new MQTTListener(broker);
+        Thread thread = new Thread(listener);
         thread.start();
     }
 }
