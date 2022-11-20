@@ -36,3 +36,10 @@ bin/
 gradle-app.setting
 !graddle-wrapper.jar
 .gradletasknamecache
+
+#Random files i have no idea why is created
+*.lck
+
+#Key files
+*.ppk
+*.pem
