@@ -77,6 +77,7 @@ async function getDataFromAPI() {
     const frontPageData = await axios({
         method: 'POST',
         url: 'http://127.0.0.1:8080/api/getData',
+        // url: 'http://129.241.152.42:80/api/getData',
         data: [
             todayMs.toString(),
             day2Ms.toString(),
@@ -89,6 +90,7 @@ async function getDataFromAPI() {
     const frontPageType = await axios({
         method: 'POST',
         url: 'http://127.0.0.1:8080/api/getWeatherType',
+        // url: 'http://129.241.152.42:80/api/getWeatherType',
         data: [
             todayMs.toString(),
             day2Ms.toString(),
@@ -108,15 +110,15 @@ function insertWeatherCard(date, weekday, weatherType, minTemp, maxTemp, rainAmo
     weatherCardContainer.innerHTML += `
         <li class="weather-card" data-date="${date}" tabindex="0">
             <h4 class="weather-card--date">${weekday}</h4>
-            <img class="weather-card--icon" src="../static/img/animated/${weatherType}.svg" alt="Weather icon">
+            <img class="weather-card--icon" src="../img/animated/${weatherType}.svg" alt="Weather icon">
             <div class="weather-card--min-temp">${minTemp}&#176C</div>
             <div class="weather-card--max-temp">${maxTemp}&#176C</div>
             <div class="weather-card--rain">
-                <img class="weather-card--rain__icon" src="../static/img/water drop.png" alt="Rain icon">
+                <img class="weather-card--rain__icon" src="../img/water drop.png" alt="Rain icon">
                 <div class="weather-card--rain--text">${rainAmount}mm</div>
             </div>
             <div class="weather-card--wind">
-                <img class="weather-card--wind__icon" src="../static/img/wind.png" alt="Wind icon">
+                <img class="weather-card--wind__icon" src="../img/wind.png" alt="Wind icon">
                 <div class="weather-card--wind--text">${windAmount}m/s</div>
             </div>
         </li>

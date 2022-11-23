@@ -68,6 +68,7 @@ window.onload = async function () {
     const dayRapport = await axios({
       method: 'POST',
       url: 'http://127.0.0.1:8080/api/getDayRapport',
+      // url: 'http://129.241.152.42:80/api/getDayRapport',
       data: [
         hour00.toString(),
         hour01.toString(),
@@ -100,6 +101,7 @@ window.onload = async function () {
     const dayRapportType = await axios({
       method: 'POST',
       url: 'http://127.0.0.1:8080/api/getWeatherTypeDayRapport',
+      // url: 'http://129.241.152.42:80/api/getWeatherTypeDayRapport',
       data: [
         hour00.toString(),
         hour01.toString(),
@@ -222,12 +224,12 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
     <tr>
       <td>${time}</td>
       <td>
-        <img src="../static/img/static/${weatherType}.svg">
+        <img src="../img/static/${weatherType}.svg">
       </td>
       <td>${temp}&#176C</td>
       <td>${rainAmount}mm</td>
       <td>
-        <div>${windAmount}m/s<img style="transform: rotate(${windDirection}deg)" src="../static/img/static/arrow.svg"></div>
+        <div>${windAmount}m/s<img style="transform: rotate(${windDirection}deg)" src="../img/static/arrow.svg"></div>
       </td>
     </tr>
   `;
