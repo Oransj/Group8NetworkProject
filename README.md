@@ -60,7 +60,7 @@ To create a secure, encrypted connection, messages are encrypted using public-ke
 
 ## Result
 
-  ![](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/3.%20sprint/Screenshot%202022-11-24%20144743.png?raw=true)
+  ![The frontpage on the website](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/3.%20sprint/Screenshot%202022-11-24%20144743.png?raw=true)
   
   ![A picture of multiple tables with weather data and a graph showing the temperature and another graph showing the precipitation](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/3.%20sprint/Website%20page%202.png?raw=true)
   
@@ -84,3 +84,6 @@ We can improve performance when loading the day’s weather. Now we are querying
 If we knew more about how the data correlates to weather, we could better predict the future weather and more accurately map the current weather. For example, currently we define “thunder” quite loosely, and it could be improved by using more variables, and weighing them differently. 
 
 On the website, it would be better if we didn’t just show when the page was last refreshed, but also when the data was last updated in the database. If the data is not updated in a long time, the “last updated” portion could become very misleading. 
+  
+  ## References
+  
