@@ -1,7 +1,7 @@
 package no.ntnu.idata2304.group8.logic.webserver;
 
 import no.ntnu.idata2304.group8.logic.MQTT.MQTTListener;
-import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
+import no.ntnu.idata2304.group8.data.databasehandler.SQLHandler;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

@@ -1,4 +1,4 @@
-package no.ntnu.idata2304.group8.databasehandler;
+package no.ntnu.idata2304.group8.data.databasehandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
