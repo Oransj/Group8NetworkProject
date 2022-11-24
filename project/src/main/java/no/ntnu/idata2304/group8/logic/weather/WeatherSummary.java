@@ -1,4 +1,4 @@
-package no.ntnu.idata2304.group8.weather;
+package no.ntnu.idata2304.group8.logic.weather;
 
 import java.util.ArrayList;
 import java.util.List;

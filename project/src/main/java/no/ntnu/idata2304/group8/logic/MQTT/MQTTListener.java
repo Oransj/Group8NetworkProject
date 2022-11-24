@@ -1,6 +1,6 @@
-package no.ntnu.idata2304.group8.MQTT;
+package no.ntnu.idata2304.group8.logic.MQTT;
 
-import no.ntnu.idata2304.group8.webserver.WeatherSorting;
+import no.ntnu.idata2304.group8.logic.webserver.WeatherSorting;
 import org.eclipse.paho.client.mqttv3.*;
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;

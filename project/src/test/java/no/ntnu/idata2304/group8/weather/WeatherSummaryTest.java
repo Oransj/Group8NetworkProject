@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import no.ntnu.idata2304.group8.logic.weather.WeatherSummary;
 import org.junit.jupiter.api.Test;
 
 /**

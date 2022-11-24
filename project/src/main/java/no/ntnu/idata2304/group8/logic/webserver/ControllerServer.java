@@ -1,4 +1,4 @@
-package no.ntnu.idata2304.group8.webserver;
+package no.ntnu.idata2304.group8.logic.webserver;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;

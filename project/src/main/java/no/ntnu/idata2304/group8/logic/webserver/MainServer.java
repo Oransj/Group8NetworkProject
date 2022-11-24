@@ -1,6 +1,6 @@
-package no.ntnu.idata2304.group8.webserver;
+package no.ntnu.idata2304.group8.logic.webserver;
 
-import no.ntnu.idata2304.group8.MQTT.MQTTListener;
+import no.ntnu.idata2304.group8.logic.MQTT.MQTTListener;
 import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
