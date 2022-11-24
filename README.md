@@ -4,7 +4,7 @@ Our project concept is an application that collects data such as temperature, pr
 
 Weather forecasts are important so people can plan their day around the weather. For example, if it is raining or snowing, it would be a good idea to wear rain-proof clothing. If it’s sunny and warm, then that would be a good day to spend outdoors gardening or hiking. By using a website, almost everyone can access it, and it can be updated frequently. 
 
-##Protocols
+## Protocols
 Our web server works with the HTTP in order to establish a connection with the users, and the TCP is used to send packets reliably. 
 
 We also use the Internet Protocol, which is used for relaying datagrams across network boundaries. Our website is hosted on a web server, and it uses IP addresses. The IPv4 address is 129.241.152.42, and the IPv6 address is 2001:700:300:600e:f816:3eff:fe87:883e. In addition, the application connects to the MQTT server with IP address 129.241.152.12, and TCP port number 1883.
@@ -25,15 +25,15 @@ As people from all over the world can connect to our website with an IP address,
 
 All devices on a network have a MAC address. As our sensor node (Raspberry Pi 4 Model B 4GB) is connected to a network it will also have a MAC address. As multiple other devices are also connected to the network, the sensor node is added to the devices’ ARP table.
 
-##Approach, architecture and solution
+## Approach, architecture and solution
 The application has two nodes, sensor and visualization nodes. Sensor node is responsible for simulating weather data and the visualization node is responsible for storing, manipulating and presenting the simulated data. 
 
-###Sensor Node
+### Sensor Node
 The sensor node is separated from the visualization node. The data simulation is implemented using Python and is running on a Raspberry Pi. As mentioned above the responsibility of the sensor node is to simulate weather data and send it to the visualization node. The data is simulated based on models which can be compared to the average weather in Ålesund. The simulation models were created by looking at the weather data from multiple different sources like yr.no and storm.no.
 
 It sends the data through the MQTT server which is provided by NTNU to any subscriber of the topic. The data is simulated based on different metrics and it takes into account regular weather data and spike data which can occur occasionally. How often the sensor node publishes its data to the topic is depending on weights set in the configuration of the sensor node. But the base setting is to send every 15 minutes, which the visualization node expects it to be.
 
-###Visualization Node
+### Visualization Node
 https://mobidev.biz/wp-content/uploads/2021/07/spa-web-app-architecture-diagram.jpg 
 Bilde fra mobidev.biz
 
@@ -47,7 +47,7 @@ The back-end consists of two layers Business Layer and Data Layer. The Business 
 
 The Data Layer consists of all the packages in the data package. The databasehandler package in the data package is responsible for creating a connection with the database and providing the needed query methods. In this simple project we chose to use SQLite to store and manage the weather data. The Data Layer is dependent on the database file which is located on src/main/resources/database.
 
-##Excellent features
+## Excellent features
 When it comes to SQL and database we have a Java class that is responsible for all queries and writing to the database. 
 
 In the database we store time in milliseconds, temperature in Celsius, precipitation in millimeters, air pressure in hectoPascals, wind speed in meters per second and wind direction in degrees. 
@@ -58,13 +58,13 @@ To display the information we use a website. The first page contains the next fe
 
 To create a secure, encrypted connection, messages are encrypted using public-key cryptography with RSA. The public and private keypairs are 4096-bit, and generated at first use of the software. The keypairs are stored in the same folder as the program running, either the visualization node or the sensor node. The private key will be stored as a PKCS8 formatted PEM file encoding while the public key will use OpenSSH both for its formatting and file encoding. 
 
-##Result
+## Result
 
 We have built a functional, responsive full-stack web application which is accessible to anyone in the world on the following address: http://129.241.152.42/. 
 
 Our application starts by simulating data in the sensor node, which it generates every 15 minutes. The back-end then collects and stores the data in a database. We query the data from the database, and it’s sorted through algorithms using statistics to filter out spikes. We also use the data to predict future weather data, using Time Series and Autoregressive integrated moving average model. The program looks at the data and maps it to a corresponding weather type. It’s sent to the web server, which displays the data on the website. 
 
-##Reflection & Improvements
+## Reflection & Improvements
 We mostly were able to keep to the original plan, with minimal changes in which functions we needed. However, we could have made an even more detailed plan, to optimize the working process more. 
 
 Certain group members could have made more issues on GitHub. Generally, we communicated well when we needed someone to make a new functionality to their part of the application. 
