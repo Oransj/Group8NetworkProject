@@ -59,6 +59,8 @@ To create a secure, encrypted connection, messages are encrypted using public-ke
 
 ## Result
 
+  ![alt text](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/3.%20sprint/Website%20page%202.png?raw=true)
+  
 We have built a functional, responsive full-stack web application which is accessible to anyone in the world on the following address: http://129.241.152.42/. 
 
 Our application starts by simulating data in the sensor node, which it generates every 15 minutes. The back-end then collects and stores the data in a database. We query the data from the database, and it’s sorted through algorithms using statistics to filter out spikes. We also use the data to predict future weather data, using Time Series and Autoregressive integrated moving average model. The program looks at the data and maps it to a corresponding weather type. It’s sent to the web server, which displays the data on the website. 
