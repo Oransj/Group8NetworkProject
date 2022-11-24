@@ -34,8 +34,7 @@ The sensor node is separated from the visualization node. The data simulation is
 It sends the data through the MQTT server which is provided by NTNU to any subscriber of the topic. The data is simulated based on different metrics and it takes into account regular weather data and spike data which can occur occasionally. How often the sensor node publishes its data to the topic is depending on weights set in the configuration of the sensor node. But the base setting is to send every 15 minutes, which the visualization node expects it to be.
 
 ### Visualization Node
-https://mobidev.biz/wp-content/uploads/2021/07/spa-web-app-architecture-diagram.jpg 
-Bilde fra mobidev.biz
+![Visualiaztion Node Explanation](https://mobidev.biz/wp-content/uploads/2021/07/spa-web-app-architecture-diagram.jpg) 
 
 The picture above describes the architecture of the visualization node quite well. The visualization node of the weather application is a web-based application consisting of presentation, business and data layers.
 
