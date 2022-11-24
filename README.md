@@ -26,6 +26,7 @@ As people from all over the world can connect to our website with an IP address,
 All devices on a network have a MAC address. As our sensor node (Raspberry Pi 4 Model B 4GB) is connected to a network it will also have a MAC address. As multiple other devices are also connected to the network, the sensor node is added to the devices’ ARP table.
 
 ## Approach, architecture and solution
+![Project Structure Plan Diagram](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/1.%20sprint/Planning/Structure%20Plan.png)
 The application has two nodes, sensor and visualization nodes. Sensor node is responsible for simulating weather data and the visualization node is responsible for storing, manipulating and presenting the simulated data. 
 
 ### Sensor Node
