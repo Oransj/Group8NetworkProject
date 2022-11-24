@@ -59,7 +59,7 @@ To create a secure, encrypted connection, messages are encrypted using public-ke
 
 ## Result
 
-  ![alt text](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/3.%20sprint/Website%20page%202.png?raw=true)
+  ![A picture of multiple tables with weather data and a graph showing the temperature and another graph showing the precipitation](https://github.com/Oransj/Group8NetworkProject/blob/main/documentation/3.%20sprint/Website%20page%202.png?raw=true)
   
 We have built a functional, responsive full-stack web application which is accessible to anyone in the world on the following address: http://129.241.152.42/. 
 
