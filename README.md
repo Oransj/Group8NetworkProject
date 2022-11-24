@@ -86,4 +86,4 @@ If we knew more about how the data correlates to weather, we could better predic
 On the website, it would be better if we didn’t just show when the page was last refreshed, but also when the data was last updated in the database. If the data is not updated in a long time, the “last updated” portion could become very misleading. 
   
   ## References
-  
+  Mobidev.biz (2021) *Spa web app architecture diagram* [Website]. Found at https://mobidev.biz/wp-content/uploads/2021/07/spa-web-app-architecture-diagram.jpg (Downloaded 24.11.2022)
