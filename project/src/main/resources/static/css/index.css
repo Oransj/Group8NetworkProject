@@ -64,7 +64,7 @@
     grid-row: 6 / 7;
     color: rgb(var(--clr-primary-2));
     font-weight: 700;
-    filter: drop-shadow(0 0 2px rgba(var(--clr-primary-1), 0.5));
+    filter: drop-shadow(0 0 2px rgba(var(--clr-primary-1), 1));
 }
 
 .weather-card--min-temp {
