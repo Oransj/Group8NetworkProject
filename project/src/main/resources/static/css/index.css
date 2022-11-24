@@ -1,6 +1,7 @@
 .weather-card-container {
     width: 90vw;
     margin: 10vh auto;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
