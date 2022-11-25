@@ -6,9 +6,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
 
 public class MQTTListener implements Runnable {
-
-    private static final String broker = "tcp://129.241.152.12:1883";
-    private final String username;
+    private final String broker;
     private final String password;
     private static int clientNumber;
     private final String clientId;
@@ -18,11 +16,9 @@ public class MQTTListener implements Runnable {
 
     /**
      * Constructor for the MQTTListener class
-     *
-     * @param username The username for the MQTT broker
      */
-    public MQTTListener(String username) {
-        this.username = username;
+    public MQTTListener() {
+        this.broker = "tcp://129.241.152.12:1883";
         this.password = "public";
         this.clientId = "client" + clientNumber;
         clientNumber++;
@@ -44,9 +40,9 @@ public class MQTTListener implements Runnable {
     }
 
     private void connect() throws MqttException {
-        MqttClient client = new MqttClient(broker, username);
+        MqttClient client = new MqttClient(this.broker, this.topic);
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setUserName(username);
+        options.setUserName(broker);
         options.setPassword(password.toCharArray());
         options.setCleanSession(true);
         options.setAutomaticReconnect(true);
@@ -77,11 +73,5 @@ public class MQTTListener implements Runnable {
 
         client.connect(options);
         client.subscribe(this.topic, this.qos);
-    }
-
-    public static void main(String[] args) {
-        MQTTListener listener = new MQTTListener(broker);
-        Thread thread = new Thread(listener);
-        thread.start();
     }
 }

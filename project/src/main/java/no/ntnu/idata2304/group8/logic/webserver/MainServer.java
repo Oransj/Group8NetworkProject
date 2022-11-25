@@ -17,7 +17,7 @@ public class MainServer {
 
   public static void main(String[] args) {
     SpringApplication.run(MainServer.class, args);
-    MQTTListener listener = new MQTTListener("admin");
+    MQTTListener listener = new MQTTListener();
     Thread thread = new Thread(listener);
     thread.start();
   }
