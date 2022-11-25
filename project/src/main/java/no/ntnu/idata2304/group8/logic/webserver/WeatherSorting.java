@@ -386,6 +386,16 @@ public class WeatherSorting {
         return previousTenWindSpeed;
     }
 
+    public double[] getLastTenWindDirection(List<JSONObject> jsons) {
+        double[] previousTenWindDirection = new double[10];
+
+        for (int i = 0; i < previousTenWindDirection.length; i++){
+            previousTenWindDirection[i] = Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_direction").toString());
+        }
+
+        return previousTenWindDirection;
+    }
+
 
 
 
