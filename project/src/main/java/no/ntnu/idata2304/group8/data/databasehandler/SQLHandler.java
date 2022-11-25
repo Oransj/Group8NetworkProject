@@ -22,6 +22,7 @@ public class SQLHandler {
         // Location of SQLlite database
 //        String fileName = "project/src/main/resources/database/test.db";
         String fileName = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and network programming\\Group8NetworkProject\\project\\src\\main\\resources\\database\\test.db";
+//        String fileName = "/home/ubuntu/project/src/main/resources/database/test.db";
         String url = "jdbc:sqlite:" + fileName;
         Connection connection = null;
         try {

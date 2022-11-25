@@ -68,7 +68,7 @@ window.onload = async function () {
     const dayRapport = await axios({
       method: 'POST',
       url: 'http://127.0.0.1:8080/api/getDayRapport',
-      // url: 'http://129.241.152.42:80/api/getDayRapport',
+      // url: 'http://129.241.152.42/api/getDayRapport',
       data: [
         hour00.toString(),
         hour01.toString(),
@@ -101,7 +101,7 @@ window.onload = async function () {
     const dayRapportType = await axios({
       method: 'POST',
       url: 'http://127.0.0.1:8080/api/getWeatherTypeDayRapport',
-      // url: 'http://129.241.152.42:80/api/getWeatherTypeDayRapport',
+      // url: 'http://129.241.152.42/api/getWeatherTypeDayRapport',
       data: [
         hour00.toString(),
         hour01.toString(),
@@ -227,13 +227,18 @@ function insertForecastTableRow(time, weatherType, temp, rainAmount, windAmount,
         <img src="../img/static/${weatherType}.svg">
       </td>
       <td>${temp}&#176C</td>
-      <td>${rainAmount}mm</td>
+      <td>${roundTwoDecimals(rainAmount)}mm</td>
       <td>
-        <div>${windAmount}m/s<img style="transform: rotate(${windDirection}deg)" src="../img/static/arrow.svg"></div>
+        <div>${roundTwoDecimals(windAmount)}m/s<img style="transform: rotate(${windDirection-90}deg); margin: 0 5px" src="../img/static/arrow.svg"></div>
       </td>
     </tr>
   `;
 }
+
+function roundTwoDecimals(number) {
+  return (Math.round(number * 100) / 100).toFixed(2);
+}
+
 
 /* Render graphs */
 function arrayToSeries(type, array) {

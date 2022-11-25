@@ -77,7 +77,7 @@ async function getDataFromAPI() {
     const frontPageData = await axios({
         method: 'POST',
         url: 'http://127.0.0.1:8080/api/getData',
-        // url: 'http://129.241.152.42:80/api/getData',
+        // url: 'http://129.241.152.42/api/getData',
         data: [
             todayMs.toString(),
             day2Ms.toString(),
@@ -90,7 +90,7 @@ async function getDataFromAPI() {
     const frontPageType = await axios({
         method: 'POST',
         url: 'http://127.0.0.1:8080/api/getWeatherType',
-        // url: 'http://129.241.152.42:80/api/getWeatherType',
+        // url: 'http://129.241.152.42/api/getWeatherType',
         data: [
             todayMs.toString(),
             day2Ms.toString(),
