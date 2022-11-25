@@ -73,7 +73,7 @@ class weights:
                                     [161.00, 29.2], [169.00, None], [149.00, None], [176.00, None]]
         self.chance_of_continued_rain = 0.85
         #How often the sensor node should update the weather data in minutes.
-        self.minutes_update = 2
+        self.minutes_update = 15
         #Sleep time for each weather update check in seconds.
         self.sleep_time = 30
         
@@ -309,7 +309,7 @@ class temperature_simulation:
 class mqtt_client:
     def __init__(self):
         self.client = mqtt.Client()
-        self.topic = "ntnu/ankeret/c220/multisensor/gruppe8/"
+        self.topic = "ntnu/ankeret/c220/gruppe8/multisensor/"
         self.sensorID = "0601holmes"
         self.client.on_connect = self.on_connect
         self.client.connect("129.241.152.12", 1883, 60)
@@ -473,7 +473,10 @@ class lux_simulation():
         min, max = self.min_max_light(time_now)
         print(min, max)
         if(precipitation > 0):
-            max = max - ((max-min)/4)*precipitation
+            current_time = time_now.hour + time_now.minute/60
+            max = min
+            max = max/(precipitation**(1/2))/2 + 1
+            min = 160 * sin(current_time/12 * pi - 6 * pi/12) + 160.0001
         else:
             min = min + ((max-min)/uniform(0.9, 3))
         print(f"new min: {min}, new max: {max}")
@@ -490,8 +493,8 @@ class lux_simulation():
             float|float: The min and max lux.
         """        
         current_time = time_now.hour + time_now.minute/60
-        max = 50000 * sin(current_time/12 * pi - 6 * pi/12) + 50001
-        min = 16000 * sin(current_time/12 * pi - 6 * pi/12) + 16000.0001
+        max = 10000 * sin(current_time/12 * pi - 6 * pi/12) + 10001
+        min = 500 * sin(current_time/12 * pi - 6 * pi/12) + 500.0001
         return min, max
       
 def main():
@@ -507,7 +510,7 @@ def main():
     else:
         storm = False
     percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-    percipitation_now = percipitation_today[now.hour]
+    percipitation_now = percipitation_today[now.hour] * (weights().minutes_update/60)
     lux_sim = lux_simulation()
     lux_now = lux_sim.simulate_lux(percipitation_now)
     temp_sim = temperature_simulation()
@@ -521,7 +524,6 @@ def main():
     weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
     mqtt_cli = mqtt_client()
     next_time = now + datetime.timedelta(minutes=weights().minutes_update)
-    next_time = next_time.time().minute
     mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
     
     while(True):
@@ -537,10 +539,10 @@ def main():
             else:
                 storm = False
             percipitation_today = percipitation_sim.generate_percipitation_today(percipitation_today)
-        if(next_time <= now.minute):
+        if(next_time <= now):
             print("Creating new data")
             time = now.time()
-            percipitation_now = percipitation_today[now.hour]
+            percipitation_now = percipitation_today[now.hour]  * (weights().minutes_update/60)
             lux_sim = lux_simulation()
             lux_now = lux_sim.simulate_lux(percipitation_now)
             temp_sim = temperature_simulation()
@@ -556,7 +558,7 @@ def main():
             print("Data published")
             next_time = datetime.datetime.now() + datetime.timedelta(minutes=weights().minutes_update)
             print(f"Next update at {next_time}")
-            next_time = next_time.time().minute
+            
         print("sleeping " + str(now))
         t.sleep(weights().sleep_time)
         now = datetime.datetime.now()
