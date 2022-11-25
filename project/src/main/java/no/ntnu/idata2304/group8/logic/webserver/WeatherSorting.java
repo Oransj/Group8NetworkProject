@@ -376,6 +376,18 @@ public class WeatherSorting {
         return previousTenValues;
     }
 
+    public double[] getLastTenWindSpeed(List<JSONObject> jsons) {
+        double[] previousTenWindSpeed = new double[10];
+
+        for (int i = 0; i < previousTenWindSpeed.length; i++){
+            previousTenWindSpeed[i] = Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_speed").toString());
+        }
+
+        return previousTenWindSpeed;
+    }
+
+
+
 
 
     public void saveData(JSONObject jsonObject) throws ParseException {
