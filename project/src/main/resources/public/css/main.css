@@ -59,7 +59,6 @@ header {
 .logo {
     height: 70px;
     margin: 10px;
-    aspect-ratio: inherit;
     float: left;
 }
 
@@ -75,9 +74,8 @@ footer {
 }
 
 .time-updated {
-    color: rgb(var(--clr-secondary-1));
+    color: rgb(var(--clr-primary-1));
     font-size: var(--fs-small);
-    filter: drop-shadow(0 0 0.1em rgb(var(--clr-primary-2)));
 }
 
 /* Scrollbar */
