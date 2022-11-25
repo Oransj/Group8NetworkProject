@@ -396,7 +396,22 @@ public class WeatherSorting {
         return previousTenWindDirection;
     }
 
+    public void predict(JSONObject jsonObject) {
+        JSONObject currentObject = jsonObject;
+        Long currentObjectTime = Long.parseLong(currentObject.getJSONObject("Reading1").getJSONObject("Time").get("ms").toString());
 
+        List<JSONObject> jsons = getLastNineObjects(currentObjectTime);
+        jsons.add(currentObject.getJSONObject("Reading1"));
+
+
+
+        System.out.println(predictValue(getLastTenValues(jsons, "Temperature")));
+        System.out.println(predictValue(getLastTenValues(jsons, "Precipitation")));
+        System.out.println(predictValue(getLastTenValues(jsons, "Air_pressure")));
+        System.out.println(predictValue(getLastTenValues(jsons, "Light")));
+        System.out.println(predictValue(getLastTenWindSpeed(jsons)));
+        System.out.println(predictValue(getLastTenWindDirection(jsons)));
+    }
 
 
 
