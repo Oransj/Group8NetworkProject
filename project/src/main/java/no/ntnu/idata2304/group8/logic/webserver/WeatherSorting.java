@@ -1,10 +1,10 @@
-package no.ntnu.idata2304.group8.webserver;
+package no.ntnu.idata2304.group8.logic.webserver;
 
 import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
-import no.ntnu.idata2304.group8.databasehandler.SQLHandler;
-import no.ntnu.idata2304.group8.weather.WeatherSummary;
+import no.ntnu.idata2304.group8.data.databasehandler.SQLHandler;
+import no.ntnu.idata2304.group8.logic.weather.WeatherSummary;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -317,15 +317,9 @@ public class WeatherSorting {
         return spike;
     }
 
-    public List<JSONObject> getLastNine(Long ms) {
+    public List<JSONObject> getLastNineObjects(Long ms) {
         ArrayList<JSONObject> objects = new ArrayList<>();
-        Long time = ms;
-
-        for (int i = 1; i < 10; i++) {
-            time -= 3600000;
-            JSONObject json = new JSONObject(sqlHandler.select(time));
-            objects.add(json);
-        }
+        sqlHandler.selectLastNine(ms).forEach(jsonString -> objects.add(new JSONObject(jsonString)));
 
         return  objects;
     }
@@ -355,14 +349,44 @@ public class WeatherSorting {
         return Double.parseDouble(decimalFormat.format(forecastData[0]));
     }
 
-    public void saveData(JSONObject jsonObject) throws ParseException {
-        JSONParser parser = new JSONParser();
-        org.json.simple.JSONObject object = (org.json.simple.JSONObject) parser.parse(jsonObject.toString());
-        if (isSpike(jsonObject)) {
-            sqlHandler.addData(object, "spike");
-        } else {
-            sqlHandler.addData(object, "weather");
-//            predict(jsonObject);
+    public double[] getLastTenValues(List<JSONObject> jsons, String attributeName) {
+        // TODO: use data with a wider range
+        double[] previousTenValues = new double[10];
+        String unit = null;
+
+        switch (attributeName) {
+            case "Temperature":
+                unit = "celsius";
+                break;
+            case "Precipitation":
+                unit = "mm";
+                break;
+            case "Air_pressure":
+                unit = "hPa";
+                break;
+            case "Light":
+                unit = "lux";
+                break;
         }
+
+        for (int i = 0; i < previousTenValues.length; i++){
+            previousTenValues[i] = Double.parseDouble(jsons.get(i).getJSONObject(attributeName).get(unit).toString());
+        }
+
+        return previousTenValues;
+    }
+
+
+
+    public void saveData(JSONObject jsonObject) throws ParseException {
+//        predict(jsonObject);
+//        JSONParser parser = new JSONParser();
+//        org.json.simple.JSONObject object = (org.json.simple.JSONObject) parser.parse(jsonObject.toString());
+//        if (isSpike(jsonObject)) {
+//            sqlHandler.addData(object, "spike");
+//        } else {
+//            sqlHandler.addData(object, "weather");
+//            predict(jsonObject);
+//        }
     }
 }
