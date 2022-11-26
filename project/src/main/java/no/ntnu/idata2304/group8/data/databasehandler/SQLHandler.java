@@ -196,10 +196,10 @@ public class SQLHandler {
         return builder.toString();
     }
 
-    public List<String> selectLastNine(Long ms){
+    public List<String> selectLastTen(Long ms){
         String sql = "SELECT * " +
                 "FROM weather " +
-                "DESC LIMIT 9";
+                "DESC LIMIT 10";
         ArrayList<String> jArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt  = connection.createStatement();
