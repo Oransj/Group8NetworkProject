@@ -45,7 +45,7 @@ public class SQLHandler {
             JSONObject object = (JSONObject) jsonObject.get(read);
             JSONObject time = (JSONObject) object.get("Time");
             JSONObject temperature = (JSONObject) object.get("Temperature");
-            JSONObject precipitaion = (JSONObject) object.get("Precipitaion");
+            JSONObject precipitaion = (JSONObject) object.get("Precipitation");
             JSONObject air_pressure = (JSONObject) object.get("Air_pressure");
             JSONObject light = (JSONObject) object.get("Light");
             JSONObject wind = (JSONObject) object.get("Wind");
@@ -165,7 +165,7 @@ public class SQLHandler {
     public String selectLast(){
         String sql = "SELECT * " +
                 "FROM weather " +
-                "DESC LIMIT 1";
+                "WHERE Time=(SELECT max(Time) FROM weather)";
         JsonObject builder = null;
         try (Connection connection = this.connect();
              Statement stmt  = connection.createStatement();
@@ -199,7 +199,7 @@ public class SQLHandler {
     public List<String> selectLastTen(Long ms){
         String sql = "SELECT * " +
                 "FROM weather " +
-                "DESC LIMIT 10";
+                "ORDER BY Time DESC LIMIT 10";
         ArrayList<String> jArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt  = connection.createStatement();
