@@ -60,6 +60,7 @@ public class MQTTListener implements Runnable {
      */
     
     public MQTTListener(String username) {
+        sensors = new HashMap<>();
         this.username = username;
         this.password = "public";
         this.clientId = "client" + clientNumber;
@@ -183,7 +184,7 @@ public class MQTTListener implements Runnable {
                 }
                 else {
                     try {
-                        Cipher decrypt = Cipher.getInstance("RSA");
+                        Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
                         decrypt.init(Cipher.DECRYPT_MODE, privateKey);
                         msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
                         JSONParser parser = new JSONParser();
@@ -197,9 +198,14 @@ public class MQTTListener implements Runnable {
                     } catch (InvalidKeyException e) {
                         System.err.println("Invalid key");
                         throw new RuntimeException(e);
-                    } catch (IllegalBlockSizeException | BadPaddingException e) {
-                        //TODO: Figure out how to correctly handle these exceptions
+                    } catch (IllegalBlockSizeException e) {
+                        System.out.println("Illegal block size");
                         throw new RuntimeException(e);
+                    } catch (BadPaddingException e) {
+                        System.out.println("Bad padding");
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        System.out.println(e.getClass().getName());
                     }
                 }
 

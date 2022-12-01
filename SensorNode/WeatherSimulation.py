@@ -627,7 +627,7 @@ def main():
                        padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
                         algorithm=hashes.SHA256(),
                         label=None))
-    
+    print(messageBytes.__len__())
     mqtt_cli.publish(messageBytes.decode("utf-8", errors="ignore"))
     
     while(True):
@@ -669,7 +669,7 @@ def main():
         
 def create_spikes(check_weather : weather) -> weather:
     values = [check_weather.temperature, check_weather.precipitation, check_weather.lux, check_weather.pascal, check_weather.wind_speed, check_weather.winddir]
-    if(randrange(100) <= 10):
+    if(randrange(100) <= 1):
         random_val = randrange(6)
         print(f"spike in {random_val}")
         values[random_val] = values[random_val]*randrange(10,20)
