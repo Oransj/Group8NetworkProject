@@ -9,8 +9,13 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class WeatherSorting {
@@ -291,7 +296,7 @@ public class WeatherSorting {
     public boolean isSpike(JSONObject jsonObject) {
         // current data
         Double tempCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Temperature").get("celsius").toString());
-        Double precipCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Precipitaion").get("mm").toString());
+        Double precipCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Precipitation").get("mm").toString());
         Double pressCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Air_pressure").get("hPa").toString());
         Double lightCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Light").get("lux").toString());
         Double speedCurrent = Double.parseDouble(jsonObject.getJSONObject("Reading1").getJSONObject("Wind").get("W_speed").toString());
@@ -300,26 +305,26 @@ public class WeatherSorting {
         JSONObject json = new JSONObject(sqlHandler.selectLast());
         Double temp = Double.parseDouble(json.getJSONObject("Temperature").get("celsius").toString());
         Double precip = Double.parseDouble(json.getJSONObject("Precipitation").get("mm").toString());
-        Double press = Double.parseDouble(json.getJSONObject("Air_Pressure").get("hPa").toString());
+        Double press = Double.parseDouble(json.getJSONObject("Air_pressure").get("hPa").toString());
         Double light = Double.parseDouble(json.getJSONObject("Light").get("lux").toString());
         Double speed = Double.parseDouble(json.getJSONObject("Wind").get("W_speed").toString());
 
         boolean spike = false;
 
-        if (tempCurrent >= (temp * 10) ||
-                precipCurrent >= (precip * 10) ||
-                pressCurrent >= (press * 20) ||
-                lightCurrent >= (light * 10) ||
-                speedCurrent >= (speed * 10)) {
+        if (tempCurrent > (temp * 10) ||
+                precipCurrent > (precip * 10) ||
+                pressCurrent > (press * 20) ||
+                lightCurrent > (light * 10) ||
+                speedCurrent > (speed * 10)) {
             spike = true;
         }
 
         return spike;
     }
 
-    public List<JSONObject> getLastNineObjects(Long ms) {
+    public List<JSONObject> getLastTenObjects(Long ms) {
         ArrayList<JSONObject> objects = new ArrayList<>();
-        sqlHandler.selectLastNine(ms).forEach(jsonString -> objects.add(new JSONObject(jsonString)));
+        sqlHandler.selectLastTen(ms).forEach(jsonString -> objects.add(new JSONObject(jsonString)));
 
         return  objects;
     }
@@ -396,34 +401,100 @@ public class WeatherSorting {
         return previousTenWindDirection;
     }
 
-    public void predict(JSONObject jsonObject) {
-        JSONObject currentObject = jsonObject;
-        Long currentObjectTime = Long.parseLong(currentObject.getJSONObject("Reading1").getJSONObject("Time").get("ms").toString());
+    public void predict() throws ParseException, java.text.ParseException {
+        Long currentObjectTime = Long.parseLong(new JSONObject(sqlHandler.selectLast()).getJSONObject("Time").get("ms").toString());
+        DateFormat obj = new SimpleDateFormat("dd MM yyyy HH mm");
+        Date res = new Date(currentObjectTime);
+        String[] date = obj.format(res).split(" ");
+        Integer day = Integer.parseInt(date[0])+1;
+        Integer month = Integer.parseInt(date[1]);
+        Integer year = Integer.parseInt(date[2]);
 
-        List<JSONObject> jsons = getLastNineObjects(currentObjectTime);
-        jsons.add(currentObject.getJSONObject("Reading1"));
+        int hourMs = 3600000;
 
+        while (res.getTime() < (obj.parse(day + " " + month + " " + year + " " + 0 + " " + 0).getTime())) {
+            List<JSONObject> jsons = getLastTenObjects(currentObjectTime);
+            res = new Date(currentObjectTime += hourMs);
+            double predictedTemperature = predictValue(getLastTenValues(jsons, "Temperature"));
+            double predictedPrecipitation = predictValue(getLastTenValues(jsons, "Precipitation"));
+            double predictedAirPressure = predictValue(getLastTenValues(jsons, "Air_pressure"));
+            double predictedLight = predictValue(getLastTenValues(jsons, "Light"));
+            double predictedWindSpeed = predictValue(getLastTenWindSpeed(jsons));
+            double predictedWindDirection = predictValue(getLastTenWindDirection(jsons));
 
+            JsonObject json = Json.createObjectBuilder()
+                    .add("Reading1",
+                            Json.createObjectBuilder()
+                                    .add("Time", Json.createObjectBuilder()
+                                            .add("ms", currentObjectTime))
+                                    .add("Temperature", Json.createObjectBuilder()
+                                            .add("celsius", predictedTemperature))
+                                    .add("Precipitation", Json.createObjectBuilder()
+                                            .add("mm", predictedPrecipitation))
+                                    .add("Air_pressure", Json.createObjectBuilder()
+                                            .add("hPa", predictedAirPressure))
+                                    .add("Light", Json.createObjectBuilder()
+                                            .add("lux", predictedLight))
+                                    .add("Wind", Json.createObjectBuilder()
+                                            .add("W_speed", predictedWindSpeed)
+                                            .add("W_direction", predictedWindDirection)))
+                    .build();
+            JSONParser parser = new JSONParser();
+            org.json.simple.JSONObject jsonDB = (org.json.simple.JSONObject) parser.parse(json.toString());
+            sqlHandler.addData(jsonDB, "weather");
+//            if (!isSpike(new JSONObject(jsonDB))) {
+//                sqlHandler.addData(jsonDB, "weather");
+//            } else {
+//                res = new Date(currentObjectTime -= hourMs);
+//            }
 
-        System.out.println(predictValue(getLastTenValues(jsons, "Temperature")));
-        System.out.println(predictValue(getLastTenValues(jsons, "Precipitation")));
-        System.out.println(predictValue(getLastTenValues(jsons, "Air_pressure")));
-        System.out.println(predictValue(getLastTenValues(jsons, "Light")));
-        System.out.println(predictValue(getLastTenWindSpeed(jsons)));
-        System.out.println(predictValue(getLastTenWindDirection(jsons)));
+        }
+
     }
 
 
 
-    public void saveData(JSONObject jsonObject) throws ParseException {
-//        predict(jsonObject);
-//        JSONParser parser = new JSONParser();
-//        org.json.simple.JSONObject object = (org.json.simple.JSONObject) parser.parse(jsonObject.toString());
-//        if (isSpike(jsonObject)) {
-//            sqlHandler.addData(object, "spike");
-//        } else {
-//            sqlHandler.addData(object, "weather");
-//            predict(jsonObject);
-//        }
+    public void saveData(JSONObject jsonObject) throws ParseException, java.text.ParseException {
+        // Saving the given object in a variable
+        JSONObject currentObject = jsonObject;
+
+        // Making a DB suitable copy of the object (simple json)
+        JSONParser parser = new JSONParser();
+        org.json.simple.JSONObject currentObjectDB = (org.json.simple.JSONObject) parser.parse(currentObject.toString());
+
+        Long currentObjectTime = Long.parseLong(currentObject.getJSONObject("Reading1").getJSONObject("Time").get("ms").toString());
+        int hourMs = 3600000;
+        int dayMs = 86400000;
+
+        if (isSpike(currentObject)) {
+            sqlHandler.addData(currentObjectDB, "spike");
+        }
+
+        // If the given object with the given time doesn't exist in DB
+        if (sqlHandler.select(currentObjectTime).equals("null")) {
+            sqlHandler.addData(currentObjectDB, "weather");
+
+            // If there is no object in the DB for the next hour => no objects for the coming days
+            if (sqlHandler.select(currentObjectTime + hourMs).equals("null")) {
+                // predict for the rest of the current day and 3 days ahead.
+                for (int i = 0; i <= 3; i++) {
+                    predict();
+                }
+            }
+
+            // If there is no object in the DB for the 4th day
+            if (sqlHandler.select(currentObjectTime + (3 * dayMs)).equals("null")) {
+                // predict for the 4th day only
+                predict();
+            }
+        }
+
+        // if the given object with the given time exists in the DB
+        if (!sqlHandler.select(currentObjectTime).equals("null")) {
+            // delete it, because it's a prediction
+            sqlHandler.delete(currentObjectTime);
+            // save the actual object instead
+            sqlHandler.addData(currentObjectDB, "weather");
+        }
     }
 }
