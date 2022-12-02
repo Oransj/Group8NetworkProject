@@ -1,4 +1,4 @@
-package no.ntnu.idata2304.group8.MQTT;
+package no.ntnu.idata2304.group8.logic.MQTT;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;

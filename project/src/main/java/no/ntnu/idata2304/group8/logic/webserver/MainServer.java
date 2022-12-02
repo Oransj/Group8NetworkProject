@@ -26,7 +26,7 @@ public class MainServer {
     SQLHandler sqlHandler = new SQLHandler();
     // The day at 00:00 in ms - 900000 ms
     // the DB will be filled with data every 15min until 00:00 excluded
-    Long num = 1668379500000L;
+    Long num = 1669934700000L;
     for (int i = 0; i < 384; i++) {
       num += 900000;
       ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -37,7 +37,7 @@ public class MainServer {
                                       .add("ms", num))
                               .add("Temperature", Json.createObjectBuilder()
                                       .add("celsius", random.nextInt(15, 30)))
-                              .add("Precipitaion", Json.createObjectBuilder()
+                              .add("Precipitation", Json.createObjectBuilder()
                                       .add("mm", random.nextDouble(0, 3)))
                               .add("Air_pressure", Json.createObjectBuilder()
                                       .add("hPa", random.nextInt(500, 3000)))

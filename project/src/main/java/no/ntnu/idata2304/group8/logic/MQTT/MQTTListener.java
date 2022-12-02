@@ -6,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.simple.JSONObject;
+//import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import no.ntnu.idata2304.group8.logic.webserver.WeatherSorting;
 import org.eclipse.paho.client.mqttv3.*;
@@ -57,14 +57,10 @@ public class MQTTListener implements Runnable {
      * The constructor for the MQTTListener class.
      * Sets up the client id and topic.
      *
-     * @param username Username for the MQTT broker
      */
     public MQTTListener() {
-        this.broker = "tcp://129.241.152.12:1883";
-
-    public MQTTListener(String username) {
         sensors = new HashMap<>();
-        this.username = username;
+        this.broker = "tcp://129.241.152.12:1883";
         this.password = "public";
         this.clientId = "client" + clientNumber;
         clientNumber++;
@@ -190,11 +186,10 @@ public class MQTTListener implements Runnable {
                         Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
                         decrypt.init(Cipher.DECRYPT_MODE, privateKey);
                         msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
-                        JSONParser parser = new JSONParser();
-                        JSONObject json = (JSONObject) parser.parse(msg);
-                        System.out.println(json);
 
-                        //TODO:Add json object to database
+                        JSONObject json = new JSONObject(msg);
+                        WeatherSorting weatherSorting = new WeatherSorting();
+                        weatherSorting.saveData(json);
                     } catch (NoSuchAlgorithmException e){
                         System.out.println("No such algorithm, something went HORRIBLY wrong");
                         throw new RuntimeException(e);
@@ -211,10 +206,6 @@ public class MQTTListener implements Runnable {
                         System.out.println(e.getClass().getName());
                     }
                 }
-
-                JSONObject json = new JSONObject(msg);
-                WeatherSorting weatherSorting = new WeatherSorting();
-                weatherSorting.saveData(json);
             }
 
             public void deliveryComplete(IMqttDeliveryToken token) {
