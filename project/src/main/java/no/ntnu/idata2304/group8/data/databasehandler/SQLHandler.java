@@ -50,7 +50,7 @@ public class SQLHandler {
             JSONObject light = (JSONObject) object.get("Light");
             JSONObject wind = (JSONObject) object.get("Wind");
 
-            String sql = "INSERT INTO "+database+"(Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO "+database+"(Time, Temperature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
             try (Connection connection = this.connect();
                 PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setLong(1, Long.parseLong(time.get("ms").toString()));
@@ -78,7 +78,7 @@ public class SQLHandler {
      * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
      */
     public ArrayList selectAllBetween(Long dayStart, Long dayEnd, String database){
-        String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir " +
+        String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir " +
                      "FROM " +database+
                      " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
         ArrayList jArray = new ArrayList();
@@ -92,7 +92,7 @@ public class SQLHandler {
                     .add("Time", Json.createObjectBuilder()
                         .add("ms", rs.getLong("Time")))
                     .add("Temperature", Json.createObjectBuilder()
-                        .add("celsius", rs.getLong("Temprature")))
+                        .add("celsius", rs.getLong("Temperature")))
                     .add("Precipitation", Json.createObjectBuilder()
                         .add("mm", rs.getLong("Precipitation")))
                     .add("Air_pressure", Json.createObjectBuilder()
@@ -112,7 +112,7 @@ public class SQLHandler {
     }
 
     public List<Double[]> selectWeatherDataBetween(Long dayStart, Long dayEnd, String database){
-        String sql = "SELECT Temprature, Precipitation, Air_pressure, Light, Wind_Speed " +
+        String sql = "SELECT Temperature, Precipitation, Air_pressure, Light, Wind_Speed " +
                 "FROM " +database+
                 " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
         List<Double[]> dataList = new ArrayList();
@@ -123,7 +123,7 @@ public class SQLHandler {
 
             // loop through the result set
             while (rs.next()) {
-                Double[] data = new Double[]{rs.getDouble("Temprature"),
+                Double[] data = new Double[]{rs.getDouble("Temperature"),
                         rs.getDouble("Precipitation"),
                         rs.getDouble("Air_pressure"),
                         rs.getDouble("Light"),
@@ -138,7 +138,7 @@ public class SQLHandler {
     }
 
     public List<Double[]> selectWeatherRapportBetween(Long dayStart, Long dayEnd, String database){
-        String sql = "SELECT Temprature, Precipitation, Wind_Speed, Wind_dir " +
+        String sql = "SELECT Temperature, Precipitation, Wind_Speed, Wind_dir " +
                 "FROM " +database+
                 " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
         List<Double[]> dataList = new ArrayList();
@@ -149,7 +149,7 @@ public class SQLHandler {
 
             // loop through the result set
             while (rs.next()) {
-                Double[] data = new Double[]{rs.getDouble("Temprature"),
+                Double[] data = new Double[]{rs.getDouble("Temperature"),
                         rs.getDouble("Precipitation"),
                         rs.getDouble("Wind_Speed"),
                         rs.getDouble("Wind_dir")
@@ -177,7 +177,7 @@ public class SQLHandler {
                         .add("Time", Json.createObjectBuilder()
                                 .add("ms", rs.getLong("Time")))
                         .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getDouble("Temprature")))
+                                .add("celsius", rs.getDouble("Temperature")))
                         .add("Precipitation", Json.createObjectBuilder()
                                 .add("mm", rs.getDouble("Precipitation")))
                         .add("Air_pressure", Json.createObjectBuilder()
@@ -211,7 +211,7 @@ public class SQLHandler {
                         .add("Time", Json.createObjectBuilder()
                                 .add("ms", rs.getLong("Time")))
                         .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getLong("Temprature")))
+                                .add("celsius", rs.getLong("Temperature")))
                         .add("Precipitation", Json.createObjectBuilder()
                                 .add("mm", rs.getLong("Precipitation")))
                         .add("Air_pressure", Json.createObjectBuilder()
@@ -256,7 +256,7 @@ public class SQLHandler {
                         .add("Time", Json.createObjectBuilder()
                                 .add("ms", rs.getLong("Time")))
                         .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getDouble("Temprature")))
+                                .add("celsius", rs.getDouble("Temperature")))
                         .add("Precipitation", Json.createObjectBuilder()
                                 .add("mm", rs.getDouble("Precipitation")))
                         .add("Air_pressure", Json.createObjectBuilder()
@@ -281,7 +281,7 @@ public class SQLHandler {
      * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
      */
     public ArrayList selectAll(String database){
-        String sql = "SELECT Time, Temprature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir FROM " +database;
+        String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir FROM " +database;
         ArrayList jArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt  = connection.createStatement();
@@ -293,7 +293,7 @@ public class SQLHandler {
                     .add("Time", Json.createObjectBuilder()
                         .add("ms", rs.getLong("Time")))
                     .add("Temperature", Json.createObjectBuilder()
-                        .add("celsius", rs.getLong("Temprature")))
+                        .add("celsius", rs.getLong("Temperature")))
                     .add("Precipitation", Json.createObjectBuilder()
                         .add("mm", rs.getLong("Precipitation")))
                     .add("Air_pressure", Json.createObjectBuilder()
