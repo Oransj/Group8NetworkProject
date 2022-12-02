@@ -11,14 +11,14 @@ import java.util.Date;
 import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
-import no.ntnu.idata2304.group8.data.databasehandler.SQLHandler;
+import no.ntnu.idata2304.group8.data.databasehandler.SqlHandler;
 import no.ntnu.idata2304.group8.logic.weather.WeatherSummary;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class WeatherSorting {
-  SQLHandler sqlHandler = new SQLHandler();
+  SqlHandler sqlHandler = new SqlHandler();
   WeatherSummary weatherSummary = new WeatherSummary();
 
   public ArrayList<Double[]> getHomePage(String[] days) {
@@ -83,122 +83,122 @@ public class WeatherSorting {
     List<Double[]> hour0Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[0]), Long.parseLong(hours[1]),
             "weather");
-    Double[] hour0AvgData = weatherSummary.getAverageValuesIDayRapport(hour0Data);
+    Double[] hour0AvgData = weatherSummary.getAverageValuesInDayRapport(hour0Data);
 
     List<Double[]> hour1Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[1]), Long.parseLong(hours[2]),
             "weather");
-    Double[] hour1AvgData = weatherSummary.getAverageValuesIDayRapport(hour1Data);
+    Double[] hour1AvgData = weatherSummary.getAverageValuesInDayRapport(hour1Data);
 
     List<Double[]> hour2Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[2]), Long.parseLong(hours[3]),
             "weather");
-    Double[] hour2AvgData = weatherSummary.getAverageValuesIDayRapport(hour2Data);
+    Double[] hour2AvgData = weatherSummary.getAverageValuesInDayRapport(hour2Data);
 
     List<Double[]> hour3Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[3]), Long.parseLong(hours[4]),
             "weather");
-    Double[] hour3AvgData = weatherSummary.getAverageValuesIDayRapport(hour3Data);
+    Double[] hour3AvgData = weatherSummary.getAverageValuesInDayRapport(hour3Data);
 
     List<Double[]> hour4Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[4]), Long.parseLong(hours[5]),
             "weather");
-    Double[] hour4AvgData = weatherSummary.getAverageValuesIDayRapport(hour4Data);
+    Double[] hour4AvgData = weatherSummary.getAverageValuesInDayRapport(hour4Data);
 
     List<Double[]> hour5Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[5]), Long.parseLong(hours[6]),
             "weather");
-    Double[] hour5AvgData = weatherSummary.getAverageValuesIDayRapport(hour5Data);
+    Double[] hour5AvgData = weatherSummary.getAverageValuesInDayRapport(hour5Data);
 
     List<Double[]> hour6Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[6]), Long.parseLong(hours[7]),
             "weather");
-    Double[] hour6AvgData = weatherSummary.getAverageValuesIDayRapport(hour6Data);
+    Double[] hour6AvgData = weatherSummary.getAverageValuesInDayRapport(hour6Data);
 
     List<Double[]> hour7Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[7]), Long.parseLong(hours[8]),
             "weather");
-    Double[] hour7AvgData = weatherSummary.getAverageValuesIDayRapport(hour7Data);
+    Double[] hour7AvgData = weatherSummary.getAverageValuesInDayRapport(hour7Data);
 
     List<Double[]> hour8Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[8]), Long.parseLong(hours[9]),
             "weather");
-    Double[] hour8AvgData = weatherSummary.getAverageValuesIDayRapport(hour8Data);
+    Double[] hour8AvgData = weatherSummary.getAverageValuesInDayRapport(hour8Data);
 
     List<Double[]> hour9Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[9]), Long.parseLong(hours[10]),
             "weather");
-    Double[] hour9AvgData = weatherSummary.getAverageValuesIDayRapport(hour9Data);
+    Double[] hour9AvgData = weatherSummary.getAverageValuesInDayRapport(hour9Data);
 
     List<Double[]> hour10Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[10]), Long.parseLong(hours[11]),
             "weather");
-    Double[] hour10AvgData = weatherSummary.getAverageValuesIDayRapport(hour10Data);
+    Double[] hour10AvgData = weatherSummary.getAverageValuesInDayRapport(hour10Data);
 
     List<Double[]> hour11Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[11]), Long.parseLong(hours[12]),
             "weather");
-    Double[] hour11AvgData = weatherSummary.getAverageValuesIDayRapport(hour11Data);
+    Double[] hour11AvgData = weatherSummary.getAverageValuesInDayRapport(hour11Data);
 
     List<Double[]> hour12Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[12]), Long.parseLong(hours[13]),
             "weather");
-    Double[] hour12AvgData = weatherSummary.getAverageValuesIDayRapport(hour12Data);
+    Double[] hour12AvgData = weatherSummary.getAverageValuesInDayRapport(hour12Data);
 
     List<Double[]> hour13Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[13]), Long.parseLong(hours[14]),
             "weather");
-    Double[] hour13AvgData = weatherSummary.getAverageValuesIDayRapport(hour13Data);
+    Double[] hour13AvgData = weatherSummary.getAverageValuesInDayRapport(hour13Data);
 
     List<Double[]> hour14Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[14]), Long.parseLong(hours[15]),
             "weather");
-    Double[] hour14AvgData = weatherSummary.getAverageValuesIDayRapport(hour14Data);
+    Double[] hour14AvgData = weatherSummary.getAverageValuesInDayRapport(hour14Data);
 
     List<Double[]> hour15Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[15]), Long.parseLong(hours[16]),
             "weather");
-    Double[] hour15AvgData = weatherSummary.getAverageValuesIDayRapport(hour15Data);
+    Double[] hour15AvgData = weatherSummary.getAverageValuesInDayRapport(hour15Data);
 
     List<Double[]> hour16Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[16]), Long.parseLong(hours[17]),
             "weather");
-    Double[] hour16AvgData = weatherSummary.getAverageValuesIDayRapport(hour16Data);
+    Double[] hour16AvgData = weatherSummary.getAverageValuesInDayRapport(hour16Data);
 
     List<Double[]> hour17Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[17]), Long.parseLong(hours[18]),
             "weather");
-    Double[] hour17AvgData = weatherSummary.getAverageValuesIDayRapport(hour17Data);
+    Double[] hour17AvgData = weatherSummary.getAverageValuesInDayRapport(hour17Data);
 
     List<Double[]> hour18Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[18]), Long.parseLong(hours[19]),
             "weather");
-    Double[] hour18AvgData = weatherSummary.getAverageValuesIDayRapport(hour18Data);
+    Double[] hour18AvgData = weatherSummary.getAverageValuesInDayRapport(hour18Data);
 
     List<Double[]> hour19Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[19]), Long.parseLong(hours[20]),
             "weather");
-    Double[] hour19AvgData = weatherSummary.getAverageValuesIDayRapport(hour19Data);
+    Double[] hour19AvgData = weatherSummary.getAverageValuesInDayRapport(hour19Data);
 
     List<Double[]> hour20Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[20]), Long.parseLong(hours[21]),
             "weather");
-    Double[] hour20AvgData = weatherSummary.getAverageValuesIDayRapport(hour20Data);
+    Double[] hour20AvgData = weatherSummary.getAverageValuesInDayRapport(hour20Data);
 
     List<Double[]> hour21Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[21]), Long.parseLong(hours[22]),
             "weather");
-    Double[] hour21AvgData = weatherSummary.getAverageValuesIDayRapport(hour21Data);
+    Double[] hour21AvgData = weatherSummary.getAverageValuesInDayRapport(hour21Data);
 
     List<Double[]> hour22Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[22]), Long.parseLong(hours[23]),
             "weather");
-    Double[] hour22AvgData = weatherSummary.getAverageValuesIDayRapport(hour22Data);
+    Double[] hour22AvgData = weatherSummary.getAverageValuesInDayRapport(hour22Data);
 
     List<Double[]> hour23Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[23]), Long.parseLong(hours[24]),
             "weather");
-    Double[] hour23AvgData = weatherSummary.getAverageValuesIDayRapport(hour23Data);
+    Double[] hour23AvgData = weatherSummary.getAverageValuesInDayRapport(hour23Data);
 
     ArrayList<Double[]> avgHoursData = new ArrayList<>();
     avgHoursData.add(hour0AvgData);
