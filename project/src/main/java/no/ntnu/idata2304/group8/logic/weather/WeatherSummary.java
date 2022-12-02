@@ -87,7 +87,7 @@ public class WeatherSummary {
      * @return  An array of double values in the format
      *          {temperature, precipitation, windSpeed, windDirection}.
      */
-    public Double[] getAverageValuesIDayRapport(List<Double[]> dataRows) {
+    public Double[] getAverageValuesInDayRapport(List<Double[]> dataRows) {
         if (dataRows == null || dataRows.isEmpty()) {
             throw new IllegalArgumentException("Data rows cannot be null or empty.");
         }
