@@ -1,4 +1,4 @@
-# Group8NetworkProject# Forecast Website
+# Forecast Website
 ## Introduction
 Our project concept is an application that collects data such as temperature, precipitation, pressure, light and wind (strength and direction), and uses this data to showcase what type of weather is in the area onto a website. It also uses statistics to predict the future weather. 
 
