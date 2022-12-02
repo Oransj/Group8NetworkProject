@@ -5,6 +5,14 @@ import time as t
 from random import randrange, uniform
 import paho.mqtt.client as mqtt
 import json
+from cryptography.hazmat.primitives import serialization as crypto_serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.x509 import load_pem_x509_certificate
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
+import os
 
 from numpy import pi, sin
 
@@ -320,8 +328,9 @@ class mqtt_client:
         Args:
             topic (str): The topic to publish to.
             payload (str): The payload to publish.
-        """        
-        self.client.publish(self.topic + self.sensorID, payload)
+        """   
+        print("Publishing payload")     
+        self.client.publish(self.topic + self.sensorID, self.sensorID + "::" + payload)
     
     def on_connect(self, client, userdata, flags, rc):
         """The callback for when the client receives a CONNACK response from the server.
@@ -333,7 +342,7 @@ class mqtt_client:
             rc (_type_): The connection result.
         """        
         print("Connected with result code "+str(rc))
-        self.client.subscribe(self.standard_path + self.sensorID)
+        self.client.subscribe(self.topic + self.sensorID)
     
     def format_to_json(self, weather : weather) -> str:
         """Formats the data to a json string.
@@ -496,8 +505,96 @@ class lux_simulation():
         max = 10000 * sin(current_time/12 * pi - 6 * pi/12) + 10001
         min = 500 * sin(current_time/12 * pi - 6 * pi/12) + 500.0001
         return min, max
-      
+
+def createKeys() -> rsa.RSAPrivateKey | rsa.RSAPublicKey:
+    if(os.path.isfile('PRK.ppk') and os.path.isfile('PUK.pem')):
+        print("Keys exists! Load em up!")
+        with open('PUK.pem', 'rb') as public_read:
+            public_key = serialization.load_ssh_public_key(public_read.read())
+        with open('PRK.ppk', 'rb') as private_read:
+            private_key = serialization.load_pem_private_key(private_read.read(), None)
+    else:
+        print("Keys dont exists! Create new keys!")
+        key = rsa.generate_private_key(
+            backend=crypto_default_backend(),
+            public_exponent=65537,
+            key_size=4096
+        )
+
+        private_key = key.private_bytes(
+            crypto_serialization.Encoding.PEM,
+            crypto_serialization.PrivateFormat.PKCS8,
+            crypto_serialization.NoEncryption()
+        )
+
+        public_key = key.public_key().public_bytes(
+            crypto_serialization.Encoding.OpenSSH,
+            crypto_serialization.PublicFormat.OpenSSH
+        )
+        
+        print("Keys generated")
+        
+        with open("PRK.ppk", 'wb') as pem_out:
+            pem_out.write(private_key)
+            
+        with open("PUK.pem", 'wb') as pem_out:
+            pem_out.write(public_key)
+            
+        print("Keys stored")
+        
+        private_key = key
+        public_key = key.public_key()
+    
+    return private_key, public_key
+
+server_public_key = None
+
+class key_exchange():
+    def __init__(self, public_key : bytes) -> None:
+        self.topic = "ntnu/ankeret/c220/multisensor/gruppe8/visualiseringsnode/"
+        self.sensorID = "0601holmes"
+        self.public_key = public_key
+        self.client = mqtt.Client(self.sensorID)
+        self.connect_mqtt()
+        self.client.connect("129.241.152.12", 1883, 60)
+        self.subscribe()
+        mqtt_client().publish(public_key.decode("utf-8"))
+        print("Loop")
+        self.client.loop_forever()
+        
+    def connect_mqtt(self) -> mqtt:
+        def on_connect(client, userdata, flags, rc):
+            if(rc == 0):
+                print("Connected to broker")
+            else:
+                print("Connection failed")
+        self.client.on_connect = on_connect
+    
+    def subscribe(self) -> None:
+        print("Subscribed")
+        def on_message(client, userdata, msg : mqtt.MQTTMessage):
+            global server_public_key
+            cert_bytes = msg.payload
+            server_public_key = serialization.load_pem_public_key(cert_bytes)
+            print("Server public key : " + server_public_key.public_bytes(crypto_serialization.Encoding.PEM, crypto_serialization.PublicFormat.SubjectPublicKeyInfo).decode("utf-8"))
+            self.client.disconnect()
+            print("Loop stop")
+        self.client.subscribe(self.topic)
+        self.client.on_message = on_message
+
 def main():
+    
+    print("Starting key exchange")
+    private_key, public_key = createKeys()
+    public_bytes = public_key.public_bytes(
+            crypto_serialization.Encoding.OpenSSH,
+            crypto_serialization.PublicFormat.OpenSSH
+        )
+    key_exchange(public_bytes)
+    global server_public_key
+    public_key : rsa.RSAPublicKey = server_public_key
+    print("Key exchange done")
+    
     now = datetime.datetime.now()
     month = now.month
     day = now.day
@@ -524,7 +621,14 @@ def main():
     weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
     mqtt_cli = mqtt_client()
     next_time = now + datetime.timedelta(minutes=weights().minutes_update)
-    mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+    messageBytes = mqtt_cli.format_to_json(weather__now).encode("utf-8")
+    
+    messageBytes = public_key.encrypt(messageBytes,
+                       padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                        algorithm=hashes.SHA256(),
+                        label=None))
+    print(messageBytes.__len__())
+    mqtt_cli.publish(messageBytes.decode("utf-8", errors="ignore"))
     
     while(True):
         if(month != now.month):
@@ -554,7 +658,7 @@ def main():
             weather__now = weather(temp_now, percipitation_now, lux_now, pressure_now, wind_speed_now, wind_direction_now)
             weather__now = create_spikes(weather__now)
             print("Data ready to be published")
-            mqtt_cli.publish(mqtt_cli.format_to_json(weather__now))
+            mqtt_cli.publish(public_key.encrypt(mqtt_cli.format_to_json(weather__now)))
             print("Data published")
             next_time = datetime.datetime.now() + datetime.timedelta(minutes=weights().minutes_update)
             print(f"Next update at {next_time}")
@@ -563,10 +667,9 @@ def main():
         t.sleep(weights().sleep_time)
         now = datetime.datetime.now()
         
-        
 def create_spikes(check_weather : weather) -> weather:
     values = [check_weather.temperature, check_weather.precipitation, check_weather.lux, check_weather.pascal, check_weather.wind_speed, check_weather.winddir]
-    if(randrange(100) <= 10):
+    if(randrange(100) <= 1):
         random_val = randrange(6)
         print(f"spike in {random_val}")
         values[random_val] = values[random_val]*randrange(10,20)
