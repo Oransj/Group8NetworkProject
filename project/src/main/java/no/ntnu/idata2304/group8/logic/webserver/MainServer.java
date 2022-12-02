@@ -1,7 +1,7 @@
 package no.ntnu.idata2304.group8.logic.webserver;
 
 import no.ntnu.idata2304.group8.logic.MQTT.MQTTListener;
-import no.ntnu.idata2304.group8.data.databasehandler.SQLHandler;
+import no.ntnu.idata2304.group8.data.databasehandler.SqlHandler;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -23,7 +23,7 @@ public class MainServer {
   }
 
   private static void fillDummyData() throws ParseException {
-    SQLHandler sqlHandler = new SQLHandler();
+    SqlHandler sqlHandler = new SqlHandler();
     // The day at 00:00 in ms - 900000 ms
     // the DB will be filled with data every 15min until 00:00 excluded
     Long num = 1669934700000L;

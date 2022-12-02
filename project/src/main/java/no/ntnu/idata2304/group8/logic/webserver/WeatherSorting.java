@@ -3,7 +3,7 @@ package no.ntnu.idata2304.group8.logic.webserver;
 import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
-import no.ntnu.idata2304.group8.data.databasehandler.SQLHandler;
+import no.ntnu.idata2304.group8.data.databasehandler.SqlHandler;
 import no.ntnu.idata2304.group8.logic.weather.WeatherSummary;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 public class WeatherSorting {
-    SQLHandler sqlHandler = new SQLHandler();
+    SqlHandler sqlHandler = new SqlHandler();
     WeatherSummary weatherSummary = new WeatherSummary();
     public ArrayList<Double[]> getHomePage(String[] days) {
         List<Double[]> day1Data = sqlHandler.selectWeatherDataBetween(Long.parseLong(days[0]), Long.parseLong(days[1]), "weather");
