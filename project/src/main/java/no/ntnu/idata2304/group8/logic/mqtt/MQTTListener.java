@@ -158,7 +158,7 @@ public class MQTTListener implements Runnable {
                 System.out.println("Sensor: " + stringArray[0]);
                 msg = stringArray[1];
                 boolean containsKey = sensors.containsKey(stringArray[0]);
-                if (!containsKey || sensors.get(stringArray[0]).equals(stringArray[1])) {
+                if ((!containsKey || sensors.get(stringArray[0]).equals(stringArray[1])) && useEncryption) {
                     if (!containsKey) {
                         sensors.put(stringArray[0], msg);
                     }
