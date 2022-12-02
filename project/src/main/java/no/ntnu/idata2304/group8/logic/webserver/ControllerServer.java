@@ -1,15 +1,20 @@
 package no.ntnu.idata2304.group8.logic.webserver;
 
-import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Represents the different endpoints of the application.
+ */
 @RestController
 public class ControllerServer {
   WeatherSorting weatherSorting = new WeatherSorting();
 
   @PostMapping(value = "/api/getData")
   public ArrayList<Double[]> getHomePageHandler(@RequestBody String[] days) {
-     return weatherSorting.getHomePage(days);
+    return weatherSorting.getHomePage(days);
   }
 
   @PostMapping(value = "/api/getWeatherType")
