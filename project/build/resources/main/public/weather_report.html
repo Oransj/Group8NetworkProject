@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/weather_report.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js" integrity="sha512-0qU9M9jfqPw6FKkPafM3gy2CBAvUWnYVOfNPDYKVuRTel1PrciTj+a9P3loJB+j0QmN2Y0JYQmkBBS8W+mbezg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <script src="https://code.jscharting.com/2.9.0/jscharting.js"></script>
+
+    <div class="content-container">
+        <header>
+            <a href="index.html">
+                <img class="logo" src="img/Logo.png" alt="Logo">
+            </a>
+            <div class="title">
+                <h2 style="margin: 0">Ålesund</h2>
+                <h4 style="margin: 0" class="forecast--day"></h4>
+            </div>
+        </header>
+        <main>
+            <div class="forecast-container">
+                <table class="forecast_table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Weather</th>
+                            <th>Temperature</th>
+                            <th>Precipitation</th>
+                            <th>Wind</th>
+                        </tr>
+                    </thead>
+                    <tbody class="forecast_table--body">
+
+                    </tbody>
+                </table>
+                <div class="forecast_graph_container">
+                    <div class="forecast_graph--temperature"></div>
+                    <div class="forecast_graph--precipitation"></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="time-updated"></div>
+        </footer>
+    </div>
+
+    <script type="text" src="../data/data.json"></script>
+    <script src="js/main.js"></script>
+    <script src="js/weather_report.js"></script>
+</body>
+
+</html>
