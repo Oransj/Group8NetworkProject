@@ -95,7 +95,7 @@ public class WeatherSummary {
         double totalTemp = 0;
         double totalPrecip = 0;
         double totalWindSpeed = 0;
-        double totalWindDirection= 0;
+        double totalWindDirection = 0;
         int size = dataRows.size();
 
         for (Double[] row : dataRows) {
