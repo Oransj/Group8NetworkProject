@@ -12,17 +12,29 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import org.json.simple.JSONObject;
 
-public class SQLHandler {
+/**
+ * Writes to and reads from the SQL database.
+ */
+public class SqlHandler {
+    private static final String TIME = "Time";
+    private static final String TEMPERATURE = "Temperature";
+    private static final String PRECIPITATION = "Precipitation";
+    private static final String AIR_PRESSURE = "Air_pressure";
+    private static final String LIGHT = "Light";
+    private static final String WIND = "Wind";
+    
     /**
-     * Connects to the SQL database
-     * @return connection
+     * Connects to the SQL database.
+     *
+     * @return The connection to the database.
      */
-
     private Connection connect() {
-        // Location of SQLlite database
-//        String fileName = "project/src/main/resources/database/test.db";
-        String fileName = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and network programming\\Group8NetworkProject\\project\\src\\main\\resources\\database\\test.db";
-//        String fileName = "/home/ubuntu/project/src/main/resources/database/test.db";
+        // Location of SQLite database
+        // String fileName = "project/src/main/resources/database/test.db";
+        String fileName = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and "
+            + "network programming\\Group8NetworkProject\\project\\src\\main\\"
+            + "resources\\database\\test.db";
+        // String fileName = "/home/ubuntu/project/src/main/resources/database/test.db";
         String url = "jdbc:sqlite:" + fileName;
         Connection connection = null;
         try {
@@ -32,76 +44,78 @@ public class SQLHandler {
         }
         return connection;
     }
-
+    
     /**
-     * Adds the given JSON object to the database
-     * @param jsonObject The JSON object to be added to the database
-     * @param database The database to save into: "weather"/"spike"
+     * Adds the given JSON object to the database.
+     *
+     * @param jsonObject The JSON object to be added to the database.
+     * @param database   The database to save into: "weather"/"spike".
      */
     public void addData(JSONObject jsonObject, String database) {
         for (int i = 1; i <= jsonObject.size(); i++) {
             String read = "Reading" + i;
-            try{
-            JSONObject object = (JSONObject) jsonObject.get(read);
-            JSONObject time = (JSONObject) object.get("Time");
-            JSONObject temperature = (JSONObject) object.get("Temperature");
-            JSONObject precipitaion = (JSONObject) object.get("Precipitation");
-            JSONObject air_pressure = (JSONObject) object.get("Air_pressure");
-            JSONObject light = (JSONObject) object.get("Light");
-            JSONObject wind = (JSONObject) object.get("Wind");
-
-            String sql = "INSERT INTO "+database+"(Time, Temperature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
-            try (Connection connection = this.connect();
-                PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setLong(1, Long.parseLong(time.get("ms").toString()));
-                pstmt.setDouble(2, Double.parseDouble(temperature.get("celsius").toString()));
-                pstmt.setDouble(3,Double.parseDouble(precipitaion.get("mm").toString()));
-                pstmt.setDouble(4,Double.parseDouble(air_pressure.get("hPa").toString()));
-                pstmt.setDouble(5,Double.parseDouble(light.get("lux").toString()));
-                pstmt.setDouble(6,Double.parseDouble(wind.get("W_speed").toString()));
-                pstmt.setDouble(7,Double.parseDouble(wind.get("W_direction").toString()));
-                pstmt.executeUpdate();
+            try {
+                JSONObject object = (JSONObject) jsonObject.get(read);
+                JSONObject time = (JSONObject) object.get(TIME);
+                JSONObject temperature = (JSONObject) object.get(TEMPERATURE);
+                JSONObject precipitation = (JSONObject) object.get(PRECIPITATION);
+                JSONObject airPressure = (JSONObject) object.get(AIR_PRESSURE);
+                JSONObject light = (JSONObject) object.get(LIGHT);
+                JSONObject wind = (JSONObject) object.get(WIND);
+                
+                String sql = "INSERT INTO " + database + "(Time, Temperature, Precipitation, "
+                    + "Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
+                try (Connection connection = this.connect();
+                     PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                    pstmt.setLong(1, Long.parseLong(time.get("ms").toString()));
+                    pstmt.setDouble(2, Double.parseDouble(temperature.get("celsius").toString()));
+                    pstmt.setDouble(3, Double.parseDouble(precipitation.get("mm").toString()));
+                    pstmt.setDouble(4, Double.parseDouble(airPressure.get("hPa").toString()));
+                    pstmt.setDouble(5, Double.parseDouble(light.get("lux").toString()));
+                    pstmt.setDouble(6, Double.parseDouble(wind.get("W_speed").toString()));
+                    pstmt.setDouble(7, Double.parseDouble(wind.get("W_direction").toString()));
+                    pstmt.executeUpdate();
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
     }
-
-
-
+    
     /**
-     * Returns an arraylist of all database entries between dayStart and dayEnd
-     * @Return - ArrayList
-     * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
+     * Return a list of all database entries between dayStart and dayEnd.
+     *
+     * @return list of all data for a day.
      */
-    public ArrayList selectAllBetween(Long dayStart, Long dayEnd, String database){
-        String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir " +
-                     "FROM " +database+
-                     " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
-        ArrayList jArray = new ArrayList();
+    // TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
+    // TODO: Define ArrayList data type. I.e. ArrayList<String> or something.
+    public ArrayList selectAllBetween(Long dayStart, Long dayEnd, String database) {
+        String sql = "SELECT Time, e, Precipitation, Air_pressure, Light, "
+            + "Wind_Speed, Wind_dir " + "FROM " + database
+            + " WHERE Time BETWEEN " + dayStart + " AND " + dayEnd;
+        ArrayList jArray = new ArrayList(); // TODO: Refactor variable name
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
                 JsonObject builder = Json.createObjectBuilder()
-                    .add("Time", Json.createObjectBuilder()
-                        .add("ms", rs.getLong("Time")))
-                    .add("Temperature", Json.createObjectBuilder()
-                        .add("celsius", rs.getLong("Temperature")))
-                    .add("Precipitation", Json.createObjectBuilder()
-                        .add("mm", rs.getLong("Precipitation")))
-                    .add("Air_pressure", Json.createObjectBuilder()
-                        .add("hPa", rs.getLong("Air_pressure")))
-                    .add("Light", Json.createObjectBuilder()
-                        .add("lux", rs.getLong("Light")))
-                    .add("Wind",
-                        Json.createObjectBuilder().add("W_speed",rs.getLong("Wind_Speed"))
-                            .add("W_direction",rs.getLong("Wind_Dir")))
+                    .add(TIME, Json.createObjectBuilder()
+                        .add("ms", rs.getLong(TIME)))
+                    .add(TEMPERATURE, Json.createObjectBuilder()
+                        .add("celsius", rs.getLong(TEMPERATURE)))
+                    .add(PRECIPITATION, Json.createObjectBuilder()
+                        .add("mm", rs.getLong(PRECIPITATION)))
+                    .add(AIR_PRESSURE, Json.createObjectBuilder()
+                        .add("hPa", rs.getLong(AIR_PRESSURE)))
+                    .add(LIGHT, Json.createObjectBuilder()
+                        .add("lux", rs.getLong(LIGHT)))
+                    .add(WIND,
+                        Json.createObjectBuilder().add("W_speed", rs.getLong("Wind_Speed"))
+                            .add("W_direction", rs.getLong("Wind_Dir")))
                     .build();
                 jArray.add(builder);
             }
@@ -110,24 +124,31 @@ public class SQLHandler {
         }
         return jArray;
     }
-
-    public List<Double[]> selectWeatherDataBetween(Long dayStart, Long dayEnd, String database){
-        String sql = "SELECT Temperature, Precipitation, Air_pressure, Light, Wind_Speed " +
-                "FROM " +database+
-                " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
+    
+    /**
+     * TODO: Document this function
+     *
+     * @param dayStart
+     * @param dayEnd
+     * @param database
+     * @return
+     */
+    public List<Double[]> selectWeatherDataBetween(Long dayStart, Long dayEnd, String database) {
+        String sql = "SELECT Temperature, Precipitation, Air_pressure, Light, Wind_Speed "
+            + "FROM " + database + " WHERE Time BETWEEN " + dayStart + " AND " + dayEnd;
         List<Double[]> dataList = new ArrayList();
-
+        
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
-                Double[] data = new Double[]{rs.getDouble("Temperature"),
-                        rs.getDouble("Precipitation"),
-                        rs.getDouble("Air_pressure"),
-                        rs.getDouble("Light"),
-                        rs.getDouble("Wind_Speed")
+                Double[] data = new Double[]{rs.getDouble(TEMPERATURE),
+                    rs.getDouble(PRECIPITATION),
+                    rs.getDouble(AIR_PRESSURE),
+                    rs.getDouble(LIGHT),
+                    rs.getDouble("Wind_Speed")
                 };
                 dataList.add(data);
             }
@@ -136,23 +157,31 @@ public class SQLHandler {
         }
         return dataList;
     }
-
-    public List<Double[]> selectWeatherRapportBetween(Long dayStart, Long dayEnd, String database){
-        String sql = "SELECT Temperature, Precipitation, Wind_Speed, Wind_dir " +
-                "FROM " +database+
-                " WHERE Time BETWEEN " +dayStart+ " AND " +dayEnd;
+    
+    /**
+     * TODO: Fill in JavaDoc
+     *
+     * @param dayStart
+     * @param dayEnd
+     * @param database
+     * @return
+     */
+    public List<Double[]> selectWeatherRapportBetween(Long dayStart, Long dayEnd, String database) {
+        String sql = "SELECT Temperature, Precipitation, Wind_Speed, Wind_dir "
+            + "FROM " + database
+            + " WHERE Time BETWEEN " + dayStart + " AND " + dayEnd;
         List<Double[]> dataList = new ArrayList();
-
+        
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
-                Double[] data = new Double[]{rs.getDouble("Temperature"),
-                        rs.getDouble("Precipitation"),
-                        rs.getDouble("Wind_Speed"),
-                        rs.getDouble("Wind_dir")
+                Double[] data = new Double[]{rs.getDouble(TEMPERATURE),
+                    rs.getDouble(PRECIPITATION),
+                    rs.getDouble("Wind_Speed"),
+                    rs.getDouble("Wind_dir")
                 };
                 dataList.add(data);
             }
@@ -161,33 +190,37 @@ public class SQLHandler {
         }
         return dataList;
     }
-
-    public String selectLast(){
-        String sql = "SELECT * " +
-                "FROM weather " +
-                "WHERE Time=(SELECT max(Time) FROM weather)";
+    
+    /**
+     * TODO: Fill in JavaDoc.
+     *
+     * @return
+     */
+    public String selectLast() {
+        String sql = "SELECT * " + "FROM weather "
+            + "WHERE Time=(SELECT max(Time) FROM weather)";
         JsonObject builder = null;
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
                 builder = Json.createObjectBuilder()
-                        .add("Time", Json.createObjectBuilder()
-                                .add("ms", rs.getLong("Time")))
-                        .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getDouble("Temperature")))
-                        .add("Precipitation", Json.createObjectBuilder()
-                                .add("mm", rs.getDouble("Precipitation")))
-                        .add("Air_pressure", Json.createObjectBuilder()
-                                .add("hPa", rs.getDouble("Air_pressure")))
-                        .add("Light", Json.createObjectBuilder()
-                                .add("lux", rs.getDouble("Light")))
-                        .add("Wind",
-                                Json.createObjectBuilder().add("W_speed",rs.getDouble("Wind_Speed"))
-                                        .add("W_direction",rs.getDouble("Wind_Dir")))
-                        .build();
+                    .add(TIME, Json.createObjectBuilder()
+                        .add("ms", rs.getLong(TIME)))
+                    .add(TEMPERATURE, Json.createObjectBuilder()
+                        .add("celsius", rs.getDouble(TEMPERATURE)))
+                    .add(PRECIPITATION, Json.createObjectBuilder()
+                        .add("mm", rs.getDouble(PRECIPITATION)))
+                    .add(AIR_PRESSURE, Json.createObjectBuilder()
+                        .add("hPa", rs.getDouble(AIR_PRESSURE)))
+                    .add(LIGHT, Json.createObjectBuilder()
+                        .add("lux", rs.getDouble(LIGHT)))
+                    .add(WIND,
+                        Json.createObjectBuilder().add("W_speed", rs.getDouble("Wind_Speed"))
+                            .add("W_direction", rs.getDouble("Wind_Dir")))
+                    .build();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -195,33 +228,38 @@ public class SQLHandler {
         assert builder != null;
         return builder.toString();
     }
-
-    public List<String> selectLastTen(Long ms){
-        String sql = "SELECT * " +
-                "FROM weather " +
-                "ORDER BY Time DESC LIMIT 10";
-        ArrayList<String> jArray = new ArrayList();
+    
+    /**
+     * TODO: Fill in JavaDoc.
+     *
+     * @param ms
+     * @return
+     */
+    public List<String> selectLastTen(Long ms) {
+        String sql = "SELECT * " + "FROM weather "
+            + "ORDER BY Time DESC LIMIT 10";
+        ArrayList<String> jArray = new ArrayList(); // TODO: Refactor variable to match checkstyle
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
                 JsonObject builder = Json.createObjectBuilder()
-                        .add("Time", Json.createObjectBuilder()
-                                .add("ms", rs.getLong("Time")))
-                        .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getLong("Temperature")))
-                        .add("Precipitation", Json.createObjectBuilder()
-                                .add("mm", rs.getLong("Precipitation")))
-                        .add("Air_pressure", Json.createObjectBuilder()
-                                .add("hPa", rs.getLong("Air_pressure")))
-                        .add("Light", Json.createObjectBuilder()
-                                .add("lux", rs.getLong("Light")))
-                        .add("Wind",
-                                Json.createObjectBuilder().add("W_speed",rs.getLong("Wind_Speed"))
-                                        .add("W_direction",rs.getLong("Wind_Dir")))
-                        .build();
+                    .add(TIME, Json.createObjectBuilder()
+                        .add("ms", rs.getLong(TIME)))
+                    .add(TEMPERATURE, Json.createObjectBuilder()
+                        .add("celsius", rs.getLong(TEMPERATURE)))
+                    .add(PRECIPITATION, Json.createObjectBuilder()
+                        .add("mm", rs.getLong(PRECIPITATION)))
+                    .add(AIR_PRESSURE, Json.createObjectBuilder()
+                        .add("hPa", rs.getLong(AIR_PRESSURE)))
+                    .add(LIGHT, Json.createObjectBuilder()
+                        .add("lux", rs.getLong(LIGHT)))
+                    .add(WIND,
+                        Json.createObjectBuilder().add("W_speed", rs.getLong("Wind_Speed"))
+                            .add("W_direction", rs.getLong("Wind_Dir")))
+                    .build();
                 jArray.add(builder.toString());
             }
         } catch (SQLException e) {
@@ -229,44 +267,53 @@ public class SQLHandler {
         }
         return jArray;
     }
-
+    
+    /**
+     * TODO: Fill in JavaDoc.
+     *
+     * @param ms
+     */
     public void delete(Long ms) {
         String sql = "DELETE FROM Weather WHERE Time =" + ms;
-
-        try(Connection connection = this.connect();
-            Statement stmt  = connection.createStatement();) {
+        
+        try (Connection connection = this.connect();
+             Statement stmt = connection.createStatement();) {
             stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-
-    public String select(Long ms){
-        String sql = "SELECT * " +
-                "FROM weather " +
-                "WHERE Time = " + ms;
+    
+    /**
+     * TODO: Fill in JavaDoc.
+     *
+     * @param ms
+     * @return
+     */
+    public String select(Long ms) {
+        String sql = "SELECT * " + "FROM weather " + "WHERE Time = " + ms;
         JsonObject builder = null;
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
                 builder = Json.createObjectBuilder()
-                        .add("Time", Json.createObjectBuilder()
-                                .add("ms", rs.getLong("Time")))
-                        .add("Temperature", Json.createObjectBuilder()
-                                .add("celsius", rs.getDouble("Temperature")))
-                        .add("Precipitation", Json.createObjectBuilder()
-                                .add("mm", rs.getDouble("Precipitation")))
-                        .add("Air_pressure", Json.createObjectBuilder()
-                                .add("hPa", rs.getDouble("Air_pressure")))
-                        .add("Light", Json.createObjectBuilder()
-                                .add("lux", rs.getDouble("Light")))
-                        .add("Wind",
-                                Json.createObjectBuilder().add("W_speed",rs.getDouble("Wind_Speed"))
-                                        .add("W_direction",rs.getDouble("Wind_Dir")))
-                        .build();
+                    .add(TIME, Json.createObjectBuilder()
+                        .add("ms", rs.getLong(TIME)))
+                    .add(TEMPERATURE, Json.createObjectBuilder()
+                        .add("celsius", rs.getDouble(TEMPERATURE)))
+                    .add(PRECIPITATION, Json.createObjectBuilder()
+                        .add("mm", rs.getDouble(PRECIPITATION)))
+                    .add(AIR_PRESSURE, Json.createObjectBuilder()
+                        .add("hPa", rs.getDouble(AIR_PRESSURE)))
+                    .add(LIGHT, Json.createObjectBuilder()
+                        .add("lux", rs.getDouble(LIGHT)))
+                    .add(WIND,
+                        Json.createObjectBuilder().add("W_speed", rs.getDouble("Wind_Speed"))
+                            .add("W_direction", rs.getDouble("Wind_Dir")))
+                    .build();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -274,35 +321,37 @@ public class SQLHandler {
         assert builder != null;
         return builder == null ? "null" : builder.toString();
     }
-
+    
     /**
-     * select all rows in the table and returns a ArrayList with all entries
-     * @Return - List of all values
-     * TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
+     * Select all rows in the table and returns a ArrayList with all entries.
+     *
+     * @return - List of all values
      */
-    public ArrayList selectAll(String database){
-        String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, Wind_Speed, Wind_dir FROM " +database;
-        ArrayList jArray = new ArrayList();
+    // TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
+    public ArrayList selectAll(String database) {
+        String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, "
+            + "Wind_Speed, Wind_dir FROM " + database;
+        ArrayList jArray = new ArrayList(); // TODO: Refactor variable name to work with checkstyle
         try (Connection connection = this.connect();
-             Statement stmt  = connection.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             // loop through the result set
             while (rs.next()) {
                 JsonObject builder = Json.createObjectBuilder()
-                    .add("Time", Json.createObjectBuilder()
-                        .add("ms", rs.getLong("Time")))
-                    .add("Temperature", Json.createObjectBuilder()
-                        .add("celsius", rs.getLong("Temperature")))
-                    .add("Precipitation", Json.createObjectBuilder()
-                        .add("mm", rs.getLong("Precipitation")))
-                    .add("Air_pressure", Json.createObjectBuilder()
-                        .add("hPa", rs.getLong("Air_pressure")))
-                    .add("Light", Json.createObjectBuilder()
-                        .add("lux", rs.getLong("Light")))
-                        .add("Wind",
-                            Json.createObjectBuilder().add("W_speed",rs.getLong("Wind_Speed"))
-                                .add("W_direction",rs.getLong("Wind_Dir")))
+                    .add(TIME, Json.createObjectBuilder()
+                        .add("ms", rs.getLong(TIME)))
+                    .add(TEMPERATURE, Json.createObjectBuilder()
+                        .add("celsius", rs.getLong(TEMPERATURE)))
+                    .add(PRECIPITATION, Json.createObjectBuilder()
+                        .add("mm", rs.getLong(PRECIPITATION)))
+                    .add(AIR_PRESSURE, Json.createObjectBuilder()
+                        .add("hPa", rs.getLong(AIR_PRESSURE)))
+                    .add(LIGHT, Json.createObjectBuilder()
+                        .add("lux", rs.getLong(LIGHT)))
+                    .add(WIND,
+                        Json.createObjectBuilder().add("W_speed", rs.getLong("Wind_Speed"))
+                            .add("W_direction", rs.getLong("Wind_Dir")))
                     .build();
                 jArray.add(builder);
             }
