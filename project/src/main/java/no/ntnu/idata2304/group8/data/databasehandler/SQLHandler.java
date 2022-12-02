@@ -92,7 +92,7 @@ public class SqlHandler {
     // TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
     // TODO: Define ArrayList data type. I.e. ArrayList<String> or something.
     public ArrayList selectAllBetween(Long dayStart, Long dayEnd, String database) {
-        String sql = "SELECT Time, e, Precipitation, Air_pressure, Light, "
+        String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, "
             + "Wind_Speed, Wind_dir " + "FROM " + database
             + " WHERE Time BETWEEN " + dayStart + " AND " + dayEnd;
         ArrayList jArray = new ArrayList(); // TODO: Refactor variable name
