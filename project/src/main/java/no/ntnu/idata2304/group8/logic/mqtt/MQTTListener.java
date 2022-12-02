@@ -1,40 +1,34 @@
-package no.ntnu.idata2304.group8.logic.MQTT;
+package no.ntnu.idata2304.group8.logic.mqtt;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.HashMap;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import no.ntnu.idata2304.group8.logic.webserver.WeatherSorting;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-//import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import no.ntnu.idata2304.group8.logic.webserver.WeatherSorting;
-import org.eclipse.paho.client.mqttv3.*;
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
-
-import javax.crypto.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.*;
-
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
 
 /**
  * Listens to the MQTT broker and sends the message to another class
  * as JSON object.
  * Runs on a separate thread.
  *
- * @version 1.0
- *
  * @author Oransj
+ * @version 1.0
  */
 
 public class MQTTListener implements Runnable {
@@ -56,7 +50,6 @@ public class MQTTListener implements Runnable {
     /**
      * The constructor for the MQTTListener class.
      * Sets up the client id and topic.
-     *
      */
     public MQTTListener() {
         sensors = new HashMap<>();
@@ -80,7 +73,11 @@ public class MQTTListener implements Runnable {
             File publicKeyFile = new File(System.getProperty("user.dir") + File.separator + "PUK.pem");
             System.out.println(privateKeyFile.getAbsolutePath());
             System.out.println(publicKeyFile.getAbsolutePath());
-            if(privateKeyFile.exists() && publicKeyFile.exists() && privateKeyFile.isFile() && publicKeyFile.isFile()) {
+            if (
+                    privateKeyFile.exists() && publicKeyFile.exists()
+                    &&
+                    privateKeyFile.isFile() && publicKeyFile.isFile()
+            ) {
                 System.out.println("Found keys");
                 byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
                 X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
@@ -121,8 +118,7 @@ public class MQTTListener implements Runnable {
             // Displaying the thread that is running
             System.out.println("Thread " + Thread.currentThread().getId() + " is running");
             connect();
-        }
-        catch (MqttException e) {
+        } catch (MqttException e) {
             // Throwing an exception
             System.out.printf("Exception caught: %s%n", e);
         } catch (NoSuchAlgorithmException e) {
@@ -159,8 +155,8 @@ public class MQTTListener implements Runnable {
                 System.out.println("Sensor: " + stringArray[0]);
                 msg = stringArray[1];
                 boolean containsKey = sensors.containsKey(stringArray[0]);
-                if(!containsKey || sensors.get(stringArray[0]).equals(stringArray[1])) {
-                    if(!containsKey) {
+                if (!containsKey || sensors.get(stringArray[0]).equals(stringArray[1])) {
+                    if (!containsKey) {
                         sensors.put(stringArray[0], msg);
                     }
                     byte[] bytes = publicKey.getEncoded();
@@ -170,7 +166,7 @@ public class MQTTListener implements Runnable {
                     StringBuilder keyBuilder = new StringBuilder();
                     keyBuilder.append("-----BEGIN RSA PUBLIC KEY-----");
                     for (char charAt : stringKey.toCharArray()) {
-                        if(i% 64 == 0) {
+                        if (i % 64 == 0) {
                             keyBuilder.append("\n");
                         }
                         keyBuilder.append(charAt);
@@ -180,8 +176,7 @@ public class MQTTListener implements Runnable {
 
                     System.out.println("Public key test: " + "\n" + keyBuilder.toString());
                     publisher.publish(keyBuilder.toString());
-                }
-                else {
+                } else {
                     try {
                         Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
                         decrypt.init(Cipher.DECRYPT_MODE, privateKey);
@@ -190,7 +185,7 @@ public class MQTTListener implements Runnable {
                         JSONObject json = new JSONObject(msg);
                         WeatherSorting weatherSorting = new WeatherSorting();
                         weatherSorting.saveData(json);
-                    } catch (NoSuchAlgorithmException e){
+                    } catch (NoSuchAlgorithmException e) {
                         System.out.println("No such algorithm, something went HORRIBLY wrong");
                         throw new RuntimeException(e);
                     } catch (InvalidKeyException e) {
