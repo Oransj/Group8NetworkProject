@@ -56,7 +56,7 @@ We have two database tables: “Weather” and “Spikes”. Weather stores all 
 
 To display the information we use a website. The first page contains the next few days, with icons and text summarizing the days. When clicking on one of the days, it links to the next web page which shows hour-by-hour data in a table. There are also graphs for temperature and precipitation. At the bottom of both pages is the information about how long ago since the page was updated, so the user knows if the data is old. 
 
-To create a secure, encrypted connection, messages are encrypted using public-key cryptography with RSA. The public and private keypairs are 4096-bit, and generated at first use of the software. The keypairs are stored in the same folder as the program running, either the visualization node or the sensor node. The private key will be stored as a PKCS8 formatted PEM file encoding while the public key will use OpenSSH both for its formatting and file encoding. OAEP padding is used with SHA-256 hashing and MGF1 padding.
+To create a secure, encrypted connection, messages are encrypted using public-key cryptography with RSA. The public and private keypairs are 4096-bit, and generated at first use of the software. The keypairs are stored in the same folder as the program running, either the visualization node or the sensor node. The private key will be stored as a PKCS8 formatted PEM file encoding while the public key will use OpenSSH both for its formatting and file encoding. OAEP padding is used with SHA-256 hashing and MGF1 padding. Because of how RSA with OAEP works, the max size of a file we can send with 4096-bit RSA keys are 470 bytes (4096/8 - 42). We can increase this limit if we increase the size of the encryption keys.
 
 ## Result
 
