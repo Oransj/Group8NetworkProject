@@ -55,7 +55,7 @@ public class MQTTListener implements Runnable {
                 System.err.println("connectionLost: " + cause.getMessage());
             }
 
-            public void messageArrived(String topic, MqttMessage message) throws ParseException {
+            public void messageArrived(String topic, MqttMessage message) throws ParseException, java.text.ParseException {
                 System.out.println("topic: " + topic);
                 System.out.println("Qos: " + message.getQos());
                 String msg = new String(message.getPayload());
