@@ -1,0 +1,58 @@
+.forecast-container {
+    width: 90vw;
+    margin: 10vh auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    list-style: none;
+}
+
+
+@media (max-width: 600px) {
+    header {
+        min-width: 600px;
+    }
+
+    body {
+        min-width: 600px;
+    }
+}
+
+.forecast_table {
+    margin: 10px auto;
+}
+
+.forecast_table img {
+    height: 24px;
+    aspect-ratio: 1;
+    user-select: none;
+}
+
+.forecast_table th, .forecast_table td {
+    text-align: center;
+    padding: 0.1em 0.5em;
+}
+
+.forecast_table th {
+    background-color: rgb(var(--clr-primary-2));
+}
+
+.forecast_table td {
+    background-color: rgba(var(--clr-primary-2), 0.8);
+}
+
+.forecast_table td > div {
+    display: inline-flex;
+    align-items: center;
+}
+
+.forecast_graph--temperature, .forecast_graph--precipitation {
+    display: block;
+    margin: 20px auto;
+    padding: 0.5em;
+    width: 36em;
+    max-width: 50em;
+    height: 20em;
+    background-color: rgb(var(--clr-primary-2));
+}

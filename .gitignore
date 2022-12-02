@@ -32,6 +32,15 @@ hs_err_pid*
 #Gradle
 .gradle
 .build/
+build/
 gradle-app.setting
 !graddle-wrapper.jar
 .gradletasknamecache
+
+bin/
+#Random files i have no idea why is created
+*.lck
+
+#Key files
+*.ppk
+*.pem

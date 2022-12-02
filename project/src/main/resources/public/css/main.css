@@ -1,0 +1,95 @@
+/* VARIABLES */
+:root {
+    /* Colours */
+    --clr-primary-1: 0, 0, 0; /* black */
+    --clr-primary-2: 255, 255, 255; /* white*/
+    --clr-secondary-1: 70, 70, 70; /* darkgrey */ 
+    --clr-secondary-2: 200, 200, 200; /* lightgrey */
+
+    /* Font families */
+    --ff-primary: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    /* Font sizes */
+    --fs-large: 1.4em;
+    --fs-medium: 1em;
+    --fs-small: 0.7em;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*:focus {
+    outline: none;
+}
+
+a:focus {
+    filter: drop-shadow(0 0 10px #4d8bcd);
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--ff-primary);
+    font-size: var(--fs-medium);
+    color: rgb(var(--clr-primary-1));
+    background-color: rgba(var(--clr-primary-1));
+    background-image: url(../img/linear-gradient.png);
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+header {
+    display: inline-flex;
+    background: rgba(var(--clr-primary-2), 0.25);
+    backdrop-filter: blur(20px);
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    height: 70px;
+    margin: 10px;
+    float: left;
+}
+
+main {
+    flex: 1;
+    display: block;
+    overflow: hidden;
+}
+
+footer {
+    padding: 0.5em;
+    z-index: -1;
+}
+
+.time-updated {
+    color: rgb(var(--clr-primary-1));
+    font-size: var(--fs-small);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px rgba(var(--clr-primary-1), 0.3);
+	background-color: rgb(var(--clr-primary-2));
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	box-shadow: inset 0 0 6px rgba(var(--clr-primary-1), 0.3);
+	background-color: rgb(var(--clr-secondary-2));
+}

@@ -1,0 +1,31 @@
+.forecast_table {
+    margin: 10px auto;
+}
+
+.forecast_table img {
+    width: 32px;
+    aspect-ratio: 1;
+}
+
+.forecast_table th, .forecast_table td {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.forecast_table th {
+    background-color: rgb(var(--clr-primary-2));
+}
+
+.forecast_table td {
+    background-color: rgba(var(--clr-primary-2), 0.8);
+}
+
+.forecast_graph--temperature {
+    display: block;
+    margin: 10px auto;
+    padding: 1em;
+    width: 27em;
+    max-width: 50em;
+    height: 20em;
+    background-color: rgb(var(--clr-primary-2));
+}
