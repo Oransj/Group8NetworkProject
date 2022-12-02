@@ -146,7 +146,7 @@ public class MQTTListener implements Runnable {
         client.setCallback(new MqttCallback() {
 
             public void connectionLost(Throwable cause) {
-                System.err.println("connectionLost: " + cause.getMessage());
+                System.err.println("connectionLost: " + cause.getMessage() + " : " + cause.getClass());
             }
 
             public void messageArrived(String topic, MqttMessage message) throws ParseException, java.text.ParseException {
@@ -154,10 +154,14 @@ public class MQTTListener implements Runnable {
                 System.out.println("Qos: " + message.getQos());
                 String msg = new String(message.getPayload());
                 System.out.println("message content: " + msg);
-                String[] stringArray = msg.split("::", 2);
-                System.out.println("Sensor: " + stringArray[0]);
-                msg = stringArray[1];
-                boolean containsKey = sensors.containsKey(stringArray[0]);
+                boolean containsKey = false;
+                String[] stringArray = new String[0];
+                if (useEncryption) {
+                    stringArray = msg.split("::", 2);
+                    System.out.println("Sensor: " + stringArray[0]);
+                    msg = stringArray[1];
+                    containsKey = sensors.containsKey(stringArray[0]);
+                }
                 if ((!containsKey || sensors.get(stringArray[0]).equals(stringArray[1])) && useEncryption) {
                     if (!containsKey) {
                         sensors.put(stringArray[0], msg);
@@ -181,7 +185,7 @@ public class MQTTListener implements Runnable {
                     publisher.publish(keyBuilder.toString());
                 } else {
                     try {
-                        if(useEncryption) {
+                        if (useEncryption) {
                             Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
                             decrypt.init(Cipher.DECRYPT_MODE, privateKey);
                             msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
