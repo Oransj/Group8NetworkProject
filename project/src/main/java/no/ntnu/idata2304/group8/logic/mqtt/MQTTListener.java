@@ -46,12 +46,15 @@ public class MQTTListener implements Runnable {
     private HashMap<String, String> sensors;
 
     private MQTTPublisher publisher;
+    private boolean useEncryption = false;
 
     /**
      * The constructor for the MQTTListener class.
      * Sets up the client id and topic.
+     *
+     * @param useEncryption Whether to use encryption
      */
-    public MQTTListener() {
+    public MQTTListener(boolean useEncryption) {
         sensors = new HashMap<>();
         this.broker = "tcp://129.241.152.12:1883";
         this.password = "public";
@@ -89,7 +92,7 @@ public class MQTTListener implements Runnable {
             } else {
                 System.out.println("Generating keys");
                 KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-                keyGen.initialize(8192);
+                keyGen.initialize(4096);
                 KeyPair pair = keyGen.generateKeyPair();
                 privateKey = pair.getPrivate();
                 publicKey = pair.getPublic();
@@ -178,9 +181,13 @@ public class MQTTListener implements Runnable {
                     publisher.publish(keyBuilder.toString());
                 } else {
                     try {
-                        Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
-                        decrypt.init(Cipher.DECRYPT_MODE, privateKey);
-                        msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
+                        if(useEncryption) {
+                            Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
+                            decrypt.init(Cipher.DECRYPT_MODE, privateKey);
+                            msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
+                        } else {
+                            msg = new String(Base64.getDecoder().decode(msg), StandardCharsets.UTF_8);
+                        }
 
                         JSONObject json = new JSONObject(msg);
                         WeatherSorting weatherSorting = new WeatherSorting();

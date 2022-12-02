@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Ignore Private and Public Keys ###
+*.pem
+*.ppk
