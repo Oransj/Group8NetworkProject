@@ -89,7 +89,7 @@ public class MQTTListener implements Runnable {
             } else {
                 System.out.println("Generating keys");
                 KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-                keyGen.initialize(4096);
+                keyGen.initialize(8192);
                 KeyPair pair = keyGen.generateKeyPair();
                 privateKey = pair.getPrivate();
                 publicKey = pair.getPublic();
