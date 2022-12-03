@@ -67,8 +67,8 @@ window.onload = async function () {
 
     const dayRapport = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:8080/api/getDayRapport',
-      // url: 'http://129.241.152.42/api/getDayRapport',
+      // url: 'http://127.0.0.1:8080/api/getDayRapport',
+      url: 'http://129.241.152.42/api/getDayRapport',
       data: [
         hour00.toString(),
         hour01.toString(),
@@ -100,8 +100,8 @@ window.onload = async function () {
 
     const dayRapportType = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:8080/api/getWeatherTypeDayRapport',
-      // url: 'http://129.241.152.42/api/getWeatherTypeDayRapport',
+      // url: 'http://127.0.0.1:8080/api/getWeatherTypeDayRapport',
+      url: 'http://129.241.152.42/api/getWeatherTypeDayRapport',
       data: [
         hour00.toString(),
         hour01.toString(),
