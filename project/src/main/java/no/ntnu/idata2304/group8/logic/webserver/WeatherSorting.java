@@ -655,6 +655,14 @@ public class WeatherSorting {
         predictedLight = 0;
       }
 
+      if (predictedAirPressure < 0) {
+        predictedAirPressure = 0;
+      }
+
+      if (predictedWindSpeed < 0) {
+        predictedWindSpeed = 0;
+      }
+
       JsonObject json = Json.createObjectBuilder()
           .add("Reading1",
               Json.createObjectBuilder()
