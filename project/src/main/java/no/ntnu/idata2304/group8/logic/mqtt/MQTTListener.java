@@ -189,8 +189,6 @@ public class MQTTListener implements Runnable {
                             Cipher decrypt = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
                             decrypt.init(Cipher.DECRYPT_MODE, privateKey);
                             msg = new String(decrypt.doFinal(msg.getBytes()), StandardCharsets.UTF_8);
-                        } else {
-                            msg = new String(Base64.getDecoder().decode(msg), StandardCharsets.UTF_8);
                         }
 
                         JSONObject json = new JSONObject(msg);
