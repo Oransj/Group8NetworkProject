@@ -62,7 +62,7 @@ public class SqlHandler {
                 JSONObject airPressure = (JSONObject) object.get(AIR_PRESSURE);
                 JSONObject light = (JSONObject) object.get(LIGHT);
                 JSONObject wind = (JSONObject) object.get(WIND);
-                
+
                 String sql = "INSERT INTO " + database + "(Time, Temperature, Precipitation, "
                     + "Air_pressure, Light, Wind_Speed, Wind_dir) VALUES(?,?,?,?,?,?,?)";
                 try (Connection connection = this.connect();
@@ -249,16 +249,16 @@ public class SqlHandler {
                     .add(TIME, Json.createObjectBuilder()
                         .add("ms", rs.getLong(TIME)))
                     .add(TEMPERATURE, Json.createObjectBuilder()
-                        .add("celsius", rs.getLong(TEMPERATURE)))
+                        .add("celsius", rs.getDouble(TEMPERATURE)))
                     .add(PRECIPITATION, Json.createObjectBuilder()
-                        .add("mm", rs.getLong(PRECIPITATION)))
+                        .add("mm", rs.getDouble(PRECIPITATION)))
                     .add(AIR_PRESSURE, Json.createObjectBuilder()
-                        .add("hPa", rs.getLong(AIR_PRESSURE)))
+                        .add("hPa", rs.getDouble(AIR_PRESSURE)))
                     .add(LIGHT, Json.createObjectBuilder()
-                        .add("lux", rs.getLong(LIGHT)))
+                        .add("lux", rs.getDouble(LIGHT)))
                     .add(WIND,
-                        Json.createObjectBuilder().add("W_speed", rs.getLong("Wind_Speed"))
-                            .add("W_direction", rs.getLong("Wind_Dir")))
+                        Json.createObjectBuilder().add("W_speed", rs.getDouble("Wind_Speed"))
+                            .add("W_direction", rs.getDouble("Wind_Dir")))
                     .build();
                 jArray.add(builder.toString());
             }

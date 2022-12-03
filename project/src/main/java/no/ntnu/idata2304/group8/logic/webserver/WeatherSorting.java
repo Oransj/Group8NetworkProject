@@ -429,15 +429,15 @@ public class WeatherSorting {
 
     boolean spike = false;
 
-    if (tempCurrent > (temp * 10)
+    if (tempCurrent > (temp * 10) || tempCurrent < (temp * 10)
         ||
         precipCurrent > (precip * 10)
         ||
-        pressCurrent > (press * 20)
+        pressCurrent > (press * 20) || pressCurrent < (press * 20)
         ||
-        lightCurrent > (light * 10)
+        lightCurrent > (light * 10) || lightCurrent < (light * 10)
         ||
-        speedCurrent > (speed * 10)) {
+        speedCurrent > (speed * 10) || speedCurrent < (speed * 10)) {
       spike = true;
     }
 
@@ -477,8 +477,7 @@ public class WeatherSorting {
   }
 
   public double[] getLastTenValues(List<JSONObject> jsons, String attributeName) {
-    // TODO: use data with a wider range
-    double[] previousTenValues = new double[10];
+    double[] previousTenValues = new double[jsons.size()];
     String unit = null;
 
     switch (attributeName) {
@@ -497,30 +496,46 @@ public class WeatherSorting {
     }
 
     for (int i = 0; i < previousTenValues.length; i++) {
-      previousTenValues[i] =
-          Double.parseDouble(jsons.get(i).getJSONObject(attributeName).get(unit).toString());
+
+      try {
+        previousTenValues[i] =
+            Double.parseDouble(jsons.get(i).getJSONObject("Reading1").getJSONObject(attributeName).get(unit).toString());
+      } catch (org.json.JSONException e) {
+        previousTenValues[i] =
+            Double.parseDouble(jsons.get(i).getJSONObject(attributeName).get(unit).toString());
+      }
     }
 
     return previousTenValues;
   }
 
   public double[] getLastTenWindSpeed(List<JSONObject> jsons) {
-    double[] previousTenWindSpeed = new double[10];
+    double[] previousTenWindSpeed = new double[jsons.size()];
 
     for (int i = 0; i < previousTenWindSpeed.length; i++) {
-      previousTenWindSpeed[i] =
-          Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_speed").toString());
+      try {
+        previousTenWindSpeed[i] =
+            Double.parseDouble(jsons.get(i).getJSONObject("Reading1").getJSONObject("Wind").get("W_speed").toString());
+      } catch (org.json.JSONException e) {
+        previousTenWindSpeed[i] =
+            Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_speed").toString());
+      }
     }
 
     return previousTenWindSpeed;
   }
 
   public double[] getLastTenWindDirection(List<JSONObject> jsons) {
-    double[] previousTenWindDirection = new double[10];
-
+    double[] previousTenWindDirection = new double[jsons.size()];
     for (int i = 0; i < previousTenWindDirection.length; i++) {
-      previousTenWindDirection[i] =
-          Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_direction").toString());
+
+      try {
+        previousTenWindDirection[i] =
+            Double.parseDouble(jsons.get(i).getJSONObject("Reading1").getJSONObject("Wind").get("W_direction").toString());
+      } catch (org.json.JSONException e) {
+        previousTenWindDirection[i] =
+            Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_direction").toString());
+      }
     }
 
     return previousTenWindDirection;
@@ -537,11 +552,10 @@ public class WeatherSorting {
     Integer year = Integer.parseInt(date[2]);
 
     int hourMs = 3600000;
-
+    List<JSONObject> jsons = getLastTenObjects(currentObjectTime);
     while (res.getTime()
         <
         (obj.parse(day + " " + month + " " + year + " " + 0 + " " + 0).getTime())) {
-      List<JSONObject> jsons = getLastTenObjects(currentObjectTime);
       res = new Date(currentObjectTime += hourMs);
       double predictedTemperature = predictValue(getLastTenValues(jsons, "Temperature"));
       double predictedPrecipitation = predictValue(getLastTenValues(jsons, "Precipitation"));
@@ -549,6 +563,14 @@ public class WeatherSorting {
       double predictedLight = predictValue(getLastTenValues(jsons, "Light"));
       double predictedWindSpeed = predictValue(getLastTenWindSpeed(jsons));
       double predictedWindDirection = predictValue(getLastTenWindDirection(jsons));
+
+      if (predictedPrecipitation < 0) {
+        predictedPrecipitation = 0;
+      }
+
+      if (predictedLight < 0) {
+        predictedLight = 0;
+      }
 
       JsonObject json = Json.createObjectBuilder()
           .add("Reading1",
@@ -571,14 +593,12 @@ public class WeatherSorting {
       org.json.simple.JSONObject jsonDB =
           (org.json.simple.JSONObject) parser.parse(json.toString());
       sqlHandler.addData(jsonDB, "weather");
-      if (!isSpike(new JSONObject(jsonDB))) {
-        sqlHandler.addData(jsonDB, "weather");
-      } else {
-        res = new Date(currentObjectTime -= hourMs);
+      if (jsons.size() >= 31) {
+        jsons.remove(0);
+        jsons.add(new JSONObject(jsonDB));
       }
-
+      jsons.add(new JSONObject(jsonDB));
     }
-
   }
 
 
@@ -619,7 +639,7 @@ public class WeatherSorting {
       }
     }
 
-    // if the given object with the given time exists in the DB
+//     if the given object with the given time exists in the DB
     if (!sqlHandler.select(currentObjectTime).equals("null")) {
       // delete it, because it's a prediction
       sqlHandler.delete(currentObjectTime);
