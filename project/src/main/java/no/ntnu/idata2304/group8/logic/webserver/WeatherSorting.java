@@ -17,10 +17,22 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * The middleman between the MQTT client, database and weather summary.
+ * Responsible for gathering the needed information about the weather and
+ * format it as needed to be displayed in the front-end.
+ */
 public class WeatherSorting {
   SqlHandler sqlHandler = new SqlHandler();
   WeatherSummary weatherSummary = new WeatherSummary();
 
+  /**
+   * Gets the 4 needed metrics minTemp, maxTemp, precipitation and wind speed.
+   * Formats the information and returns it to the front-end to be displayed.
+
+   * @param days An array of the dates representing the days you need to display in milliseconds.
+   * @return An array list of the needed information for each day in the following format [minTemp, maxTemp, precip, wspeed]
+   */
   public ArrayList<Double[]> getHomePage(String[] days) {
     List<Double[]> day1Data =
         sqlHandler.selectWeatherDataBetween(Long.parseLong(days[0]), Long.parseLong(days[1]),
@@ -51,6 +63,12 @@ public class WeatherSorting {
     return avgDaysData;
   }
 
+  /**
+   * Gets the weather type of the given dates. sun/rain/snow etc.
+
+   * @param days An array of the dates representing the days you need to display in milliseconds.
+   * @return An array of the weather type for each day [day1Type, day2Type, day3Type, day4Type].
+   */
   public String[] getWeatherType(String[] days) {
     List<Double[]> day1Data =
         sqlHandler.selectWeatherDataBetween(Long.parseLong(days[0]), Long.parseLong(days[1]),
@@ -79,6 +97,13 @@ public class WeatherSorting {
     return new String[] {day1Type, day2Type, day3Type, day4Type};
   }
 
+  /**
+   * Gets the needed metrics minTemp, maxTemp, precipitation and wind speed & direction for each hour of the day.
+   * Formats the information and returns it to the front-end to be displayed.
+
+   * @param hours An array of the hours of the day you need to display in milliseconds.
+   * @return An array list of the needed information for each hour of the day.
+   */
   public ArrayList<Double[]> getDayRapport(String[] hours) {
     List<Double[]> hour0Data =
         sqlHandler.selectWeatherRapportBetween(Long.parseLong(hours[0]), Long.parseLong(hours[1]),
@@ -230,6 +255,12 @@ public class WeatherSorting {
     return avgHoursData;
   }
 
+  /**
+   * Gets the weather type for each hour of the day. sun/rain/snow etc.
+
+   * @param hours An array of the hours of the day you need to display in milliseconds.
+   * @return An array of the weather type for each hour of the day.
+   */
   public String[] getWeatherTypeDayRapport(String[] hours) {
     List<Double[]> hour0Data =
         sqlHandler.selectWeatherDataBetween(Long.parseLong(hours[0]), Long.parseLong(hours[1]),
@@ -405,6 +436,13 @@ public class WeatherSorting {
     };
   }
 
+  /**
+   * Checks weather the data is considered a spike by comparing it the previous one in the DB.
+   * If any of the data is bigger 20 times than the previous one, it is considered a spike.
+   *
+   * @param jsonObject An object with the weather data.
+   * @return True if the data is considered a spike and False otherwise.
+   */
   public boolean isSpike(JSONObject jsonObject) {
     // current data
     Double tempCurrent = Double.parseDouble(
@@ -444,6 +482,12 @@ public class WeatherSorting {
     return spike;
   }
 
+  /**
+   * Returns the last ten entries in the database from the given time as a list of json objects.
+   *
+   * @param ms Time in milliseconds.
+   * @return A list of json objects with data older than the given time.
+   */
   public List<JSONObject> getLastTenObjects(Long ms) {
     ArrayList<JSONObject> objects = new ArrayList<>();
     sqlHandler.selectLastTen(ms).forEach(jsonString -> objects.add(new JSONObject(jsonString)));
@@ -451,9 +495,15 @@ public class WeatherSorting {
     return objects;
   }
 
-  public double predictValue(double[] previousTenValues) {
+  /**
+   * Predicts future value of data based on old values.
+   *
+   * @param previousValues An array of previous values of data.
+   * @return A predicted future value.
+   */
+  public double predictValue(double[] previousValues) {
     // Prepare input timeseries data.
-    double[] dataArray = previousTenValues;
+    double[] dataArray = previousValues;
 
     // Set ARIMA model parameters.
     int p = 3;
@@ -471,13 +521,20 @@ public class WeatherSorting {
     ForecastResult forecastResult = Arima.forecast_arima(dataArray, forecastSize, arimaParams);
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
     // Read forecast values
-    double[] forecastData = forecastResult.getForecast(); // in this example, it will return { 2 };
+    double[] forecastData = forecastResult.getForecast();
 
     return Double.parseDouble(decimalFormat.format(forecastData[0]));
   }
 
-  public double[] getLastTenValues(List<JSONObject> jsons, String attributeName) {
-    double[] previousTenValues = new double[jsons.size()];
+  /**
+   * Returns the values of the given attribute from the given objects.
+
+   * @param jsons A list of json objects representing weather data.
+   * @param attributeName The attribute of the object you want to get its value.
+   * @return The values of the given attribute.
+   */
+  public double[] getValues(List<JSONObject> jsons, String attributeName) {
+    double[] previousValues = new double[jsons.size()];
     String unit = null;
 
     switch (attributeName) {
@@ -495,52 +552,78 @@ public class WeatherSorting {
         break;
     }
 
-    for (int i = 0; i < previousTenValues.length; i++) {
+    for (int i = 0; i < previousValues.length; i++) {
 
       try {
-        previousTenValues[i] =
-            Double.parseDouble(jsons.get(i).getJSONObject("Reading1").getJSONObject(attributeName).get(unit).toString());
+        previousValues[i] =
+            Double.parseDouble(
+                jsons.get(i).getJSONObject("Reading1").getJSONObject(attributeName).get(unit)
+                    .toString());
       } catch (org.json.JSONException e) {
-        previousTenValues[i] =
+        previousValues[i] =
             Double.parseDouble(jsons.get(i).getJSONObject(attributeName).get(unit).toString());
       }
     }
 
-    return previousTenValues;
+    return previousValues;
   }
 
-  public double[] getLastTenWindSpeed(List<JSONObject> jsons) {
-    double[] previousTenWindSpeed = new double[jsons.size()];
+  /**
+   * Returns the values of wind speed attribute from the given objects.
 
-    for (int i = 0; i < previousTenWindSpeed.length; i++) {
+   * @param jsons A list of json objects representing weather data.
+   * @return The values of the attribute.
+   */
+  public double[] getWindSpeed(List<JSONObject> jsons) {
+    double[] previousWindSpeed = new double[jsons.size()];
+
+    for (int i = 0; i < previousWindSpeed.length; i++) {
       try {
-        previousTenWindSpeed[i] =
-            Double.parseDouble(jsons.get(i).getJSONObject("Reading1").getJSONObject("Wind").get("W_speed").toString());
+        previousWindSpeed[i] =
+            Double.parseDouble(
+                jsons.get(i).getJSONObject("Reading1").getJSONObject("Wind").get("W_speed")
+                    .toString());
       } catch (org.json.JSONException e) {
-        previousTenWindSpeed[i] =
+        previousWindSpeed[i] =
             Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_speed").toString());
       }
     }
 
-    return previousTenWindSpeed;
+    return previousWindSpeed;
   }
 
-  public double[] getLastTenWindDirection(List<JSONObject> jsons) {
-    double[] previousTenWindDirection = new double[jsons.size()];
-    for (int i = 0; i < previousTenWindDirection.length; i++) {
+  /**
+   * Returns the values of wind direction attribute from the given objects.
+
+   * @param jsons A list of json objects representing weather data.
+   * @return The values of the attribute.
+   */
+  public double[] getWindDirection(List<JSONObject> jsons) {
+    double[] previousWindDirection = new double[jsons.size()];
+    for (int i = 0; i < previousWindDirection.length; i++) {
 
       try {
-        previousTenWindDirection[i] =
-            Double.parseDouble(jsons.get(i).getJSONObject("Reading1").getJSONObject("Wind").get("W_direction").toString());
+        previousWindDirection[i] =
+            Double.parseDouble(
+                jsons.get(i).getJSONObject("Reading1").getJSONObject("Wind").get("W_direction")
+                    .toString());
       } catch (org.json.JSONException e) {
-        previousTenWindDirection[i] =
+        previousWindDirection[i] =
             Double.parseDouble(jsons.get(i).getJSONObject("Wind").get("W_direction").toString());
       }
     }
 
-    return previousTenWindDirection;
+    return previousWindDirection;
   }
 
+  /**
+   * Predict weather data for each hour of the day measured from the last entry in the DB.
+   * Predict data until 00:00 of the day.
+   * The prediction is based on the last ten entries in the DB and on the ARIMA model.
+   *
+   * @throws ParseException If any problem occurs while parsing a json object.
+   * @throws java.text.ParseException If any problem occurs while parsing a json object.
+   */
   public void predict() throws ParseException, java.text.ParseException {
     Long currentObjectTime = Long.parseLong(
         new JSONObject(sqlHandler.selectLast()).getJSONObject("Time").get("ms").toString());
@@ -557,12 +640,12 @@ public class WeatherSorting {
         <
         (obj.parse(day + " " + month + " " + year + " " + 0 + " " + 0).getTime())) {
       res = new Date(currentObjectTime += hourMs);
-      double predictedTemperature = predictValue(getLastTenValues(jsons, "Temperature"));
-      double predictedPrecipitation = predictValue(getLastTenValues(jsons, "Precipitation"));
-      double predictedAirPressure = predictValue(getLastTenValues(jsons, "Air_pressure"));
-      double predictedLight = predictValue(getLastTenValues(jsons, "Light"));
-      double predictedWindSpeed = predictValue(getLastTenWindSpeed(jsons));
-      double predictedWindDirection = predictValue(getLastTenWindDirection(jsons));
+      double predictedTemperature = predictValue(getValues(jsons, "Temperature"));
+      double predictedPrecipitation = predictValue(getValues(jsons, "Precipitation"));
+      double predictedAirPressure = predictValue(getValues(jsons, "Air_pressure"));
+      double predictedLight = predictValue(getValues(jsons, "Light"));
+      double predictedWindSpeed = predictValue(getWindSpeed(jsons));
+      double predictedWindDirection = predictValue(getWindDirection(jsons));
 
       if (predictedPrecipitation < 0) {
         predictedPrecipitation = 0;
@@ -601,7 +684,17 @@ public class WeatherSorting {
     }
   }
 
-
+  /**
+   * Saves the given object to the correct DB depending on weather the object is considered a spike or not.
+   * Predict data for the needed day. If there is no object for the next hour of the given object then
+   * we consider that there are no objects for the rest of the day and for the 3 days ahead.
+   * If there is no object for the given time + 3 days then we consider that there is no data for
+   * the 4th day.
+   *
+   * @param jsonObject The object representing the newly simulated weather data.
+   * @throws ParseException If any problem occurs while parsing a json object.
+   * @throws java.text.ParseException If any problem occurs while parsing a json object.
+   */
   public void saveData(JSONObject jsonObject) throws ParseException, java.text.ParseException {
     // Saving the given object in a variable
     JSONObject currentObject = jsonObject;
