@@ -30,7 +30,7 @@ public class SqlHandler {
      */
     private Connection connect() {
         // Location of SQLite database
-         String fileName = "/home/ubuntu/project/src/main/resources/database/test.db";
+        String fileName = "/home/ubuntu/project/src/main/resources/database/test.db";
         String url = "jdbc:sqlite:" + fileName;
         Connection connection = null;
         try {
@@ -43,6 +43,7 @@ public class SqlHandler {
     
     /**
      * Adds the given JSON object to the database.
+     *
      * @param jsonObject The JSON object to be added to the database.
      * @param database   The database to save into: "weather"/"spike".
      */
@@ -119,7 +120,8 @@ public class SqlHandler {
     }
     
     /**
-     * Queries the database between dayStart and dayEnd to return temperature, precipitation, air pressure, light and wind speed.
+     * Queries the database between dayStart and dayEnd to return
+     * temperature, precipitation, air pressure, light and wind speed.
      *
      * @param dayStart The start point of the query.
      * @param dayEnd The end point of the query.
@@ -151,8 +153,10 @@ public class SqlHandler {
         return dataList;
     }
 
-     /**
-     * Queries the database between dayStart and dayEnd to return temperature, precipitation, wind direction and wind speed.
+    /**
+     * Queries the database between dayStart and dayEnd to return
+     * temperature, precipitation, wind direction and wind speed.
+     *
      * @param dayStart The start point of the query.
      * @param dayEnd The end point of the query.
      * @param database Database to connect to.
@@ -185,6 +189,7 @@ public class SqlHandler {
     
     /**
      * Queries the weather table for the most recent entry.
+     *
      * @return String of the most recent entry.
      */
     public String selectLast() {
@@ -222,7 +227,8 @@ public class SqlHandler {
 
     /**
      * Queries the weather table for the 10 most recent readings.
-     * @param Time in milliseconds.
+     *
+     * @param ms time in milliseconds.
      * @return list of the 10 most recent readings from the weather table.
      */
     public List<String> selectLastTen(Long ms) {
@@ -260,6 +266,7 @@ public class SqlHandler {
     
     /**
      * Deletes an entry from weather table where the Time equal ms.
+     *
      * @param ms Time in milliseconds.
      */
     public void delete(Long ms) {
@@ -275,6 +282,7 @@ public class SqlHandler {
     
     /**
      * Queries the weather table where Time equals ms then returns a String.
+     *
      * @param ms Time in milliseconds.
      * @return String of the object at ms.
      */
@@ -312,6 +320,7 @@ public class SqlHandler {
     
     /**
      * Select all rows in the table and returns a ArrayList with all entries.
+     *
      * @return - List of all values
      */
     public ArrayList selectAll(String database) {
