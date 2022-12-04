@@ -13,7 +13,7 @@ import javax.json.JsonObject;
 import org.json.simple.JSONObject;
 
 /**
- * Writes to and reads from the SQL database.
+ * SQLHandler is responsible for writing to and reading from the SQL database.
  */
 public class SqlHandler {
     private static final String TIME = "Time";
@@ -30,10 +30,6 @@ public class SqlHandler {
      */
     private Connection connect() {
         // Location of SQLite database
-        // String fileName = "project/src/main/resources/database/test.db";
-//        String fileName = "D:\\NTNU\\Semester 3\\IDATA2304 Computer networks and "
-//            + "network programming\\Group8NetworkProject\\project\\src\\main\\"
-//            + "resources\\database\\test.db";
          String fileName = "/home/ubuntu/project/src/main/resources/database/test.db";
         String url = "jdbc:sqlite:" + fileName;
         Connection connection = null;
@@ -47,7 +43,6 @@ public class SqlHandler {
     
     /**
      * Adds the given JSON object to the database.
-     *
      * @param jsonObject The JSON object to be added to the database.
      * @param database   The database to save into: "weather"/"spike".
      */
@@ -89,13 +84,11 @@ public class SqlHandler {
      *
      * @return list of all data for a day.
      */
-    // TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
-    // TODO: Define ArrayList data type. I.e. ArrayList<String> or something.
     public ArrayList selectAllBetween(Long dayStart, Long dayEnd, String database) {
         String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, "
             + "Wind_Speed, Wind_dir " + "FROM " + database
             + " WHERE Time BETWEEN " + dayStart + " AND " + dayEnd;
-        ArrayList jArray = new ArrayList(); // TODO: Refactor variable name
+        ArrayList<JsonObject> jsonObjectArray = new ArrayList<>();
         try (Connection connection = this.connect();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -117,21 +110,21 @@ public class SqlHandler {
                         Json.createObjectBuilder().add("W_speed", rs.getLong("Wind_Speed"))
                             .add("W_direction", rs.getLong("Wind_Dir")))
                     .build();
-                jArray.add(builder);
+                jsonObjectArray.add(builder);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return jArray;
+        return jsonObjectArray;
     }
     
     /**
-     * TODO: Document this function
+     * Queries the database between dayStart and dayEnd to return temperature, precipitation, air pressure, light and wind speed.
      *
-     * @param dayStart
-     * @param dayEnd
-     * @param database
-     * @return
+     * @param dayStart The start point of the query.
+     * @param dayEnd The end point of the query.
+     * @param database Database to connect to.
+     * @return a list with temperature, precipitation, air pressure, light and wind speed.
      */
     public List<Double[]> selectWeatherDataBetween(Long dayStart, Long dayEnd, String database) {
         String sql = "SELECT Temperature, Precipitation, Air_pressure, Light, Wind_Speed "
@@ -157,14 +150,13 @@ public class SqlHandler {
         }
         return dataList;
     }
-    
-    /**
-     * TODO: Fill in JavaDoc
-     *
-     * @param dayStart
-     * @param dayEnd
-     * @param database
-     * @return
+
+     /**
+     * Queries the database between dayStart and dayEnd to return temperature, precipitation, wind direction and wind speed.
+     * @param dayStart The start point of the query.
+     * @param dayEnd The end point of the query.
+     * @param database Database to connect to.
+     * @return a list with temperature, precipitation, wind direction and wind speed.
      */
     public List<Double[]> selectWeatherRapportBetween(Long dayStart, Long dayEnd, String database) {
         String sql = "SELECT Temperature, Precipitation, Wind_Speed, Wind_dir "
@@ -192,9 +184,8 @@ public class SqlHandler {
     }
     
     /**
-     * TODO: Fill in JavaDoc.
-     *
-     * @return
+     * Queries the weather table for the most recent entry.
+     * @return String of the most recent entry.
      */
     public String selectLast() {
         String sql = "SELECT * " + "FROM weather "
@@ -228,17 +219,16 @@ public class SqlHandler {
         assert builder != null;
         return builder.toString();
     }
-    
+
     /**
-     * TODO: Fill in JavaDoc.
-     *
-     * @param ms
-     * @return
+     * Queries the weather table for the 10 most recent readings.
+     * @param Time in milliseconds.
+     * @return list of the 10 most recent readings from the weather table.
      */
     public List<String> selectLastTen(Long ms) {
         String sql = "SELECT * " + "FROM weather "
             + "ORDER BY Time DESC LIMIT 10";
-        ArrayList<String> jArray = new ArrayList(); // TODO: Refactor variable to match checkstyle
+        ArrayList<String> jsonObjectArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -260,18 +250,17 @@ public class SqlHandler {
                         Json.createObjectBuilder().add("W_speed", rs.getDouble("Wind_Speed"))
                             .add("W_direction", rs.getDouble("Wind_Dir")))
                     .build();
-                jArray.add(builder.toString());
+                jsonObjectArray.add(builder.toString());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return jArray;
+        return jsonObjectArray;
     }
     
     /**
-     * TODO: Fill in JavaDoc.
-     *
-     * @param ms
+     * Deletes an entry from weather table where the Time equal ms.
+     * @param ms Time in milliseconds.
      */
     public void delete(Long ms) {
         String sql = "DELETE FROM Weather WHERE Time =" + ms;
@@ -285,10 +274,9 @@ public class SqlHandler {
     }
     
     /**
-     * TODO: Fill in JavaDoc.
-     *
-     * @param ms
-     * @return
+     * Queries the weather table where Time equals ms then returns a String.
+     * @param ms Time in milliseconds.
+     * @return String of the object at ms.
      */
     public String select(Long ms) {
         String sql = "SELECT * " + "FROM weather " + "WHERE Time = " + ms;
@@ -324,14 +312,12 @@ public class SqlHandler {
     
     /**
      * Select all rows in the table and returns a ArrayList with all entries.
-     *
      * @return - List of all values
      */
-    // TODO: CHANGE TO PROPER DATABASE AND CHANGE QUERY ACCORDINGLY
     public ArrayList selectAll(String database) {
         String sql = "SELECT Time, Temperature, Precipitation, Air_pressure, Light, "
             + "Wind_Speed, Wind_dir FROM " + database;
-        ArrayList jArray = new ArrayList(); // TODO: Refactor variable name to work with checkstyle
+        ArrayList jsonObjectArray = new ArrayList();
         try (Connection connection = this.connect();
              Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -353,12 +339,12 @@ public class SqlHandler {
                         Json.createObjectBuilder().add("W_speed", rs.getLong("Wind_Speed"))
                             .add("W_direction", rs.getLong("Wind_Dir")))
                     .build();
-                jArray.add(builder);
+                jsonObjectArray.add(builder);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return jArray;
+        return jsonObjectArray;
     }
 }
 
